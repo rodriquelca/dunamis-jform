@@ -64,8 +64,8 @@ export default {
       switch (id) {
         case 'activity-json-forms':
           activityBar.id = 'activity-json-forms';
-          sideBar.id = 'side-bar-json-forms';
-          mainPanel.id = 'main-json-forms';
+          sideBar.id = 'side-bar-dashboard';
+          mainPanel.id = 'main-dashboard';
           actionsBar.id = 'actions-dashboard';
           break;
         case 'activity-json-form-editor':
