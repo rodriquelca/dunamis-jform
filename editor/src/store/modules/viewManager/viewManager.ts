@@ -158,11 +158,6 @@ const state: ViewManagerState = {
     active: 0,
     items: [
       {
-        id: 'empty',
-        component: 'empty',
-        data: {},
-      },
-      {
         id: 'actions-dashboard',
         component: 'actions-bar-dashboard',
         data: {},
