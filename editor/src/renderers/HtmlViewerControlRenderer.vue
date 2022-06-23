@@ -54,6 +54,11 @@ const controlRenderer = defineComponent({
       ...{
         editorSettings: {
           inline: true,
+          plugins: 'link, code, lists',
+          toolbar:
+            'undo redo | link | styleselect | bold italic backcolor forecolor | ' +
+            'alignleft aligncenter alignright alignjustify | ' +
+            'bullist numlist outdent indent | removeformat | code',
           menubar: false,
         },
       },
