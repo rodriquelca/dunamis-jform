@@ -378,6 +378,23 @@ const controlElements = [
       };
     },
   },
+  {
+    type: 'Submit',
+    label: 'Submit Button',
+    icon: 'mdi-send-circle',
+    uiSchemaElementProvider: () => {
+      const control = {
+        "type": "string",
+        "title": "Submit Form",
+        "i18n": "submit"
+      };
+      return {
+        control,
+        variable: "submit",
+        uiOptions: {}
+      };
+    },
+  },
 ];
 const complexElements = [
   {

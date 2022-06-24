@@ -5,6 +5,7 @@ export { default as CheckboxGroupControlRendererEditor } from './CheckboxGroupCo
 export { default as HtmlViewerControlRendererEditor } from './HtmlViewerControlRendererEditor.vue';
 export { default as ImageControlRendererEditor } from './ImageControlRendererEditor.vue';
 export { default as EditorStringControlRenderer } from './EditorStringControlRenderer.vue';
+export { default as SubmitButtonControlRendererEditor } from './SubmitButtonControlRendererEditor.vue';
 
 import { entry as suggestControlRendererEditorEntry } from './SuggestControlRendererEditor.vue';
 import { entry as dropdownControlRendererEditorEntry } from './DropdownControlRendererEditor.vue';
@@ -13,6 +14,7 @@ import { entry as checkboxGroupControlRendererEditorEntry } from './CheckboxGrou
 import { entry as htmlViewerControlRendererEditorEntry } from './HtmlViewerControlRendererEditor.vue';
 import { entry as imageControlRendererEditorEntry } from './ImageControlRendererEditor.vue';
 import { entry as editorStringControlRendererEntry } from './EditorStringControlRenderer.vue';
+import { entry as submitButtonControlRendererEditorEntry } from './SubmitButtonControlRendererEditor.vue';
 
 export const editorRenderers = [
   suggestControlRendererEditorEntry,
@@ -22,4 +24,5 @@ export const editorRenderers = [
   checkboxGroupControlRendererEditorEntry,
   imageControlRendererEditorEntry,
   editorStringControlRendererEntry,
+  submitButtonControlRendererEditorEntry,
 ];
