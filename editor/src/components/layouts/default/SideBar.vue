@@ -9,7 +9,7 @@
 import { sync } from 'vuex-pathify';
 import _ from 'lodash';
 import PalletePanel from '../../DynaformEditor/PalletePanel.vue';
-import PropertiesPanel from '../../properties-panel/PropertiesPanel.vue';
+import PropertiesPanel from '../../PropertiesPanel/PropertiesPanelDynamic.vue';
 import SideBarI18n from '../../i18n/sideBarI18n.vue';
 import SideBarPreview from '../../DynaformPreview/sideBarDynaformPreview.vue';
 import SideBarDataSources from '../../../modules/DataSources/SideBarDataSources.vue';

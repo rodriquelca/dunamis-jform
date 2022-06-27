@@ -113,8 +113,6 @@ export const useTranslator = () => {
   return translate;
 };
 
-
-
 /**
  * Adds styles, appliedOptions and childUiSchema
  */
@@ -201,7 +199,7 @@ export const useVuetifyControlExt = <
     items: Controlbuilder.items(input.control.value.uischema),
     itemsBuilder: Controlbuilder.itemsBuilder(input.control.value.uischema),
     scope: Controlbuilder.pathControlSchema(input.control.value.uischema.scope),
-    payload: {}
+    payload: {},
   });
 
   const isFocused = ref(false);
@@ -236,14 +234,16 @@ export const useVuetifyControlExt = <
   //Watch for execute onchange
   const unwatch = Controlbuilder.watchScope(store, props.uischema, {
     JForm,
-    JReactivex
+    JReactivex,
   });
 
-  Controlbuilder.scopesHandler(props.uischema, {
-    JReactivex,
-    JForm
-  },
-    // Save new items 
+  Controlbuilder.scopesHandler(
+    props.uischema,
+    {
+      JReactivex,
+      JForm,
+    },
+    // Save new items
     (narray: any) => {
       controlBuilder.items = narray;
     },
@@ -251,22 +251,21 @@ export const useVuetifyControlExt = <
     (payload: any) => {
       controlBuilder.payload = payload;
     }
-
   );
 
-  onBeforeMount(() => { });
-  onMounted(() => { });
-  onBeforeUpdate(() => { });
-  onUpdated(() => { });
-  onBeforeUnmount(() => { });
+  onBeforeMount(() => {});
+  onMounted(() => {});
+  onBeforeUpdate(() => {});
+  onUpdated(() => {});
+  onBeforeUnmount(() => {});
   onUnmounted(() => {
     unwatch();
   });
-  onActivated(() => { });
+  onActivated(() => {});
   onDeactivated(() => {
     unwatch();
   });
-  onErrorCaptured(() => { });
+  onErrorCaptured(() => {});
   return {
     ...input,
     styles,
@@ -276,6 +275,6 @@ export const useVuetifyControlExt = <
     onChange,
     persistentHint,
     computedLabel,
-    controlBuilder
+    controlBuilder,
   };
 };
