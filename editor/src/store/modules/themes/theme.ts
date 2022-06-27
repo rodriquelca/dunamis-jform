@@ -8,27 +8,10 @@ import defaultThemes from './defaultThemes.json';
 export interface ThemeState {
   themes: any;
   active: string;
-  customForm: any;
 }
 const state: ThemeState = {
   themes: defaultThemes,
   active: 'Default',
-  customForm: {
-    paddings: {
-      paddingTop: '',
-      paddingRight: '',
-      paddingBottom: '',
-      paddingLeft: '',
-    },
-    margins: {
-      top: '',
-      right: '',
-      bottom: '',
-      left: '',
-    },
-    background: '',
-    backgroundColor: '#FFFFFF',
-  },
 };
 const themes: Module<ThemeState, RootState> = {
   namespaced: true,
