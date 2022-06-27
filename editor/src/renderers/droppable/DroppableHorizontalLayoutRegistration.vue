@@ -104,7 +104,8 @@ const droppableRenderer = defineComponent({
             evt.added.element.type === 'Dropdown' ||
             evt.added.element.type === 'Image' ||
             evt.added.element.type === 'GridControl' ||
-            evt.added.element.type === 'File')
+            evt.added.element.type === 'File' ||
+            evt.added.element.type === 'Submit')
         ) {
           //here update the schema
           const property = evt.added.element.uiSchemaElementProvider();
