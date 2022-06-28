@@ -14,15 +14,16 @@
 <script lang="ts">
 import { defineComponent, ref } from '@vue/composition-api';
 import FieldProperties from '../models/FieldProperties';
-import TextProp from './TextProp.vue';
-import TextareaProp from './TextareaProp.vue';
-import DropdownProp from './DropdownProp.vue';
-import CheckboxProp from './CheckboxProp.vue';
+import * as components from './index';
+// import TextProp from './TextProp.vue';
+// import TextareaProp from './TextareaProp.vue';
+// import DropdownProp from './DropdownProp.vue';
+// import CheckboxProp from './CheckboxProp.vue';
 import _ from 'lodash';
 
 const PropertiesPanelDynamic = defineComponent({
   name: 'PropertiesPanelDynamic',
-  components: { TextProp, TextareaProp, DropdownProp, CheckboxProp },
+  components: components,
   props: ['config'],
   setup(props: any, context: any) {
     let type = ref(props.config.type);
@@ -45,5 +46,4 @@ const PropertiesPanelDynamic = defineComponent({
 });
 export default PropertiesPanelDynamic;
 </script>
-<style>
-</style>
+<style></style>
