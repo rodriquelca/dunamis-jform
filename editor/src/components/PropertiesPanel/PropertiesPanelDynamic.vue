@@ -157,6 +157,13 @@ const PropertiesPanel = defineComponent({
           defaultDate: data.defaultDate,
         });
       }
+      //mask
+      if (data.mask) {
+        this.$store.dispatch('app/updateUISchemaElement', {
+          elementUUID: this.uiElement.uuid,
+          changedProperties: { label: data.label },
+        });
+      }
       // label
       if (data.label) {
         this.$store.dispatch('app/updateUISchemaElement', {

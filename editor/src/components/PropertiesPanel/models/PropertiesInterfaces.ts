@@ -45,7 +45,7 @@ const PropertiesPanel = [
   {
     id: 'mask',
     type: 'text',
-    name: 'Mask',
+    name: 'Input Mask',
     items: [],
   } as PropertyPanel,
   {
