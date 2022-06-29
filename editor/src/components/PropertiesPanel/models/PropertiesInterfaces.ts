@@ -7,6 +7,13 @@ export interface PropertyPanel {
 
 const PropertiesPanel = [
   {
+    id: 'calculated',
+    type: 'calculated',
+    name: 'Calculated',
+    items: [],
+  } as PropertyPanel,
+  
+  {
     id: 'variable',
     type: 'text',
     name: 'Variable',
