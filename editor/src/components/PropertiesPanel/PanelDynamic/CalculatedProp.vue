@@ -80,22 +80,82 @@
                       </v-btn>
                     </v-row>
                     <v-row align="center" class="mx-0">
-                      <v-btn fab color="secondary"> 4 </v-btn>
-                      <v-btn fab color="secondary"> 5 </v-btn>
-                      <v-btn fab color="secondary"> 6 </v-btn>
-                      <v-btn fab color="primary"> * </v-btn>
+                      <v-btn
+                        fab
+                        color="secondary"
+                        @click="appendToDisplay('4')"
+                      >
+                        4
+                      </v-btn>
+                      <v-btn
+                        fab
+                        color="secondary"
+                        @click="appendToDisplay('5')"
+                      >
+                        5
+                      </v-btn>
+                      <v-btn
+                        fab
+                        color="secondary"
+                        @click="appendToDisplay('6')"
+                      >
+                        6
+                      </v-btn>
+                      <v-btn fab color="primary" @click="appendToDisplay('*')">
+                        *
+                      </v-btn>
                     </v-row>
                     <v-row align="center" class="mx-0">
-                      <v-btn fab color="secondary"> 7 </v-btn>
-                      <v-btn fab color="secondary"> 8 </v-btn>
-                      <v-btn fab color="secondary"> 9 </v-btn>
-                      <v-btn fab color="primary"> / </v-btn>
+                      <v-btn
+                        fab
+                        color="secondary"
+                        @click="appendToDisplay('7')"
+                      >
+                        7
+                      </v-btn>
+                      <v-btn
+                        fab
+                        color="secondary"
+                        @click="appendToDisplay('8')"
+                      >
+                        8
+                      </v-btn>
+                      <v-btn
+                        fab
+                        color="secondary"
+                        @click="appendToDisplay('9')"
+                      >
+                        9
+                      </v-btn>
+                      <v-btn fab color="primary" @click="appendToDisplay('/')">
+                        /
+                      </v-btn>
                     </v-row>
                     <v-row align="center" class="mx-0">
-                      <v-btn fab color="secondary"> +/- </v-btn>
-                      <v-btn fab color="secondary"> 0 </v-btn>
-                      <v-btn fab color="secondary"> , </v-btn>
-                      <v-btn fab color="primary"> = </v-btn>
+                      <v-btn
+                        fab
+                        color="secondary"
+                        @click="appendToDisplay('+/-')"
+                      >
+                        +/-
+                      </v-btn>
+                      <v-btn
+                        fab
+                        color="secondary"
+                        @click="appendToDisplay('0')"
+                      >
+                        0
+                      </v-btn>
+                      <v-btn
+                        fab
+                        color="secondary"
+                        @click="appendToDisplay(',')"
+                      >
+                        ,
+                      </v-btn>
+                      <v-btn fab color="primary" @click="appendToDisplay('=')">
+                        =
+                      </v-btn>
                     </v-row>
                   </v-card-text>
                 </v-card>
@@ -104,7 +164,6 @@
                 <v-chip
                   v-for="(selection, i) in selections"
                   :key="i"
-                  :disabled="loading"
                   @click:close="selected.splice(i, 1)"
                 >
                   <v-icon left v-text="selection.icon"></v-icon>
