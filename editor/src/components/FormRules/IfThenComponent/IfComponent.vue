@@ -46,7 +46,7 @@
             @keyup.enter="edit(index, item)"
           ></v-text-field>
           <v-chip v-else dark label color="blue-grey darken-1" x-small>
-            {{ item.text }}
+            {{ item.text }} ffff
           </v-chip>
           <v-spacer></v-spacer>
           <v-list-item-action @click.stop>
