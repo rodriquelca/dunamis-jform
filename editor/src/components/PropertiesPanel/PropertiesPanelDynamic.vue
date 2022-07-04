@@ -194,6 +194,13 @@ const PropertiesPanel = defineComponent({
           changedProperties: { maxLength: data.maxLength },
         });
       }
+      // hint
+      if (data.hint || data.hint == '') {
+        this.$store.dispatch('app/updateUISchemaElement', {
+          elementUUID: this.uiElement.uuid,
+          changedProperties: { hint: data.hint },
+        });
+      }
     },
     findElementSchema() {
       const linkedSchemaUUID = this.uiElement.linkedSchemaElement;

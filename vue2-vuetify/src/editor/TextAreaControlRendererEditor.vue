@@ -32,7 +32,18 @@
         @change="onChange"
         @focus="isFocused = true"
         @blur="isFocused = false"
-      />
+      >
+        <v-tooltip
+          v-if="control.uischema.hint && control.uischema.hint != ''"
+          slot="append"
+          top
+        >
+          <template v-slot:activator="{ on }">
+            <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
+          </template>
+          <span class="">{{ control.uischema.hint }}</span>
+        </v-tooltip>
+      </v-textarea>
     </v-hover>
   </control-wrapper>
 </template>
@@ -52,7 +63,7 @@ import {
 } from '@jsonforms/vue2';
 import { default as ControlWrapper } from '../controls/ControlWrapper.vue';
 import { useVuetifyControl } from '../util';
-import { VHover, VTextarea } from 'vuetify/lib';
+import { VHover, VTextarea, VTooltip, VIcon } from 'vuetify/lib';
 import { DisabledIconFocus } from '../controls/directives';
 
 const controlRenderer = defineComponent({
@@ -61,6 +72,8 @@ const controlRenderer = defineComponent({
     ControlWrapper,
     VHover,
     VTextarea,
+    VTooltip,
+    VIcon,
   },
   directives: {
     DisabledIconFocus,

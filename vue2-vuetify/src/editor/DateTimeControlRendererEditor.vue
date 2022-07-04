@@ -20,7 +20,18 @@
       :value="dataTime"
       @focus="isFocused = true"
       @blur="isFocused = false"
-    />
+    >
+      <v-tooltip
+        v-if="control.uischema.hint && control.uischema.hint != ''"
+        slot="append"
+        top
+      >
+        <template v-slot:activator="{ on }">
+          <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
+        </template>
+        <span class="">{{ control.uischema.hint }}</span>
+      </v-tooltip>
+    </v-text-field>
   </control-wrapper>
 </template>
 
@@ -39,13 +50,15 @@ import {
 } from '@jsonforms/vue2';
 import { default as ControlWrapper } from './../controls/ControlWrapper.vue';
 import { useVuetifyControl, parseDateTime } from '../util';
-import { VTextField } from 'vuetify/lib';
+import { VTextField, VIcon, VTooltip } from 'vuetify/lib';
 
 const controlRenderer = defineComponent({
   name: 'datetime-control-renderer-editor',
   components: {
     ControlWrapper,
     VTextField,
+    VIcon,
+    VTooltip,
   },
   props: {
     ...rendererProps<ControlElement>(),
