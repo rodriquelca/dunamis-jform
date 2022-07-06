@@ -144,86 +144,22 @@ export default {
           return 'mdi-tab';
         case 'Label':
           return 'mdi-format-text';
-        case 'Control':
-          if (
-            schemaElement &&
-            schemaElement.schema &&
-            schemaElement.schema.type === 'boolean'
-          ) {
-            return 'mdi-checkbox-outline';
-          }
-          if (
-            schemaElement &&
-            schemaElement.schema &&
-            schemaElement.schema.format === 'date'
-          ) {
-            return 'mdi-calendar-month';
-          }
-          if (
-            schemaElement &&
-            schemaElement.schema &&
-            schemaElement.schema.format === 'date-time'
-          ) {
-            return 'mdi-calendar-clock-outline';
-          }
-          if (
-            schemaElement &&
-            schemaElement.schema &&
-            schemaElement.schema.format === 'time'
-          ) {
-            return 'mdi-clock-outline';
-          }
-          if (
-            schemaElement &&
-            schemaElement.schema &&
-            schemaElement.schema.format == 'time'
-          ) {
-            return 'mdi-clock-outline';
-          }
-          if (
-            this.wrappedElement &&
-            this.wrappedElement.options &&
-            this.wrappedElement.options.multipleFile
-          ) {
-            return 'mdi-cloud-upload-outline';
-          }
-          if (
-            this.wrappedElement &&
-            this.wrappedElement.options &&
-            this.wrappedElement.options.multi
-          ) {
-            return 'mdi-format-pilcrow';
-          }
-          if (
-            this.wrappedElement &&
-            this.wrappedElement.options &&
-            this.wrappedElement.options.isHtmlViewer
-          ) {
-            return 'mdi-pencil-ruler';
-          }
-          if (
-            schemaElement &&
-            schemaElement.schema &&
-            schemaElement.schema.oneOf
-          ) {
-            return 'mdi-form-dropdown';
-          }
-          if (
-            schemaElement &&
-            schemaElement.schema &&
-            schemaElement.schema.type === 'number'
-          ) {
-            return 'mdi-numeric';
-          }
-          if (
-            schemaElement &&
-            schemaElement.schema &&
-            schemaElement.schema.type === 'integer'
-          ) {
-            return 'mdi-counter';
-          }
-
+        case 'Checkbox':
+          return 'mdi-checkbox-outline';
+        case 'DatePicker':
+          return 'mdi-calendar-month';
+        case 'DateTime':
+          return 'mdi-calendar-clock-outline';
+        case 'TimePicker':
+          return 'mdi-clock-outline';
+        case 'MultipleFile':
+          return 'mdi-cloud-upload-outline';
+        case 'Text':
           return 'mdi-crop-square';
+        case 'TextArea':
+          return 'mdi-format-pilcrow';
+        case 'RichText':
+          return 'mdi-pencil-ruler';
         case 'Suggest':
           return 'mdi-text-box-search-outline';
         case 'RadioGroup':
@@ -236,6 +172,8 @@ export default {
           return 'mdi-image-outline';
         case 'DataTableControl':
           return 'mdi-grid';
+        case 'Rating':
+          return 'mdi-star-outline';
 
         default:
           return 'mdi-checkbox-blank-badge-outline';

@@ -6,8 +6,7 @@
     :appliedOptions="appliedOptions"
   >
     <v-hover v-slot="{ hover }">
-      <v-select
-        v-if="appliedOptions.autocomplete === false"
+      <v-textarea
         v-disabled-icon-focus
         :id="control.id + '-input'"
         :class="styles.control.input"
@@ -19,33 +18,17 @@
         :persistent-hint="persistentHint()"
         :required="control.required"
         :error-messages="control.errors"
-        :clearable="hover"
         :value="control.data"
-        :items="control.options"
-        item-text="label"
-        item-value="value"
-        @change="onChange"
-        @focus="isFocused = true"
-        @blur="isFocused = false"
-      />
-      <v-autocomplete
-        v-else
-        v-disabled-icon-focus
-        :id="control.id + '-input'"
-        :class="styles.control.input"
-        :disabled="!control.enabled"
-        :autofocus="appliedOptions.focus"
-        :placeholder="appliedOptions.placeholder"
-        :label="computedLabel"
-        :hint="control.description"
-        :persistent-hint="persistentHint()"
-        :required="control.required"
-        :error-messages="control.errors"
+        :maxlength="
+          appliedOptions.restrict ? control.schema.maxLength : undefined
+        "
+        :size="
+          appliedOptions.trim && control.schema.maxLength !== undefined
+            ? control.schema.maxLength
+            : undefined
+        "
         :clearable="hover"
-        :value="control.data"
-        :items="control.options"
-        item-text="label"
-        item-value="value"
+        multi-line
         @change="onChange"
         @focus="isFocused = true"
         @blur="isFocused = false"
@@ -59,26 +42,25 @@ import {
   ControlElement,
   JsonFormsRendererRegistryEntry,
   rankWith,
-  isOneOfEnumControl,
+  uiTypeIs,
 } from '@jsonforms/core';
 import { defineComponent } from '../vue';
 import {
   rendererProps,
-  useJsonFormsOneOfEnumControl,
+  useJsonFormsControl,
   RendererProps,
 } from '@jsonforms/vue2';
 import { default as ControlWrapper } from '../controls/ControlWrapper.vue';
 import { useVuetifyControl } from '../util';
-import { VSelect, VHover, VAutocomplete } from 'vuetify/lib';
+import { VHover, VTextarea } from 'vuetify/lib';
 import { DisabledIconFocus } from '../controls/directives';
 
 const controlRenderer = defineComponent({
-  name: 'autocomplete-oneof-enum-control-renderer',
+  name: 'text-area-control-renderer-editor',
   components: {
     ControlWrapper,
-    VSelect,
-    VAutocomplete,
     VHover,
+    VTextarea,
   },
   directives: {
     DisabledIconFocus,
@@ -88,7 +70,7 @@ const controlRenderer = defineComponent({
   },
   setup(props: RendererProps<ControlElement>) {
     return useVuetifyControl(
-      useJsonFormsOneOfEnumControl(props),
+      useJsonFormsControl(props),
       (value) => value || undefined
     );
   },
@@ -98,6 +80,6 @@ export default controlRenderer;
 
 export const entry: JsonFormsRendererRegistryEntry = {
   renderer: controlRenderer,
-  tester: rankWith(10, isOneOfEnumControl),
+  tester: rankWith(2, uiTypeIs('TextArea')),
 };
 </script>

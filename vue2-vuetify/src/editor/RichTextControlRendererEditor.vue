@@ -5,16 +5,7 @@
     :isFocused="isFocused"
     :appliedOptions="appliedOptions"
   >
-    <v-btn
-      :id="control.id + '-input'"
-      :class="styles.control.input"
-      :disabled="!control.enabled"
-      :autofocus="appliedOptions.focus"
-      :error-messages="control.errors"
-      @click="onSubmit"
-    >
-      {{ control.schema.title }}
-    </v-btn>
+    <v-container v-html="appliedOptions.content"></v-container>
   </control-wrapper>
 </template>
 
@@ -28,39 +19,39 @@ import {
 import { defineComponent } from '../vue';
 import {
   rendererProps,
-  useJsonFormsEnumControl,
+  useJsonFormsControl,
   RendererProps,
 } from '@jsonforms/vue2';
 import { default as ControlWrapper } from '../controls/ControlWrapper.vue';
-import { useVuetifyControl } from '../composition';
-import { VBtn } from 'vuetify/lib';
+import { useVuetifyControl } from '../util';
+import { DisabledIconFocus } from '../controls/directives';
+import { VContainer } from 'vuetify/lib';
 
 const controlRenderer = defineComponent({
-  name: 'submit-button-control-renderer-editor',
+  name: 'rich-text-control-renderer-editor',
   components: {
     ControlWrapper,
-    VBtn,
+    VContainer,
+  },
+  directives: {
+    DisabledIconFocus,
   },
   props: {
     ...rendererProps<ControlElement>(),
   },
   setup(props: RendererProps<ControlElement>) {
     return useVuetifyControl(
-      useJsonFormsEnumControl(props),
+      useJsonFormsControl(props),
       (value) => value || undefined
     );
   },
-  methods: {
-    onSubmit() {
-      alert('The form was submitted');
-    },
-  },
+  computed: {},
 });
 
 export default controlRenderer;
 
 export const entry: JsonFormsRendererRegistryEntry = {
   renderer: controlRenderer,
-  tester: rankWith(1, uiTypeIs('Submit')),
+  tester: rankWith(2, uiTypeIs('RichText')),
 };
 </script>

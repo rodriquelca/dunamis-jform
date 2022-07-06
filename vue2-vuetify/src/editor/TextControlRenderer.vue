@@ -73,7 +73,7 @@ import {
   ControlElement,
   JsonFormsRendererRegistryEntry,
   rankWith,
-  isStringControl,
+  uiTypeIs,
 } from '@jsonforms/core';
 import { defineComponent } from '../vue';
 import {
@@ -91,7 +91,7 @@ import isString from 'lodash/isString';
 import { mask } from '@titou10/v-mask';
 
 const controlRenderer = defineComponent({
-  name: 'string-control-renderer',
+  name: 'text-control-renderer-editor',
   components: {
     ControlWrapper,
     VHover,
@@ -187,6 +187,6 @@ export default controlRenderer;
 
 export const entry: JsonFormsRendererRegistryEntry = {
   renderer: controlRenderer,
-  tester: rankWith(2, isStringControl),
+  tester: rankWith(2, uiTypeIs('Text')),
 };
 </script>

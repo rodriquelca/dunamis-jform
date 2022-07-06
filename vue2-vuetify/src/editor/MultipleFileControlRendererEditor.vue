@@ -61,7 +61,7 @@ import {
   JsonFormsRendererRegistryEntry,
   and,
   isObjectArrayWithNesting,
-  optionIs,
+  uiTypeIs,
 } from '@jsonforms/core';
 import { defineComponent } from '@vue/composition-api';
 import {
@@ -85,7 +85,7 @@ import {
   VBtn,
 } from 'vuetify/lib';
 const controlRenderer = defineComponent({
-  name: 'multiple-file-control-renderer',
+  name: 'multiple-file-control-renderer-editor',
   components: {
     ControlWrapper,
     VCard,
@@ -146,9 +146,6 @@ const controlRenderer = defineComponent({
 export default controlRenderer;
 export const entry: JsonFormsRendererRegistryEntry = {
   renderer: controlRenderer,
-  tester: rankWith(
-    6,
-    and(isObjectArrayWithNesting, optionIs('multipleFile', true))
-  ),
+  tester: rankWith(6, and(isObjectArrayWithNesting, uiTypeIs('multipleFile'))),
 };
 </script>
