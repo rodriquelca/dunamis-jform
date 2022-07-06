@@ -98,13 +98,23 @@ const droppableRenderer = defineComponent({
         if (
           evt.added.element &&
           (evt.added.element.type === 'Control' ||
+            evt.added.element.type === 'Checkbox' ||
+            evt.added.element.type === 'DatePicker' ||
+            evt.added.element.type === 'DateTime' ||
+            evt.added.element.type === 'TimePicker' ||
+            evt.added.element.type === 'MultipleFile' ||
+            evt.added.element.type === 'Text' ||
+            evt.added.element.type === 'TextArea' ||
+            evt.added.element.type === 'RichText' ||
+            evt.added.element.type === 'Rating' ||
             evt.added.element.type === 'RadioGroup' ||
             evt.added.element.type === 'Suggest' ||
             evt.added.element.type === 'CheckboxGroup' ||
             evt.added.element.type === 'Dropdown' ||
             evt.added.element.type === 'Image' ||
             evt.added.element.type === 'GridControl' ||
-            evt.added.element.type === 'File')
+            evt.added.element.type === 'File' ||
+            evt.added.element.type === 'Submit')
         ) {
           //here update the schema
           const property = evt.added.element.uiSchemaElementProvider();

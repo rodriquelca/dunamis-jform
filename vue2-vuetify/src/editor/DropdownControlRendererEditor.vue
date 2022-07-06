@@ -50,7 +50,7 @@ import { VSelect, VHover } from 'vuetify/lib';
 import { DisabledIconFocus } from './../controls/directives';
 
 const controlRenderer = defineComponent({
-  name: 'DropdownControlRendererEditor',
+  name: 'dropdown-control-renderer-editor',
   components: {
     ControlWrapper,
     VSelect,

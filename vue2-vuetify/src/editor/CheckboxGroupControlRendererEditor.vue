@@ -37,6 +37,7 @@
 import {
   ControlElement,
   JsonFormsRendererRegistryEntry,
+  or,
   rankWith,
   uiTypeIs,
 } from '@jsonforms/core';
@@ -79,6 +80,6 @@ export default controlRenderer;
 
 export const entry: JsonFormsRendererRegistryEntry = {
   renderer: controlRenderer,
-  tester: rankWith(2, uiTypeIs('CheckboxGroup')),
+  tester: rankWith(2, or(uiTypeIs('CheckboxGroup'))),
 };
 </script>

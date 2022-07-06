@@ -51,9 +51,7 @@ import {
   ControlElement,
   JsonFormsRendererRegistryEntry,
   rankWith,
-  isIntegerControl,
-  and,
-  optionIs,
+  uiTypeIs,
 } from '@jsonforms/core';
 import { defineComponent } from '../vue';
 import {
@@ -66,7 +64,7 @@ import { useVuetifyControl } from '../util';
 import { VRating } from 'vuetify/lib';
 
 const controlRenderer = defineComponent({
-  name: 'rating-control-renderer',
+  name: 'rating-control-renderer-editor',
   components: {
     ControlWrapper,
 
@@ -93,6 +91,6 @@ export default controlRenderer;
 
 export const entry: JsonFormsRendererRegistryEntry = {
   renderer: controlRenderer,
-  tester: rankWith(1, and(isIntegerControl, optionIs('rating', true))),
+  tester: rankWith(1, uiTypeIs('Rating')),
 };
 </script>
