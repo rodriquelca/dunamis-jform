@@ -44,7 +44,7 @@
         :autofocus="appliedOptions.focus"
         :placeholder="appliedOptions.placeholder"
         :label="computedLabel"
-        :hint="control.description"
+        :hint="control.hint"
         :persistent-hint="persistentHint()"
         :required="control.required"
         :error-messages="control.errors"
@@ -63,7 +63,18 @@
         @focus="isFocused = true"
         @blur="isFocused = false"
         v-mask="inputMask"
-      />
+      >
+        <v-tooltip
+          v-if="control.uischema.hint && control.uischema.hint != ''"
+          slot="append"
+          top
+        >
+          <template v-slot:activator="{ on }">
+            <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
+          </template>
+          <span class="">{{ control.uischema.hint }}</span>
+        </v-tooltip>
+      </v-text-field>
     </v-hover>
   </control-wrapper>
 </template>
@@ -83,7 +94,7 @@ import {
 } from '@jsonforms/vue2';
 import { default as ControlWrapper } from '../controls/ControlWrapper.vue';
 import { useVuetifyControl } from '../util';
-import { VHover, VTextField, VCombobox } from 'vuetify/lib';
+import { VHover, VTextField, VCombobox, VTooltip, VIcon } from 'vuetify/lib';
 import { DisabledIconFocus } from '../controls/directives';
 import isArray from 'lodash/isArray';
 import every from 'lodash/every';
@@ -97,6 +108,8 @@ const controlRenderer = defineComponent({
     VHover,
     VTextField,
     VCombobox,
+    VTooltip,
+    VIcon,
   },
   directives: {
     DisabledIconFocus,

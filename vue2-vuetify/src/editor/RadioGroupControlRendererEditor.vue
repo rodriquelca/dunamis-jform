@@ -27,6 +27,16 @@
         :label="o.label"
         :value="o.value"
       ></v-radio>
+      <v-tooltip
+        v-if="control.uischema.hint && control.uischema.hint != ''"
+        slot="append"
+        top
+      >
+        <template v-slot:activator="{ on }">
+          <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
+        </template>
+        <span class="">{{ control.uischema.hint }}</span>
+      </v-tooltip>
     </v-radio-group>
   </control-wrapper>
 </template>
@@ -46,7 +56,7 @@ import {
 } from '@jsonforms/vue2';
 import { default as ControlWrapper } from './../controls/ControlWrapper.vue';
 import { useVuetifyControl } from '../util';
-import { VRadioGroup, VRadio, VLabel } from 'vuetify/lib';
+import { VRadioGroup, VRadio, VLabel, VIcon, VTooltip } from 'vuetify/lib';
 
 const controlRenderer = defineComponent({
   name: 'radio-group-control-renderer-editor',
@@ -55,6 +65,8 @@ const controlRenderer = defineComponent({
     VRadioGroup,
     VRadio,
     VLabel,
+    VIcon,
+    VTooltip,
   },
   props: {
     ...rendererProps<ControlElement>(),

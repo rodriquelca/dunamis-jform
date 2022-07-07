@@ -28,7 +28,18 @@
         :label="o.label"
         :value="o.value"
         @change="onChange"
-      ></v-checkbox>
+      >
+      </v-checkbox>
+      <v-tooltip
+        v-if="control.uischema.hint && control.uischema.hint != ''"
+        slot="append"
+        top
+      >
+        <template v-slot:activator="{ on }">
+          <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
+        </template>
+        <span class="">{{ control.uischema.hint }}</span>
+      </v-tooltip>
     </v-radio-group>
   </control-wrapper>
 </template>
@@ -49,7 +60,7 @@ import {
 } from '@jsonforms/vue2';
 import { useVuetifyControl } from '../util';
 import { default as ControlWrapper } from '../controls/ControlWrapper.vue';
-import { VRadioGroup, VCheckbox, VLabel } from 'vuetify/lib';
+import { VRadioGroup, VCheckbox, VLabel, VIcon, VTooltip } from 'vuetify/lib';
 import { reactive } from '@vue/composition-api';
 
 const controlRenderer = defineComponent({
@@ -59,6 +70,8 @@ const controlRenderer = defineComponent({
     VRadioGroup,
     VCheckbox,
     VLabel,
+    VIcon,
+    VTooltip,
   },
   props: {
     ...rendererProps<ControlElement>(),

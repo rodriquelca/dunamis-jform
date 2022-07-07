@@ -63,6 +63,15 @@
             </draggable>
           </tbody>
         </v-simple-table>
+        <v-tooltip
+          v-if="control.uischema.hint && control.uischema.hint != ''"
+          top
+        >
+          <template v-slot:activator="{ on }">
+            <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
+          </template>
+          <span class="">{{ control.uischema.hint }}</span>
+        </v-tooltip>
       </v-row>
     </v-card-text>
   </v-card>
@@ -114,7 +123,6 @@ const controlRenderer = defineComponent({
     VCard,
     VCardTitle,
     VCardText,
-
     VToolbar,
     VToolbarTitle,
     VTooltip,

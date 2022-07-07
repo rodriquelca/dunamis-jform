@@ -5,11 +5,18 @@
     :isFocused="isFocused"
     :appliedOptions="appliedOptions"
   >
+    <v-tooltip v-if="control.uischema.hint && control.uischema.hint != ''" top>
+      <template v-slot:activator="{ on }">
+        <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
+      </template>
+      <span class="">{{ control.uischema.hint }}</span>
+    </v-tooltip>
     <v-img
       :max-height="appliedOptions.height || 150"
       :max-width="appliedOptions.width || 150"
       :src="appliedOptions.image"
-    ></v-img>
+    >
+    </v-img>
   </control-wrapper>
 </template>
 
@@ -29,7 +36,7 @@ import {
 import { default as ControlWrapper } from '../controls/ControlWrapper.vue';
 import { useVuetifyControl } from '../util';
 import { DisabledIconFocus } from '../controls/directives';
-import { VContainer, VImg } from 'vuetify/lib';
+import { VContainer, VImg, VIcon, VTooltip } from 'vuetify/lib';
 
 const controlRenderer = defineComponent({
   name: 'image-control-renderer-editor',
@@ -37,6 +44,8 @@ const controlRenderer = defineComponent({
     ControlWrapper,
     VContainer,
     VImg,
+    VIcon,
+    VTooltip,
   },
   directives: {
     DisabledIconFocus,
