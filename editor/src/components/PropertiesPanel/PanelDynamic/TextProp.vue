@@ -5,23 +5,30 @@
     persistent-placeholder
     class="caption"
     :value="value"
+    :type="inputType"
+    :min="min"
     @input="input"
     @change="change"
   ></v-text-field>
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent, ref } from '@vue/composition-api';
 import { dynamicPropertyDefault } from '../PropertiesPanelComp';
 const TextProp = defineComponent({
   name: 'TextProp',
   emits: ['input', 'change'],
   props: ['value', 'config'],
   setup(props: any, context: any) {
-    return dynamicPropertyDefault(props, context);
+    let inputType = ref(props.config.options.inputType || 'text');
+    let min = ref(props.config.options.min || 1);
+    return {
+      ...dynamicPropertyDefault(props, context),
+      inputType,
+      min,
+    };
   },
 });
 export default TextProp;
 </script>
-<style>
-</style>
+<style></style>

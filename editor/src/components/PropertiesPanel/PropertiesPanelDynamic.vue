@@ -95,11 +95,11 @@ const PropertiesPanel = defineComponent({
         fieldData['description'] = elementSchema.schema.description
           ? elementSchema.schema.description
           : '';
-        // Get the maLength property
+        // Get the maxLength property
         fieldData['maxLength'] = elementSchema.schema.maxLength
           ? elementSchema.schema.maxLength
           : '';
-
+        // Get the readOnly property
         fieldData['readOnly'] = elementSchema.schema.readOnly
           ? elementSchema.schema.readOnly
           : false;
@@ -199,6 +199,13 @@ const PropertiesPanel = defineComponent({
         this.$store.dispatch('app/updateUISchemaElement', {
           elementUUID: this.uiElement.uuid,
           changedProperties: { hint: data.hint },
+        });
+      }
+      // rows for TextArea
+      if (data.rows) {
+        this.$store.dispatch('app/updateUISchemaElement', {
+          elementUUID: this.uiElement.uuid,
+          changedProperties: { rows: data.rows },
         });
       }
     },
