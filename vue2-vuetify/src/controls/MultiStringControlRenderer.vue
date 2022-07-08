@@ -32,7 +32,8 @@
         @change="onChange"
         @focus="isFocused = true"
         @blur="isFocused = false"
-      />
+      >
+      </v-textarea>
     </v-hover>
   </control-wrapper>
 </template>

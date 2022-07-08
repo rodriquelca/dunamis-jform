@@ -4,7 +4,7 @@ import {
   createLabel,
   createLayout,
 } from '../util/generators/uiSchema';
-import { createControl } from '../util/generators/schema'
+import { createControl } from '../util/generators/schema';
 export interface PaletteService {
   getPaletteElements(): PaletteElement[];
 }
@@ -50,138 +50,138 @@ const paletteElements: PaletteElement[] = [
 ];
 const controlElements = [
   {
-    type: 'Control',
+    type: 'Checkbox',
     label: 'Checkbox',
     icon: 'mdi-checkbox-outline',
     uiSchemaElementProvider: () => {
-      const control = createControl("boolean");
+      const control = createControl('boolean');
       return {
         control,
-        variable: "checkbox"
+        variable: 'checkbox',
       };
     },
   },
   {
-    type: 'Control',
+    type: 'DatePicker',
     label: 'Date Picker',
     icon: 'mdi-calendar-month',
     uiSchemaElementProvider: () => {
-      const control = createControl("string", { format: "date" });
+      const control = createControl('string', { format: 'date' });
       return {
         control,
-        variable: "DatePicker",
-        format: "date"
+        variable: 'DatePicker',
+        format: 'date',
       };
     },
   },
 
   {
-    type: 'Control',
+    type: 'DateTime',
     label: 'Date Time Picker',
     icon: 'mdi-calendar-clock-outline',
     uiSchemaElementProvider: () => {
       const control = {
-        "type": "string",
-        "format": "date-time"
+        type: 'string',
+        format: 'date-time',
       };
       return {
         control,
-        variable: "datetime"
+        variable: 'datetime',
       };
     },
   },
   {
-    type: 'Control',
+    type: 'TimePicker',
     label: 'Time Picker',
     icon: 'mdi-clock-outline',
     uiSchemaElementProvider: () => {
       const control = {
-        "type": "string",
-        "format": "time",
+        type: 'string',
+        format: 'time',
       };
       return {
         control,
-        variable: "time"
+        variable: 'time',
       };
     },
   },
   {
-    type: 'Control',
+    type: 'MultipleFile',
     label: 'Multiple File Upload',
     icon: 'mdi-cloud-upload-outline',
     uiSchemaElementProvider: () => {
-      const control = createControl("array", {
+      const control = createControl('array', {
         items: {
           name: {
-            "type": "string"
+            type: 'string',
           },
           size: {
-            "type": "string"
+            type: 'string',
           },
           mimetype: {
-            "type": "string"
-          }
-        }
+            type: 'string',
+          },
+        },
       });
       return {
         control,
-        variable: "multipleFile",
+        variable: 'multipleFile',
         uiOptions: {
-          "multipleFile": true,
-          "placeholder": "Select your files",
-          "multiple": true,
-          "accept": ".png, .jpg",
-          "maxFileSize": 70000
-        }
-      };
-    }
-  },
-  {
-    type: 'Control',
-    label: 'Line Input',
-    icon: 'mdi-crop-square',
-    uiSchemaElementProvider: () => {
-      const control = {
-        type: "string",
-        "description": "",
-        "i18n": "textField",
-      }
-      return {
-        control,
-        variable: "textField"
+          multipleFile: true,
+          placeholder: 'Select your files',
+          multiple: true,
+          accept: '.png, .jpg',
+          maxFileSize: 70000,
+        },
       };
     },
   },
   {
-    type: 'Control',
+    type: 'Text',
+    label: 'Text',
+    icon: 'mdi-crop-square',
+    uiSchemaElementProvider: () => {
+      const control = {
+        type: 'string',
+        description: '',
+        i18n: 'textField',
+      };
+      return {
+        control,
+        variable: 'textField',
+      };
+    },
+  },
+  {
+    type: 'TextArea',
     label: 'Text Area',
     icon: 'mdi-format-pilcrow',
     uiSchemaElementProvider: () => {
       const control = {
-        type: "string",
-        "description": "",
-        "i18n": "textArea",
-      }
+        type: 'string',
+        description: '',
+        i18n: 'textArea',
+      };
       return {
         control,
-        variable: "textArea",
-        uiOptions: { multi: true }
+        variable: 'textArea',
+        uiOptions: { multi: true },
       };
     },
   },
   {
-    type: 'Control',
+    type: 'RichText',
     label: 'Rich Text',
     icon: 'mdi-pencil-ruler',
     uiSchemaElementProvider: () => {
-      const control = createControl("string");
+      const control = createControl('string');
       return {
         control,
-        variable: "richText",
+        variable: 'richText',
         uiOptions: {
-          "isHtmlViewer": true,
-          "content": "Rich Text"
-        }
+          isHtmlViewer: true,
+          content: 'Rich Text',
+        },
       };
     },
   },
@@ -191,87 +191,25 @@ const controlElements = [
     icon: 'mdi-text-box-search-outline',
     uiSchemaElementProvider: () => {
       const control = {
-        type: "object",
-        "description": "",
-        "i18n": "suggest",
-      }
+        type: 'object',
+        description: '',
+        i18n: 'suggest',
+      };
       return {
         control,
-        variable: "suggest",
+        variable: 'suggest',
         uiOptions: {
           events: {
             onChange: {
-              arguments: "JForm, nval, oval",
-              body: ""
-            }
+              arguments: 'JForm, nval, oval',
+              body: '',
+            },
           },
           source: null,
           items: null,
           request: null,
-          dependencies: []
-        }
-      };
-    },
-  },
-  {
-    type: 'Control',
-    label: 'Select List',
-    icon: 'mdi-form-dropdown',
-    uiSchemaElementProvider: () => {
-      const control = {
-        "type": "string",
-        "description": "",
-        "i18n": "dropdown",
-        "oneOf": [
-          {
-            "const": "foo",
-            "title": "Foo"
-          },
-          {
-            "const": "bar",
-            "title": "Bar"
-          },
-          {
-            "const": "foobar",
-            "title": "FooBar"
-          }
-        ]
-      }
-      return {
-        control,
-        variable: "dropdown"
-      };
-    },
-  },
-  {
-    type: 'Control',
-    label: 'Number',
-    icon: 'mdi-numeric',
-    uiSchemaElementProvider: () => {
-      const control = {
-        "type": "number",
-        "description": "",
-        "i18n": "number"
-      };
-      return {
-        control,
-        variable: "number"
-      };
-    },
-  },
-  {
-    type: 'Control',
-    label: 'Integer',
-    icon: 'mdi-counter',
-    uiSchemaElementProvider: () => {
-      const control = {
-        "type": "integer",
-        "description": "",
-        "i18n": "integer"
-      };
-      return {
-        control,
-        variable: "integer"
+          dependencies: [],
+        },
       };
     },
   },
@@ -281,25 +219,25 @@ const controlElements = [
     icon: 'mdi-radiobox-marked',
     uiSchemaElementProvider: () => {
       const control = {
-        "type": "string",
-        "description": "",
-        "i18n": "radiogroup"
+        type: 'string',
+        description: '',
+        i18n: 'radiogroup',
       };
       return {
         control,
-        variable: "radiogroup",
+        variable: 'radiogroup',
         uiOptions: {
           events: {
             onChange: {
-              arguments: "JForm, nval, oval",
-              body: ""
-            }
+              arguments: 'JForm, nval, oval',
+              body: '',
+            },
           },
           items: null,
           request: null,
           source: null,
-          dependencies: []
-        }
+          dependencies: [],
+        },
       };
     },
   },
@@ -309,25 +247,25 @@ const controlElements = [
     icon: 'mdi-form-dropdown',
     uiSchemaElementProvider: () => {
       const control = {
-        "type": "string",
-        "description": "",
-        "i18n": "dropdown"
+        type: 'string',
+        description: '',
+        i18n: 'dropdown',
       };
       return {
         control,
-        variable: "dropdown",
+        variable: 'dropdown',
         uiOptions: {
           events: {
             onChange: {
-              arguments: "JForm, nval, oval",
-              body: ""
-            }
+              arguments: 'JForm, nval, oval',
+              body: '',
+            },
           },
           items: null,
           request: null,
           source: null,
-          dependencies: []
-        }
+          dependencies: [],
+        },
       };
     },
   },
@@ -337,25 +275,25 @@ const controlElements = [
     icon: 'mdi-checkbox-outline',
     uiSchemaElementProvider: () => {
       const control = {
-        "type": "string",
-        "description": "",
-        "i18n": "checkboxgroup"
+        type: 'string',
+        description: '',
+        i18n: 'checkboxgroup',
       };
       return {
         control,
-        variable: "checkboxgroup",
+        variable: 'checkboxgroup',
         uiOptions: {
           events: {
             onChange: {
-              arguments: "JForm, nval, oval",
-              body: ""
-            }
+              arguments: 'JForm, nval, oval',
+              body: '',
+            },
           },
           items: null,
           request: null,
           source: null,
-          dependencies: []
-        }
+          dependencies: [],
+        },
       };
     },
   },
@@ -365,16 +303,16 @@ const controlElements = [
     icon: 'mdi-image-outline',
     uiSchemaElementProvider: () => {
       const control = {
-        type: "object"
-      }
+        type: 'object',
+      };
       return {
         control,
-        variable: "image",
+        variable: 'image',
         uiOptions: {
-          image: "https://picsum.photos/id/11/500/300",
+          image: 'https://picsum.photos/id/11/500/300',
           height: 600,
           width: 600,
-        }
+        },
       };
     },
   },
@@ -384,14 +322,14 @@ const controlElements = [
     icon: 'mdi-send-circle',
     uiSchemaElementProvider: () => {
       const control = {
-        "type": "string",
-        "title": "Submit Form",
-        "i18n": "submit"
+        type: 'string',
+        title: 'Submit Form',
+        i18n: 'submit',
       };
       return {
         control,
-        variable: "submit",
-        uiOptions: {}
+        variable: 'submit',
+        uiOptions: {},
       };
     },
   },
@@ -403,136 +341,67 @@ const complexElements = [
     icon: 'mdi-grid',
     uiSchemaElementProvider: () => {
       const control = {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-          }
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {},
         },
-        "minItems": 0,
-        "maxItems": 15
-      }
+        minItems: 0,
+        maxItems: 15,
+      };
 
       return {
         control,
-        variable: "dataTable",
+        variable: 'dataTable',
         uiOptions: {
-          "detail": {
-            "type": "VerticalLayout",
-            "elements": [
-            ]
-          }
-        }
+          detail: {
+            type: 'VerticalLayout',
+            elements: [],
+          },
+        },
       };
     },
   },
-  {
-    type: 'Control',
-    label: 'List With Detail',
-    icon: 'mdi-format-list-text',
-    uiSchemaElementProvider: () => {
-      const control = {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "title": "Users",
-          "properties": {
-            "firstname": {
-              "type": "string"
-            },
-            "lastname": {
-              "type": "string"
-            },
-            "email": {
-              "type": "string",
-              "format": "email"
-            },
-            "age": {
-              "type": "number",
-              "minimum": 0
-            }
-          },
-        }
-      };
-      return {
-        control,
-        variable: "listDetail",
-        uiOptions: {
-          "detail": {
-            "type": "VerticalLayout",
-            "elements": [
-              {
-                "type": "HorizontalLayout",
-                "elements": [
-                  {
-                    "type": "Control",
-                    "scope": "#/properties/firstname",
-                    "label": "First Name"
-                  },
-                  {
-                    "type": "Control",
-                    "scope": "#/properties/lastname",
-                    "label": "Last Name"
-                  }
-                ]
-              },
-              {
-                "type": "Control",
-                "scope": "#/properties/age",
-                "label": "Age"
-              },
-              {
-                "type": "Control",
-                "scope": "#/properties/email",
-                "label": "Email"
-              }
-            ]
-          },
-          "showSortButtons": true
-        }
-      };
-    },
-  },
-]
+];
 const extendedElements = [
   {
-    type: 'Control',
+    type: 'Rating',
     label: 'Rating',
     icon: 'mdi-star-outline',
     uiSchemaElementProvider: () => {
       const control = {
-        "type": "integer",
-        "minimum": 0,
-        "maximum": 5
+        type: 'integer',
+        minimum: 0,
+        maximum: 5,
       };
       return {
         control,
-        variable: "rating",
+        variable: 'rating',
         uiOptions: {
           rating: true,
-        }
+        },
       };
     },
   },
-]
+];
 const mainPalette = {
   containers: {
     label: 'Layouts & Others',
-    elements: paletteElements
+    elements: paletteElements,
   },
   controls: {
     label: 'Controls',
-    elements: controlElements
+    elements: controlElements,
   },
   complex: {
     label: 'Complex',
-    elements: complexElements
+    elements: complexElements,
   },
   extended: {
     label: 'Extended',
-    elements: extendedElements
-  }
-}
+    elements: extendedElements,
+  },
+};
 
 export class DefaultPaletteService implements PaletteService {
   getPaletteElements = () => mainPalette;

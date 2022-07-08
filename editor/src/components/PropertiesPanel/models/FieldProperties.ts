@@ -2,12 +2,13 @@ import Props from './Properties';
 
 const FieldProperties: any = {
   get(id: string) {
-    return this[id] ? this[id] : this['textField'];
+    return this[id] ? this[id] : this['TextField'];
   },
-  textField: [
-    Props.build('dataSource'),
+  TextField: [
+    Props.build('type'),
     Props.build('variable'),
     Props.build('placeholder'),
+    Props.build('hint'),
     Props.build('label'),
     Props.build('description'),
     Props.build('validation'),
@@ -21,9 +22,11 @@ const FieldProperties: any = {
     Props.build('trim'),
     Props.build('restrictMaxLength'),
   ],
-  textArea: [
+  TextArea: [
+    Props.build('type'),
     Props.build('variable'),
     Props.build('placeholder'),
+    Props.build('hint'),
     Props.build('label'),
     Props.build('description'),
     Props.build('validation'),
@@ -37,9 +40,13 @@ const FieldProperties: any = {
     Props.build('trim'),
     Props.build('restrictMaxLength'),
   ],
-  dropdown: [
+  DateTime: [Props.build('type'), Props.build('hint')],
+  Dropdown: [Props.build('type'), Props.build('hint')],
+  Checkbox: [
+    Props.build('type'),
     Props.build('variable'),
     Props.build('placeholder'),
+    Props.build('hint'),
     Props.build('label'),
     Props.build('description'),
     Props.build('validation'),
@@ -53,22 +60,17 @@ const FieldProperties: any = {
     Props.build('trim'),
     Props.build('restrictMaxLength'),
   ],
-  checkbox: [
-    Props.build('variable'),
-    Props.build('placeholder'),
-    Props.build('label'),
-    Props.build('description'),
-    Props.build('validation'),
-    Props.build('validationMessage'),
-    Props.build('mask'),
-    Props.build('maxLength'),
-    Props.build('textTransform'),
-    Props.build('required'),
-    Props.build('readOnly'),
-    Props.build('multi'),
-    Props.build('trim'),
-    Props.build('restrictMaxLength'),
-  ],
+  CheckGroup: [Props.build('type'), Props.build('hint')],
+  DatePicker: [Props.build('type'), Props.build('hint')],
+  Grid: [Props.build('type')],
+  Image: [Props.build('type'), Props.build('hint')],
+  MultipleFile: [Props.build('type')],
+  RadioGroup: [Props.build('type'), Props.build('hint')],
+  Rating: [Props.build('type')],
+  RichText: [Props.build('type')],
+  Submit: [Props.build('type')],
+  Suggest: [Props.build('type'), Props.build('hint')],
+  Time: [Props.build('type')],
 };
 
 export default FieldProperties;

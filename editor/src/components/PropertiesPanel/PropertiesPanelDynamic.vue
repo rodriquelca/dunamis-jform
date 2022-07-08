@@ -177,6 +177,13 @@ const PropertiesPanel = defineComponent({
           defaultDate: data.defaultDate,
         });
       }
+      //mask
+      if (data.mask) {
+        this.$store.dispatch('app/updateUISchemaElement', {
+          elementUUID: this.uiElement.uuid,
+          changedProperties: { label: data.label },
+        });
+      }
       // label
       if (data.label) {
         this.$store.dispatch('app/updateUISchemaElement', {
@@ -205,6 +212,13 @@ const PropertiesPanel = defineComponent({
         this.$store.dispatch('app/updateSchemaElement', {
           elementUUID: this.uiElement.uuid,
           changedProperties: { maxLength: data.maxLength },
+        });
+      }
+      // hint
+      if (data.hint || data.hint == '') {
+        this.$store.dispatch('app/updateUISchemaElement', {
+          elementUUID: this.uiElement.uuid,
+          changedProperties: { hint: data.hint },
         });
       }
     },

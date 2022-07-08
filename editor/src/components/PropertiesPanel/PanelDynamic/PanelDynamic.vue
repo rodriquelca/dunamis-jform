@@ -68,5 +68,4 @@ const PropertiesPanelDynamic = defineComponent({
 });
 export default PropertiesPanelDynamic;
 </script>
-<style>
-</style>
+<style></style>
