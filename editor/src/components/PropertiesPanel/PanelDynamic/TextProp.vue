@@ -1,5 +1,6 @@
 <template>
   <v-text-field
+    :readonly="readOnly"
     dense
     :label="data.name"
     persistent-placeholder
@@ -22,10 +23,12 @@ const TextProp = defineComponent({
   setup(props: any, context: any) {
     let inputType = ref(props.config.options.inputType || 'text');
     let min = ref(props.config.options.min || 1);
+    let readOnly = ref(props.config.options.readOnly || false);
     return {
       ...dynamicPropertyDefault(props, context),
       inputType,
       min,
+      readOnly,
     };
   },
 });

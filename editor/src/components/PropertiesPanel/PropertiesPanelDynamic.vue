@@ -103,6 +103,9 @@ const PropertiesPanel = defineComponent({
         fieldData['readOnly'] = elementSchema.schema.readOnly
           ? elementSchema.schema.readOnly
           : false;
+
+        // Get the Type property
+        fieldData['type'] = this.uiElement.type ? this.uiElement.type : '';
       }
       this.generalData = {
         type: this.uiElement.type,
@@ -112,6 +115,13 @@ const PropertiesPanel = defineComponent({
     updateData(data: any) {
       const elementSchema = this.findElementSchema();
       this.generalData['data'] = data;
+      // type
+      if (data.type) {
+        this.$store.dispatch('app/updateUISchemaElement', {
+          elementUUID: this.uiElement.uuid,
+          changedProperties: { type: data.type },
+        });
+      }
       // variable
       if (data.variable) {
         this.$store.dispatch('app/updateSchemaVariable', {
