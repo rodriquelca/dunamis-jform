@@ -111,5 +111,11 @@ const PropertiesPanel = [
     name: 'Restrict Max Length',
     items: [],
   } as PropertyPanel,
+  {
+    id: 'dataSource',
+    type: 'dataSource',
+    name: 'Data Source',
+    items: [],
+  } as PropertyPanel,
 ];
 export default PropertiesPanel;

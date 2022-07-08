@@ -1,28 +1,38 @@
 <template>
-  <v-expansion-panels
-    v-model="panel"
-    multiple
-    no-gutters
-    dense
-    class="caption"
-    :key="selectedElement.edit"
-  >
-    <v-expansion-panel>
-      <v-expansion-panel-header>
-        <div>
-          <span class="caption font-weight-bold"> General</span>
-          <v-icon small class="px-2">mdi-card</v-icon>
-        </div>
-      </v-expansion-panel-header>
-      <v-expansion-panel-content>
-        <PropertiesPanelDynamic
-          v-if="generalData"
-          :config="generalData"
-          @updateData="updateData"
-        />
-      </v-expansion-panel-content>
-    </v-expansion-panel>
-  </v-expansion-panels>
+  <v-window v-model="step">
+    <v-window-item :value="1">
+      <v-expansion-panels
+        v-model="panel"
+        multiple
+        no-gutters
+        dense
+        class="caption"
+        :key="selectedElement.edit"
+      >
+        <v-expansion-panel>
+          <v-expansion-panel-header>
+            <div>
+              <span class="caption font-weight-bold"> General</span>
+              <v-icon small class="px-2">mdi-card</v-icon>
+            </div>
+          </v-expansion-panel-header>
+          <v-expansion-panel-content>
+            <PropertiesPanelDynamic
+              v-if="generalData"
+              :config="generalData"
+              @updateData="updateData"
+              @extendPanel="extendPanel"
+              @backPanel="backPanel"
+            />
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+      </v-expansion-panels>
+    </v-window-item>
+
+    <v-window-item :value="2">
+      <component :is="panelExtended" @backPanel="backPanel" />
+    </v-window-item>
+  </v-window>
 </template>
 
 <script lang="ts">
@@ -32,25 +42,35 @@ import { omit } from 'lodash';
 import { defineComponent } from '../../util/vue';
 import { getVariableName } from '../../model/uischema';
 import { tryFindByUUID } from '../../util/schemasUtil';
+import PanelExtended from './PanelDynamicExtended/index';
 import _ from 'lodash';
 const PropertiesPanel = defineComponent({
   name: 'PropertiesPanel',
   props: {},
   components: {
     PropertiesPanelDynamic,
+    ...PanelExtended,
   },
   data() {
     return {
+      step: 1,
       panel: [0, 1, 2, 3, 4],
       generalData: null,
       type: null,
       uiElement: null,
+      panelHistory: [],
     };
   },
   computed: {
     schema: sync('app/editor@schema'),
     uischema: sync('app/editor@uiSchema'),
     selectedElement: sync('app/editor@element'),
+    panelExtended() {
+      if (this.panelHistory.length == 0) {
+        return 'div';
+      }
+      return this.panelHistory[this.panelHistory.length - 1].component;
+    },
   },
   mounted() {
     this.setSelection(this.selectedElement.selected);
@@ -204,6 +224,14 @@ const PropertiesPanel = defineComponent({
         }
       }
       return ele;
+    },
+    extendPanel(dt) {
+      this.panelHistory.push(dt);
+      this.step = 2;
+    },
+    backPanel(dt) {
+      this.step = this.step - 1;
+      this.panelHistory.pop();
     },
   },
 });

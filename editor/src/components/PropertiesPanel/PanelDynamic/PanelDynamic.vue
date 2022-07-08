@@ -7,6 +7,8 @@
         :config="property"
         v-model="data[property.id]"
         @change="getData"
+        @extendPanel="extendPanel"
+        @backPanel="backPanel"
       ></component> </template
   ></v-card>
 </template>
@@ -18,12 +20,23 @@ import TextProp from './TextProp.vue';
 import TextareaProp from './TextareaProp.vue';
 import DropdownProp from './DropdownProp.vue';
 import CheckboxProp from './CheckboxProp.vue';
+import DataSourceProp from './DataSourceProp.vue';
+import PanelExtended from '../PanelDynamicExtended/index';
+
 import _ from 'lodash';
 
 const PropertiesPanelDynamic = defineComponent({
   name: 'PropertiesPanelDynamic',
-  components: { TextProp, TextareaProp, DropdownProp, CheckboxProp },
+  components: {
+    TextProp,
+    TextareaProp,
+    DropdownProp,
+    CheckboxProp,
+    DataSourceProp,
+    ...PanelExtended,
+  },
   props: ['config'],
+  emit: ['backPanel'],
   setup(props: any, context: any) {
     let type = ref(props.config.type);
     let properties = FieldProperties.get(type);
@@ -37,10 +50,20 @@ const PropertiesPanelDynamic = defineComponent({
     let data = ref(
       formatProperties(FieldProperties.get(type), props.config.data)
     );
-    let getData = () => {
-      context.emit('updateData', _.cloneDeep(data.value));
+    return {
+      properties,
+      type,
+      data,
+      getData() {
+        context.emit('updateData', _.cloneDeep(data.value));
+      },
+      extendPanel(dt: any) {
+        context.emit('extendPanel', dt);
+      },
+      backPanel(dt: any) {
+        context.emit('backPanel', dt);
+      },
     };
-    return { properties, type, data, getData };
   },
 });
 export default PropertiesPanelDynamic;
