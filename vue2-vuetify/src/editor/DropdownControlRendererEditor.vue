@@ -12,7 +12,7 @@
         :class="styles.control.input"
         :disabled="!control.enabled"
         :autofocus="appliedOptions.focus"
-        :placeholder="appliedOptions.placeholder"
+        :placeholder="control.uischema.options.placeholder"
         :label="computedLabel"
         :hint="control.description"
         :persistent-hint="persistentHint()"
@@ -28,14 +28,16 @@
         @blur="isFocused = false"
       >
         <v-tooltip
-          v-if="control.uischema.hint && control.uischema.hint != ''"
+          v-if="
+            control.uischema.options.hint && control.uischema.options.hint != ''
+          "
           slot="append-outer"
           top
         >
           <template v-slot:activator="{ on }">
             <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
           </template>
-          <span class="">{{ control.uischema.hint }}</span>
+          <span class="">{{ control.uischema.options.hint }}</span>
         </v-tooltip>
       </v-select>
     </v-hover>

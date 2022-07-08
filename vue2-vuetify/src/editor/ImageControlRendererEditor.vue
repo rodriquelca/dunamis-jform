@@ -5,11 +5,16 @@
     :isFocused="isFocused"
     :appliedOptions="appliedOptions"
   >
-    <v-tooltip v-if="control.uischema.hint && control.uischema.hint != ''" top>
+    <v-tooltip
+      v-if="
+        control.uischema.options.hint && control.uischema.options.hint != ''
+      "
+      top
+    >
       <template v-slot:activator="{ on }">
         <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
       </template>
-      <span class="">{{ control.uischema.hint }}</span>
+      <span class="">{{ control.uischema.options.hint }}</span>
     </v-tooltip>
     <v-img
       :max-height="appliedOptions.height || 150"

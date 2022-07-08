@@ -58,6 +58,7 @@ const controlElements = [
       return {
         control,
         variable: 'checkbox',
+        uiOptions: {},
       };
     },
   },
@@ -71,6 +72,7 @@ const controlElements = [
         control,
         variable: 'DatePicker',
         format: 'date',
+        uiOptions: {},
       };
     },
   },
@@ -83,6 +85,7 @@ const controlElements = [
       const control = {
         type: 'string',
         format: 'date-time',
+        uiOptions: {},
       };
       return {
         control,
@@ -98,6 +101,7 @@ const controlElements = [
       const control = {
         type: 'string',
         format: 'time',
+        uiOptions: {},
       };
       return {
         control,
@@ -149,6 +153,7 @@ const controlElements = [
       return {
         control,
         variable: 'textField',
+        uiOptions: {},
       };
     },
   },
