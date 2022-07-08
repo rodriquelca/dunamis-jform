@@ -11,6 +11,7 @@
         :id="control.id + '-input'"
         :class="styles.control.input"
         :disabled="!control.enabled"
+        :rows="control.uischema.rows"
         :autofocus="appliedOptions.focus"
         :placeholder="appliedOptions.placeholder"
         :label="computedLabel"

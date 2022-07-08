@@ -27,6 +27,7 @@ const FieldProperties: any = {
     Props.build('variable'),
     Props.build('placeholder'),
     Props.build('hint'),
+    Props.build('rows'),
     Props.build('label'),
     Props.build('description'),
     Props.build('validation'),
