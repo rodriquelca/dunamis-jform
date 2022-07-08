@@ -38,6 +38,16 @@ const PropertiesPanel = [
     items: [],
   } as PropertyPanel,
   {
+    id: 'rows',
+    type: 'text',
+    name: 'Rows',
+    options: {
+      inputType: 'number',
+      min: 2,
+    },
+    items: [],
+  } as PropertyPanel,
+  {
     id: 'label',
     type: 'text',
     name: 'Label',

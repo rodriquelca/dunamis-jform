@@ -39,7 +39,7 @@ const PropertiesPanelDynamic = defineComponent({
   emit: ['backPanel'],
   setup(props: any, context: any) {
     let type = ref(props.config.type);
-    let properties = FieldProperties.get(type);
+    let properties = FieldProperties.get(type.value);
     let formatProperties = (properties: any, data: any) => {
       let res = {};
       properties.forEach((element) => {
@@ -48,7 +48,7 @@ const PropertiesPanelDynamic = defineComponent({
       return _.assign(res, data);
     };
     let data = ref(
-      formatProperties(FieldProperties.get(type), props.config.data)
+      formatProperties(FieldProperties.get(type.value), props.config.data)
     );
     return {
       properties,
