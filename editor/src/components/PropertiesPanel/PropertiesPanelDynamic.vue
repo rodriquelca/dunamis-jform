@@ -123,6 +123,8 @@ const PropertiesPanel = defineComponent({
         fieldData['readOnly'] = elementSchema.schema.readOnly
           ? elementSchema.schema.readOnly
           : false;
+        // Get the Type property
+        fieldData['type'] = this.uiElement.type ? this.uiElement.type : '';
       }
       this.generalData = {
         type: this.uiElement.type,
@@ -132,6 +134,13 @@ const PropertiesPanel = defineComponent({
     updateData(data: any) {
       const elementSchema = this.findElementSchema();
       this.generalData['data'] = data;
+      // type
+      if (data.type) {
+        this.$store.dispatch('app/updateUISchemaElement', {
+          elementUUID: this.uiElement.uuid,
+          changedProperties: { type: data.type },
+        });
+      }
       // variable
       if (data.variable) {
         this.$store.dispatch('app/updateSchemaVariable', {
@@ -177,9 +186,9 @@ const PropertiesPanel = defineComponent({
           defaultDate: data.defaultDate,
         });
       }
-      //mask
+      //mask -> to options
       if (data.mask) {
-        this.$store.dispatch('app/updateUISchemaElement', {
+        this.$store.dispatch('app/updateUISchemaElementOption', {
           elementUUID: this.uiElement.uuid,
           changedProperties: { label: data.label },
         });
@@ -223,18 +232,25 @@ const PropertiesPanel = defineComponent({
           changedProperties: { maxLength: data.maxLength },
         });
       }
-      // hint
+      // hint -> to options
       if (data.hint || data.hint == '') {
-        this.$store.dispatch('app/updateUISchemaElement', {
+        this.$store.dispatch('app/updateUISchemaElementOption', {
           elementUUID: this.uiElement.uuid,
           changedProperties: { hint: data.hint },
         });
       }
-      // rows for TextArea
+      // rows for TextArea -> to options
       if (data.rows) {
-        this.$store.dispatch('app/updateUISchemaElement', {
+        this.$store.dispatch('app/updateUISchemaElementOption', {
           elementUUID: this.uiElement.uuid,
           changedProperties: { rows: data.rows },
+        });
+      }
+      // placeholder -> to options
+      if (data.placeholder) {
+        this.$store.dispatch('app/updateUISchemaElementOption', {
+          elementUUID: this.uiElement.uuid,
+          changedProperties: { placeholder: data.placeholder },
         });
       }
     },

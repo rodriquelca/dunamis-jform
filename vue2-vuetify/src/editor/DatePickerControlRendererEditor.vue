@@ -20,7 +20,7 @@
           :class="styles.control.input"
           :disabled="!control.enabled"
           :autofocus="appliedOptions.focus"
-          :placeholder="appliedOptions.placeholder"
+          :placeholder="control.uischema.options.placeholder"
           :label="computedLabel"
           :hint="control.description"
           :persistent-hint="persistentHint()"
