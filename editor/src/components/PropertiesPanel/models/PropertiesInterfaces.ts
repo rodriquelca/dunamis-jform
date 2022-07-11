@@ -152,5 +152,12 @@ const PropertiesPanel = [
     options: {},
     items: [],
   } as PropertyPanel,
+  {
+    id: 'items',
+    type: 'items',
+    name: 'Items',
+    options: {},
+    items: [],
+  } as PropertyPanel,
 ];
 export default PropertiesPanel;
