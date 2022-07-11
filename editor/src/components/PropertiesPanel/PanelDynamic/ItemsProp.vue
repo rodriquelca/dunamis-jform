@@ -29,7 +29,7 @@ const ItemProp = defineComponent({
       ...dynamicPropertyDefault(props, context),
       extendPanel() {
         context.emit('extendPanel', {
-          id: 'dataSource',
+          id: 'items',
           component: 'itemsPropExt',
         });
       },

@@ -141,12 +141,19 @@ const ListOptions = defineComponent({
         items.value = clone;
       },
       getData() {
-        return _.map(_.clone(items.value), (i: any) => {
-          return {
-            [this.value]: i.value,
-            [this.label]: i.label,
-          };
-        });
+        if (
+          items.value.length >= 0 &&
+          items.value[0].value !== '' &&
+          items.value[0].label !== ''
+        ) {
+          return _.map(_.clone(items.value), (i: any) => {
+            return {
+              [this.value]: i.value,
+              [this.label]: i.label,
+            };
+          });
+        }
+        return [];
       },
     };
   },
