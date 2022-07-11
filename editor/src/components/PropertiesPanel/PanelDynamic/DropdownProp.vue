@@ -17,7 +17,7 @@ import { defineComponent } from '@vue/composition-api';
 import { dynamicPropertyDefault } from '../PropertiesPanelComp';
 const DropdownProp = defineComponent({
   name: 'DropdownProp',
-  emits: ['input', 'change'],
+  emits: ['input', 'change', 'visible'],
   props: ['value', 'config'],
   setup(props: any, context: any) {
     return dynamicPropertyDefault(props, context);
@@ -25,5 +25,4 @@ const DropdownProp = defineComponent({
 });
 export default DropdownProp;
 </script>
-<style>
-</style>
+<style></style>

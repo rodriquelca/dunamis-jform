@@ -44,6 +44,7 @@ const FieldProperties: any = {
   DateTime: [
     Props.build('type'),
     Props.build('variable'),
+    Props.build('format'),
     Props.build('hint'),
     Props.build('placeholder'),
   ],
@@ -79,6 +80,7 @@ const FieldProperties: any = {
   DatePicker: [
     Props.build('type'),
     Props.build('variable'),
+    Props.build('format'),
     Props.build('hint'),
     Props.build('placeholder'),
   ],
@@ -103,8 +105,9 @@ const FieldProperties: any = {
     Props.build('hint'),
     Props.build('placeholder'),
   ],
-  Time: [
+  TimePicker: [
     Props.build('type'),
+    Props.build('format'),
     Props.build('variable'),
     Props.build('placeholder'),
   ],

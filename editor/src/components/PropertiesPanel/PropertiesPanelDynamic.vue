@@ -267,6 +267,13 @@ const PropertiesPanel = defineComponent({
           changedProperties: { placeholder: data.placeholder },
         });
       }
+      // format for DateTime
+      if (data.format) {
+        this.$store.dispatch('app/updateSchemaElement', {
+          elementUUID: this.uiElement.uuid,
+          changedProperties: { format: data.format.format },
+        });
+      }
     },
     findElementSchema() {
       const linkedSchemaUUID = this.uiElement.linkedSchemaElement;

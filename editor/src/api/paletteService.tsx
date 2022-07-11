@@ -63,21 +63,6 @@ const controlElements = [
     },
   },
   {
-    type: 'DatePicker',
-    label: 'Date Picker',
-    icon: 'mdi-calendar-month',
-    uiSchemaElementProvider: () => {
-      const control = createControl('string', { format: 'date' });
-      return {
-        control,
-        variable: 'DatePicker',
-        format: 'date',
-        uiOptions: {},
-      };
-    },
-  },
-
-  {
     type: 'DateTime',
     label: 'Date Time Picker',
     icon: 'mdi-calendar-clock-outline',
@@ -90,22 +75,7 @@ const controlElements = [
       return {
         control,
         variable: 'datetime',
-      };
-    },
-  },
-  {
-    type: 'TimePicker',
-    label: 'Time Picker',
-    icon: 'mdi-clock-outline',
-    uiSchemaElementProvider: () => {
-      const control = {
-        type: 'string',
-        format: 'time',
         uiOptions: {},
-      };
-      return {
-        control,
-        variable: 'time',
       };
     },
   },

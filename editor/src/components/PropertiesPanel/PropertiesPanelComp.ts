@@ -5,8 +5,9 @@ export const dynamicPropertyDefault = (props: any, context: any) => {
   const input = (v: string) => {
     context.emit('input', v);
   };
-  const change = (value: string) => {
+  const change = (value: any) => {
     context.emit('change', value);
+    context.emit('visible', value.id);
   };
   return { data, input, change };
 };
