@@ -60,11 +60,11 @@
 </template>
 
 <script lang="ts">
+import { defineComponent, ref, onMounted } from '@vue/composition-api';
 import _ from 'lodash';
-export default {
+const ListOptions = defineComponent({
   name: 'ListOptions',
   components: {},
-
   props: {
     value: {
       type: String,
@@ -91,25 +91,6 @@ export default {
       required: false,
     },
   },
-  data() {
-    return {
-      slots: ['value', 'label'],
-      headers: [
-        { text: this.valueTitle, value: 'value', sortable: false },
-        { text: this.labelTitle, value: 'label', sortable: false },
-        { text: '', value: 'actions', sortable: false },
-      ],
-      items: [
-        {
-          value: '',
-          label: '',
-        },
-      ],
-      optionsTable: {
-        itemsPerPage: 5,
-      },
-    };
-  },
   mounted() {
     let its = _.map(this.options, (i) => {
       return { value: i[this.value], label: i[this.label] };
@@ -124,35 +105,53 @@ export default {
           ]
         : its;
   },
-  methods: {
-    addItem(item: any, index: any) {
-      let clone = _.clone(this.items);
-      clone = _.concat(
-        _.slice(clone, 0, index + 1),
-        { value: '', label: '' },
-        _.slice(clone, index + 1, clone.length)
-      );
-      this.items = clone;
-    },
-    removeItem(item: any, index: any) {
-      let clone = _.clone(this.items);
-      clone = _.concat(
-        _.slice(clone, 0, index),
-        _.slice(clone, index + 1, clone.length)
-      );
-      this.items = clone;
-    },
-    getData() {
-      _.clone(this.items);
-      return _.map(_.clone(this.items), (i) => {
-        return {
-          [this.value]: i.value,
-          [this.label]: i.label,
-        };
-      });
-    },
+  setup(props: any, context: any) {
+    let items = ref([
+      {
+        value: '',
+        label: '',
+      },
+    ]);
+    return {
+      items,
+      slots: ref(['value', 'label']),
+      optionsTable: ref({
+        itemsPerPage: 5,
+      }),
+      headers: ref([
+        { text: props.valueTitle, value: 'value', sortable: false },
+        { text: props.labelTitle, value: 'label', sortable: false },
+        { text: '', value: 'actions', sortable: false },
+      ]),
+      addItem(item: any, index: any) {
+        let clone: any = _.clone(items.value);
+        clone = _.concat(
+          _.slice(clone, 0, index + 1),
+          { value: '', label: '' },
+          _.slice(clone, index + 1, clone.length)
+        );
+        items.value = clone;
+      },
+      removeItem(item: any, index: any) {
+        let clone: any = _.clone(items.value);
+        clone = _.concat(
+          _.slice(clone, 0, index),
+          _.slice(clone, index + 1, clone.length)
+        );
+        items.value = clone;
+      },
+      getData() {
+        return _.map(_.clone(items.value), (i: any) => {
+          return {
+            [this.value]: i.value,
+            [this.label]: i.label,
+          };
+        });
+      },
+    };
   },
-};
+});
+export default ListOptions;
 </script>
 <style>
 .vpm-item-list > div > div > div > .v-label {

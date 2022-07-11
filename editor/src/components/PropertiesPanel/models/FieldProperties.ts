@@ -51,6 +51,7 @@ const FieldProperties: any = {
     Props.build('type'),
     Props.build('variable'),
     Props.build('hint'),
+    Props.build('items'),
     Props.build('placeholder'),
   ],
   Checkbox: [
