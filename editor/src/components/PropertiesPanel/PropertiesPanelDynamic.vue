@@ -279,17 +279,24 @@ const PropertiesPanel = defineComponent({
         });
       }
       // alt text for Image -> to options
-      if (data.alt) {
+      if (data.alt || data.alt == '') {
         this.$store.dispatch('app/updateUISchemaElementOption', {
           elementUUID: this.uiElement.uuid,
           changedProperties: { alt: data.alt },
         });
       }
       // placeholder -> to options
-      if (data.placeholder) {
+      if (data.placeholder || data.placeholder == '') {
         this.$store.dispatch('app/updateUISchemaElementOption', {
           elementUUID: this.uiElement.uuid,
           changedProperties: { placeholder: data.placeholder },
+        });
+      }
+      // default value -> to options
+      if (data.defaultValue || data.defaultValue == '') {
+        this.$store.dispatch('app/updateUISchemaElementOption', {
+          elementUUID: this.uiElement.uuid,
+          changedProperties: { defaultValue: data.defaultValue },
         });
       }
     },

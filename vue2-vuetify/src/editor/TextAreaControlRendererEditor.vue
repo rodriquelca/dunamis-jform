@@ -15,11 +15,11 @@
         :autofocus="appliedOptions.focus"
         :placeholder="placeholder"
         :label="computedLabel"
-        :hint="control.description"
+        :hint="control.hint"
         :persistent-hint="persistentHint()"
         :required="control.required"
         :error-messages="control.errors"
-        :value="control.data"
+        :value="control.uischema.options.defaultValue"
         :maxlength="
           appliedOptions.restrict ? control.schema.maxLength : undefined
         "
