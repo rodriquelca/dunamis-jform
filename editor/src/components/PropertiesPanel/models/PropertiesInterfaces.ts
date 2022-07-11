@@ -153,9 +153,10 @@ const PropertiesPanel = [
     items: [],
   } as PropertyPanel,
   {
-    id: 'dataSource',
-    type: 'dataSource',
-    name: 'Data Source',
+    id: 'items',
+    type: 'items',
+    name: 'Items',
+    options: {},
     items: [],
   } as PropertyPanel,
 ];

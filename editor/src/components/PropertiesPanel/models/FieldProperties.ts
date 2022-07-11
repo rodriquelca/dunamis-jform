@@ -42,7 +42,7 @@ const FieldProperties: any = {
     Props.build('restrictMaxLength'),
   ],
   DateTime: [Props.build('type'), Props.build('hint')],
-  Dropdown: [Props.build('type'), Props.build('hint')],
+  Dropdown: [Props.build('type'), Props.build('items'), Props.build('hint')],
   Checkbox: [
     Props.build('type'),
     Props.build('variable'),

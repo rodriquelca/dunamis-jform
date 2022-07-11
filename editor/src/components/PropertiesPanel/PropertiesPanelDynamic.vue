@@ -207,6 +207,15 @@ const PropertiesPanel = defineComponent({
           },
         });
       }
+      // description
+      if (data.items) {
+        this.$store.dispatch('app/updateUISchemaElement', {
+          elementUUID: this.uiElement.uuid,
+          changedProperties: {
+            items: data.items,
+          },
+        });
+      }
       // maxLength
       if (data.maxLength) {
         this.$store.dispatch('app/updateSchemaElement', {
@@ -248,11 +257,12 @@ const PropertiesPanel = defineComponent({
     },
     extendPanel(dt) {
       this.panelHistory.push(dt);
-      this.step = 2;
+      this.step = this.step + 1;
     },
     backPanel(dt) {
       this.step = this.step - 1;
       this.panelHistory.pop();
+      this.updateData(Object.assign({}, this.generalData['data'], dt));
     },
   },
 });

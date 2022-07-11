@@ -19,10 +19,9 @@
 <script lang="ts">
 import { defineComponent, ref } from '@vue/composition-api';
 import { dynamicPropertyDefault } from '../PropertiesPanelComp';
-import DataSourcePropExt from '../PanelDynamicExtended/DataSourcePropExt.vue';
 
-const DataSourceProp = defineComponent({
-  name: 'DataSourceProp',
+const ItemProp = defineComponent({
+  name: 'ItemProp',
   emits: ['input', 'change', 'extendPanel'],
   props: ['value', 'config'],
   setup(props: any, context: any) {
@@ -30,14 +29,14 @@ const DataSourceProp = defineComponent({
       ...dynamicPropertyDefault(props, context),
       extendPanel() {
         context.emit('extendPanel', {
-          id: 'DataSourceProp',
-          component: 'DataSourcePropExt',
+          id: 'dataSource',
+          component: 'itemsPropExt',
         });
       },
     };
   },
 });
-export default DataSourceProp;
+export default ItemProp;
 </script>
 <style>
 .vpm-action-editor-btn {

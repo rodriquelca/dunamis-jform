@@ -1,4 +1,4 @@
-import DataSourcePropExt from './DataSourcePropExt.vue';
+import ItemsPropExt from './ItemsPropExt.vue';
 export default {
-  DataSourcePropExt,
+  ItemsPropExt,
 };

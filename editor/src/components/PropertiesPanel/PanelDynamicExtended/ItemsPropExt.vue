@@ -12,20 +12,16 @@
     </v-btn>
     <div class="v-expansion-panel-header">
       <div>
-        <span class="caption font-weight-bold">Items</span
-        ><i
-          aria-hidden="true"
-          class="v-icon notranslate px-2 mdi mdi-card theme--light"
-          style="font-size: 16px"
-        ></i>
+        <span class="caption font-weight-bold">Items</span>
       </div>
     </div>
 
     <v-card elevation="0" color="transparent" class="mx-4">
       <v-combobox
         class="caption"
+        persistent-placeholder
         v-model="select"
-        :items="itemsd"
+        :items="sources"
         label="Data Source"
         outlined
         dense
@@ -33,11 +29,10 @@
       <v-row dense>
         <list-options
           :options="items"
-          ref="static"
-          value="value"
-          label="label"
-          valueTitle="Value"
-          labelTitle="Label"
+          :value="keys.value"
+          :label="keys.label"
+          :valueTitle="titles.value"
+          :labelTitle="titles.label"
           :hideFooter="false"
         />
       </v-row>
@@ -50,8 +45,8 @@
 import { defineComponent, inject, ref } from '@vue/composition-api';
 import ListOptions from '../../Generic/ListOptions.vue';
 import { dynamicPropertyDefault } from '../PropertiesPanelComp';
-const DataSourcePropExt = defineComponent({
-  name: 'DataSourcePropExt',
+const ItemPropExt = defineComponent({
+  name: 'ItemPropExt',
   components: {
     ListOptions,
   },
@@ -61,28 +56,36 @@ const DataSourcePropExt = defineComponent({
     let items = ref([]);
     const serviceProvider = inject<any>('serviceProvider');
     const dataSources = serviceProvider.get('dataSources');
-
+    const select = ref(null);
+    const titles = ref({
+      value: 'Value',
+      label: 'Label',
+    });
+    const keys = ref({
+      value: 'value',
+      label: 'label',
+    });
     return {
       ...dynamicPropertyDefault(props, context),
       backPanel() {
-        context.emit('backPanel', null);
+        context.emit('backPanel', {
+          items: {
+            dataSource: {
+              id: select.value.id,
+              text: select.value.text,
+            },
+          },
+        });
       },
       items,
-      select: ref('Vuetify'),
-      itemsd: [
-        {
-          text: 'Programming',
-          color: 'blue',
-        },
-        {
-          text: 'Vuetify',
-          color: 'red',
-        },
-      ],
+      select,
+      titles,
+      keys,
+      sources: ref(dataSources.get()),
     };
   },
 });
-export default DataSourcePropExt;
+export default ItemPropExt;
 </script>
 <style>
 </style>

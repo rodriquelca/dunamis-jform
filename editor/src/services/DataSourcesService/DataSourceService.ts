@@ -22,9 +22,21 @@ export class DataSourceService implements Service {
     this.apis = apis;
   }
   get(data?: any): void {
-    console.log('GET');
+    return this.formatDataSources();
   }
-  call(config: any): void {
-    console.log('CALL');
+  call(config: any): any {
+    return {};
+  }
+  formatDataSources() {
+    return this.lists.map((element: any) => {
+      return {
+        id: element.id,
+        text: element.name,
+        type: element.type,
+        render() {
+          return 'div';
+        },
+      };
+    });
   }
 }
