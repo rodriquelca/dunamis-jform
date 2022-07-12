@@ -28,6 +28,7 @@
       ></v-combobox>
       <v-row dense>
         <list-options
+          ref="refList"
           :options="items"
           :value="keys.value"
           :label="keys.label"
@@ -42,7 +43,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, ref } from '@vue/composition-api';
+import { defineComponent, inject, onMounted, ref } from '@vue/composition-api';
 import ListOptions from '../../Generic/ListOptions.vue';
 import { dynamicPropertyDefault } from '../PropertiesPanelComp';
 const ItemPropExt = defineComponent({
@@ -53,10 +54,12 @@ const ItemPropExt = defineComponent({
   emits: ['input', 'change', 'backPanel'],
   props: ['value', 'config'],
   setup(props: any, context: any) {
-    let items = ref([]);
+    let items = ref(
+      props.config && props.config.local ? props.config.local : []
+    );
     const serviceProvider = inject<any>('serviceProvider');
     const dataSources = serviceProvider.get('dataSources');
-    const select = ref(null);
+
     const titles = ref({
       value: 'Value',
       label: 'Label',
@@ -65,17 +68,33 @@ const ItemPropExt = defineComponent({
       value: 'value',
       label: 'label',
     });
+    const refList = ref(null);
+
+    let select = ref(
+      props.config && props.config.dataSource
+        ? {
+            id: props.config.dataSource.id,
+            text: props.config.dataSource.name,
+            type: props.config.dataSource.type,
+          }
+        : []
+    );
     return {
+      refList,
       ...dynamicPropertyDefault(props, context),
       backPanel() {
-        context.emit('backPanel', {
-          items: {
-            dataSource: {
-              id: select.value.id,
-              text: select.value.text,
-            },
-          },
-        });
+        let items = {
+          dataSource: null,
+          local: refList.value.getData(),
+        };
+        if (select.value) {
+          items.dataSource = {
+            id: select.value.id,
+            name: select.value.text,
+            type: select.value.type,
+          };
+        }
+        context.emit('backPanel', { items });
       },
       items,
       select,

@@ -30,7 +30,11 @@
     </v-window-item>
 
     <v-window-item :value="2">
-      <component :is="panelExtended" @backPanel="backPanel" />
+      <component
+        :is="panelExtended"
+        @backPanel="backPanel"
+        :config="extendedConfig"
+      />
     </v-window-item>
   </v-window>
 </template>
@@ -59,6 +63,7 @@ const PropertiesPanel = defineComponent({
       type: null,
       uiElement: null,
       panelHistory: [],
+      extendedConfig: {},
     };
   },
   computed: {
@@ -69,6 +74,11 @@ const PropertiesPanel = defineComponent({
       if (this.panelHistory.length == 0) {
         return 'div';
       }
+      this.extendedConfig =
+        this.generalData['data'][
+          this.panelHistory[this.panelHistory.length - 1]['id']
+        ];
+
       return this.panelHistory[this.panelHistory.length - 1].component;
     },
   },
@@ -125,6 +135,10 @@ const PropertiesPanel = defineComponent({
           : false;
         // Get the Type property
         fieldData['type'] = this.uiElement.type ? this.uiElement.type : '';
+        // Get the items property
+        fieldData['items'] = this.uiElement.options
+          ? this.uiElement.options.items
+          : null;
       }
       this.generalData = {
         type: this.uiElement.type,
@@ -216,9 +230,9 @@ const PropertiesPanel = defineComponent({
           },
         });
       }
-      // description
+      // items
       if (data.items) {
-        this.$store.dispatch('app/updateUISchemaElement', {
+        this.$store.dispatch('app/updateUISchemaElementOption', {
           elementUUID: this.uiElement.uuid,
           changedProperties: {
             items: data.items,
