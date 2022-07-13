@@ -25,7 +25,21 @@ export class DataSourceService implements Service {
     return this.formatDataSources();
   }
   call(config: any): any {
-    return {};
+    let res = [];
+    if (config.type === 'list') {
+      res = this.lists.find((el: any) => {
+        return el.id === config.id;
+      });
+      return res.data.length
+        ? res.data.map((element: any) => {
+            return {
+              [config.config['id']]: element.id,
+              [config.config['value']]: element.value,
+            };
+          })
+        : [];
+    }
+    return [];
   }
   formatDataSources() {
     return this.lists.map((element: any) => {
@@ -33,10 +47,25 @@ export class DataSourceService implements Service {
         id: element.id,
         text: element.name,
         type: element.type,
-        render() {
-          return 'div';
-        },
+        render: this.render(element.type),
       };
     });
+  }
+  render(type: string) {
+    switch (type) {
+      case 'list':
+        return () => {
+          return import('./ConfigViews/ListConfig.vue');
+        };
+        break;
+      case 'api':
+        return () => {
+          return import('./ConfigViews/ListConfig.vue');
+        };
+        break;
+    }
+    return () => {
+      return 'div';
+    };
   }
 }
