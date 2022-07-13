@@ -5,6 +5,7 @@ const FieldProperties: any = {
     return this[id] ? this[id] : this['TextField'];
   },
   TextField: [
+    Props.build('calculated'),
     Props.build('type'),
     Props.build('variable'),
     Props.build('placeholder'),
