@@ -12,7 +12,7 @@
         :class="styles.control.input"
         :disabled="!control.enabled"
         :autofocus="appliedOptions.focus"
-        :placeholder="appliedOptions.placeholder"
+        :placeholder="control.uischema.options.placeholder"
         :label="computedLabel"
         :hint="control.description"
         :persistent-hint="persistentHint()"
@@ -26,7 +26,20 @@
         @change="onChange"
         @focus="isFocused = true"
         @blur="isFocused = false"
-      />
+      >
+        <v-tooltip
+          v-if="
+            control.uischema.options.hint && control.uischema.options.hint != ''
+          "
+          slot="append-outer"
+          top
+        >
+          <template v-slot:activator="{ on }">
+            <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
+          </template>
+          <span class="">{{ control.uischema.options.hint }}</span>
+        </v-tooltip>
+      </v-select>
     </v-hover>
   </control-wrapper>
 </template>
@@ -46,15 +59,17 @@ import {
 } from '@jsonforms/vue2';
 import { default as ControlWrapper } from './../controls/ControlWrapper.vue';
 import { useVuetifyControl } from '../util';
-import { VSelect, VHover } from 'vuetify/lib';
+import { VSelect, VHover, VIcon, VTooltip } from 'vuetify/lib';
 import { DisabledIconFocus } from './../controls/directives';
 
 const controlRenderer = defineComponent({
-  name: 'DropdownControlRendererEditor',
+  name: 'dropdown-control-renderer-editor',
   components: {
     ControlWrapper,
     VSelect,
     VHover,
+    VIcon,
+    VTooltip,
   },
   directives: {
     DisabledIconFocus,

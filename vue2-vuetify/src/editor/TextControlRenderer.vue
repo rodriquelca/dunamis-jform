@@ -13,7 +13,7 @@
         :class="styles.control.input"
         :disabled="!control.enabled"
         :autofocus="appliedOptions.focus"
-        :placeholder="appliedOptions.placeholder"
+        :placeholder="control.uischema.options.placeholder"
         :label="computedLabel"
         :hint="control.description"
         :persistent-hint="persistentHint()"
@@ -42,9 +42,9 @@
         :class="styles.control.input"
         :disabled="!control.enabled"
         :autofocus="appliedOptions.focus"
-        :placeholder="appliedOptions.placeholder"
+        :placeholder="control.uischema.options.placeholder"
         :label="computedLabel"
-        :hint="control.description"
+        :hint="control.hint"
         :persistent-hint="persistentHint()"
         :required="control.required"
         :error-messages="control.errors"
@@ -63,7 +63,20 @@
         @focus="isFocused = true"
         @blur="isFocused = false"
         v-mask="inputMask"
-      />
+      >
+        <v-tooltip
+          v-if="
+            control.uischema.options.hint && control.uischema.options.hint != ''
+          "
+          slot="append"
+          top
+        >
+          <template v-slot:activator="{ on }">
+            <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
+          </template>
+          <span class="">{{ control.uischema.options.hint }}</span>
+        </v-tooltip>
+      </v-text-field>
     </v-hover>
   </control-wrapper>
 </template>
@@ -73,7 +86,7 @@ import {
   ControlElement,
   JsonFormsRendererRegistryEntry,
   rankWith,
-  isStringControl,
+  uiTypeIs,
 } from '@jsonforms/core';
 import { defineComponent } from '../vue';
 import {
@@ -83,7 +96,7 @@ import {
 } from '@jsonforms/vue2';
 import { default as ControlWrapper } from '../controls/ControlWrapper.vue';
 import { useVuetifyControl } from '../util';
-import { VHover, VTextField, VCombobox } from 'vuetify/lib';
+import { VHover, VTextField, VCombobox, VTooltip, VIcon } from 'vuetify/lib';
 import { DisabledIconFocus } from '../controls/directives';
 import isArray from 'lodash/isArray';
 import every from 'lodash/every';
@@ -91,12 +104,14 @@ import isString from 'lodash/isString';
 import { mask } from '@titou10/v-mask';
 
 const controlRenderer = defineComponent({
-  name: 'string-control-renderer',
+  name: 'text-control-renderer-editor',
   components: {
     ControlWrapper,
     VHover,
     VTextField,
     VCombobox,
+    VTooltip,
+    VIcon,
   },
   directives: {
     DisabledIconFocus,
@@ -187,6 +202,6 @@ export default controlRenderer;
 
 export const entry: JsonFormsRendererRegistryEntry = {
   renderer: controlRenderer,
-  tester: rankWith(2, isStringControl),
+  tester: rankWith(2, uiTypeIs('Text')),
 };
 </script>

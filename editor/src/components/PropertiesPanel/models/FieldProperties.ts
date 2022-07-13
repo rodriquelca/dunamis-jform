@@ -2,12 +2,14 @@ import Props from './Properties';
 
 const FieldProperties: any = {
   get(id: string) {
-    return this[id] ? this[id] : this['textField'];
+    return this[id] ? this[id] : this['TextField'];
   },
   textField: [
     Props.build('calculated'),
+    Props.build('type'),
     Props.build('variable'),
     Props.build('placeholder'),
+    Props.build('hint'),
     Props.build('label'),
     Props.build('description'),
     Props.build('validation'),
@@ -21,9 +23,12 @@ const FieldProperties: any = {
     Props.build('trim'),
     Props.build('restrictMaxLength'),
   ],
-  textArea: [
+  TextArea: [
+    Props.build('type'),
     Props.build('variable'),
     Props.build('placeholder'),
+    Props.build('hint'),
+    Props.build('rows'),
     Props.build('label'),
     Props.build('description'),
     Props.build('validation'),
@@ -37,9 +42,23 @@ const FieldProperties: any = {
     Props.build('trim'),
     Props.build('restrictMaxLength'),
   ],
-  dropdown: [
+  DateTime: [
+    Props.build('type'),
     Props.build('variable'),
+    Props.build('hint'),
     Props.build('placeholder'),
+  ],
+  Dropdown: [
+    Props.build('type'),
+    Props.build('variable'),
+    Props.build('hint'),
+    Props.build('items'),
+    Props.build('placeholder'),
+  ],
+  Checkbox: [
+    Props.build('type'),
+    Props.build('variable'),
+    Props.build('hint'),
     Props.build('label'),
     Props.build('description'),
     Props.build('validation'),
@@ -53,21 +72,42 @@ const FieldProperties: any = {
     Props.build('trim'),
     Props.build('restrictMaxLength'),
   ],
-  checkbox: [
+  CheckGroup: [
+    Props.build('type'),
+    Props.build('variable'),
+    Props.build('hint'),
+  ],
+  DatePicker: [
+    Props.build('type'),
+    Props.build('variable'),
+    Props.build('hint'),
+    Props.build('placeholder'),
+  ],
+  Grid: [Props.build('type'), Props.build('variable')],
+  Image: [Props.build('type'), Props.build('variable'), Props.build('hint')],
+  MultipleFile: [Props.build('type'), Props.build('variable')],
+  RadioGroup: [
+    Props.build('type'),
+    Props.build('variable'),
+    Props.build('hint'),
+  ],
+  Rating: [Props.build('type'), Props.build('variable')],
+  RichText: [
+    Props.build('type'),
     Props.build('variable'),
     Props.build('placeholder'),
-    Props.build('label'),
-    Props.build('description'),
-    Props.build('validation'),
-    Props.build('validationMessage'),
-    Props.build('mask'),
-    Props.build('maxLength'),
-    Props.build('textTransform'),
-    Props.build('required'),
-    Props.build('readOnly'),
-    Props.build('multi'),
-    Props.build('trim'),
-    Props.build('restrictMaxLength'),
+  ],
+  Submit: [Props.build('type'), Props.build('variable')],
+  Suggest: [
+    Props.build('type'),
+    Props.build('variable'),
+    Props.build('hint'),
+    Props.build('placeholder'),
+  ],
+  Time: [
+    Props.build('type'),
+    Props.build('variable'),
+    Props.build('placeholder'),
   ],
 };
 

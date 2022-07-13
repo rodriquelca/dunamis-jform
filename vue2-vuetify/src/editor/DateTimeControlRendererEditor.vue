@@ -5,31 +5,22 @@
     :isFocused="isFocused"
     :appliedOptions="appliedOptions"
   >
-    <v-label :for="control.id + '-input'">{{ computedLabel }}</v-label>
-    <v-radio-group
+    <v-text-field
+      type="datetime-local"
       :id="control.id + '-input'"
       :class="styles.control.input"
       :disabled="!control.enabled"
       :autofocus="appliedOptions.focus"
-      :placeholder="appliedOptions.placeholder"
+      :placeholder="control.uischema.options.placeholder"
+      :label="computedLabel"
       :hint="control.description"
       :persistent-hint="persistentHint()"
       :required="control.required"
       :error-messages="control.errors"
-      :value="control.data"
-      @change="onChange"
+      :value="dataTime"
       @focus="isFocused = true"
       @blur="isFocused = false"
     >
-      <v-checkbox
-        v-for="o in control.options"
-        v-model="data"
-        :key="o.value"
-        :label="o.label"
-        :value="o.value"
-        @change="onChange"
-      >
-      </v-checkbox>
       <v-tooltip
         v-if="
           control.uischema.options.hint && control.uischema.options.hint != ''
@@ -42,7 +33,7 @@
         </template>
         <span class="">{{ control.uischema.options.hint }}</span>
       </v-tooltip>
-    </v-radio-group>
+    </v-text-field>
   </control-wrapper>
 </template>
 
@@ -50,28 +41,24 @@
 import {
   ControlElement,
   JsonFormsRendererRegistryEntry,
-  or,
   rankWith,
   uiTypeIs,
 } from '@jsonforms/core';
 import { defineComponent } from '../vue';
 import {
   rendererProps,
-  useJsonFormsEnumControl,
+  useJsonFormsControl,
   RendererProps,
 } from '@jsonforms/vue2';
-import { useVuetifyControl } from '../util';
-import { default as ControlWrapper } from '../controls/ControlWrapper.vue';
-import { VRadioGroup, VCheckbox, VLabel, VIcon, VTooltip } from 'vuetify/lib';
-import { reactive } from '@vue/composition-api';
+import { default as ControlWrapper } from './../controls/ControlWrapper.vue';
+import { useVuetifyControl, parseDateTime } from '../util';
+import { VTextField, VIcon, VTooltip } from 'vuetify/lib';
 
 const controlRenderer = defineComponent({
-  name: 'checkbox-group-control-renderer-editor',
+  name: 'datetime-control-renderer-editor',
   components: {
     ControlWrapper,
-    VRadioGroup,
-    VCheckbox,
-    VLabel,
+    VTextField,
     VIcon,
     VTooltip,
   },
@@ -79,22 +66,40 @@ const controlRenderer = defineComponent({
     ...rendererProps<ControlElement>(),
   },
   setup(props: RendererProps<ControlElement>) {
-    let input: any = useVuetifyControl(
-      useJsonFormsEnumControl(props),
-      (value) => {
-        return value || undefined;
-      }
-    );
-    input.data = reactive([]);
-    return input;
+    return useVuetifyControl(useJsonFormsControl(props));
   },
-  methods: {},
+  computed: {
+    dataTime: {
+      get(): string | null | undefined {
+        const datetimeLocalFormat = 'YYYY-MM-DDTHH:mm:ss.SSS';
+        const saveFormat = this.appliedOptions.dateTimeSaveFormat ?? undefined;
+        const value = this.control.data as string | undefined | null;
+
+        const dateTime = parseDateTime(value, saveFormat);
+        return dateTime ? dateTime.local().format(datetimeLocalFormat) : value;
+      },
+      set(value: string) {
+        const datetimeLocalFormats = [
+          'YYYY-MM-DDTHH:mm:ss.SSS',
+          'YYYY-MM-DDTHH:mm:ss',
+          'YYYY-MM-DDTHH:mm',
+        ];
+        const saveFormat =
+          this.appliedOptions.dateTimeSaveFormat ?? 'YYYY-MM-DDTHH:mm:ssZ';
+
+        const dateTime = parseDateTime(value, datetimeLocalFormats);
+        const result = dateTime ? dateTime.format(saveFormat) : value;
+
+        this.onChange(result);
+      },
+    },
+  },
 });
 
 export default controlRenderer;
 
 export const entry: JsonFormsRendererRegistryEntry = {
   renderer: controlRenderer,
-  tester: rankWith(2, or(uiTypeIs('CheckboxGroup'))),
+  tester: rankWith(2, uiTypeIs('DateTime')),
 };
 </script>

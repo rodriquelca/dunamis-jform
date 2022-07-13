@@ -2,6 +2,7 @@ export interface PropertyPanel {
   id: string;
   name: string;
   type: string;
+  options: any;
   items: Array<any>;
 }
 
@@ -12,59 +13,93 @@ const PropertiesPanel = [
     name: 'Calculated',
     items: [],
   } as PropertyPanel,
-  
+  {
+    id: 'type',
+    type: 'text',
+    name: 'Type',
+    options: {
+      readOnly: true,
+    },
+    items: [],
+  } as PropertyPanel,
   {
     id: 'variable',
     type: 'text',
     name: 'Variable',
+    options: {},
     items: [],
   } as PropertyPanel,
   {
     id: 'placeholder',
     type: 'text',
     name: 'Placeholder',
+    options: {},
+    items: [],
+  } as PropertyPanel,
+  {
+    id: 'hint',
+    type: 'text',
+    name: 'Hint',
+    options: {},
+    items: [],
+  } as PropertyPanel,
+  {
+    id: 'rows',
+    type: 'text',
+    name: 'Rows',
+    options: {
+      inputType: 'number',
+      min: 2,
+    },
     items: [],
   } as PropertyPanel,
   {
     id: 'label',
     type: 'text',
     name: 'Label',
+    options: {},
     items: [],
   } as PropertyPanel,
   {
     id: 'description',
     type: 'textarea',
     name: 'Description',
+    options: {},
     items: [],
   } as PropertyPanel,
   {
     id: 'validation',
     type: 'text',
     name: 'Validation',
+    options: {},
     items: [],
   } as PropertyPanel,
   {
     id: 'validationMessage',
     type: 'text',
     name: 'Validation message',
+    options: {},
     items: [],
   } as PropertyPanel,
   {
     id: 'mask',
     type: 'text',
     name: 'Mask',
+    options: {},
     items: [],
   } as PropertyPanel,
   {
     id: 'maxLength',
     type: 'text',
     name: 'Max length',
+    options: {},
     items: [],
   } as PropertyPanel,
   {
     id: 'textTransform',
     type: 'dropdown',
     name: 'Text Transform',
+    options: {},
     items: [
       {
         text: 'None',
@@ -92,30 +127,42 @@ const PropertiesPanel = [
     id: 'required',
     type: 'checkbox',
     name: 'Required',
+    options: {},
     items: [],
   } as PropertyPanel,
   {
     id: 'readOnly',
     type: 'checkbox',
     name: 'Variable',
+    options: {},
     items: [],
   } as PropertyPanel,
   {
     id: 'multi',
     type: 'checkbox',
     name: 'Multi',
+    options: {},
     items: [],
   } as PropertyPanel,
   {
     id: 'trim',
     type: 'checkbox',
     name: 'Trim',
+    options: {},
     items: [],
   } as PropertyPanel,
   {
     id: 'restrictMaxLength',
     type: 'checkbox',
     name: 'Restrict Max Length',
+    options: {},
+    items: [],
+  } as PropertyPanel,
+  {
+    id: 'items',
+    type: 'items',
+    name: 'Items',
+    options: {},
     items: [],
   } as PropertyPanel,
 ];

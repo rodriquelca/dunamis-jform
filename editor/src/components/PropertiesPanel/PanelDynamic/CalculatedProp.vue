@@ -28,9 +28,6 @@
                 <v-card>
                   <v-card-text>
                     <v-row align="center" class="mx-0">
-                      <!-- <div class="text-center">
-                        {{ displayValue }}
-                      </div> -->
                       <v-select
                         :items="scopes"
                         label="Formula"
@@ -169,11 +166,6 @@
                   <v-icon left v-text="selection.icon"></v-icon>
                   {{ selection }}
                 </v-chip>
-
-                <!-- <v-chip class="mr-2" @click="lights">
-                  <v-icon left> mdi-brightness-5 </v-icon>
-                  Turn on Lights
-                </v-chip> -->
               </v-col>
             </v-row>
           </v-card-text>
@@ -203,7 +195,7 @@ const CalculatedProp = defineComponent({
     return {
       ...dynamicPropertyDefault(props, context),
       ...{
-        displayValue: '5 + 6 ',
+        displayValue: '',
         dialog: false,
         items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
         selections: [],

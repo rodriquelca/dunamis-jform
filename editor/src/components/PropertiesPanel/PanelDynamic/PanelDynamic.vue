@@ -7,6 +7,8 @@
         :config="property"
         v-model="data[property.id]"
         @change="getData"
+        @extendPanel="extendPanel"
+        @backPanel="backPanel"
       ></component> </template
   ></v-card>
 </template>
@@ -14,20 +16,30 @@
 <script lang="ts">
 import { defineComponent, ref } from '@vue/composition-api';
 import FieldProperties from '../models/FieldProperties';
-import * as components from './index';
-// import TextProp from './TextProp.vue';
-// import TextareaProp from './TextareaProp.vue';
-// import DropdownProp from './DropdownProp.vue';
-// import CheckboxProp from './CheckboxProp.vue';
+import TextProp from './TextProp.vue';
+import TextareaProp from './TextareaProp.vue';
+import DropdownProp from './DropdownProp.vue';
+import CheckboxProp from './CheckboxProp.vue';
+import ItemsProp from './ItemsProp.vue';
+import PanelExtended from '../PanelDynamicExtended/index';
+
 import _ from 'lodash';
 
 const PropertiesPanelDynamic = defineComponent({
   name: 'PropertiesPanelDynamic',
-  components: components,
+  components: {
+    TextProp,
+    TextareaProp,
+    DropdownProp,
+    CheckboxProp,
+    ItemsProp,
+    ...PanelExtended,
+  },
   props: ['config'],
+  emit: ['backPanel'],
   setup(props: any, context: any) {
     let type = ref(props.config.type);
-    let properties = FieldProperties.get(type);
+    let properties = FieldProperties.get(type.value);
     let formatProperties = (properties: any, data: any) => {
       let res = {};
       properties.forEach((element) => {
@@ -36,12 +48,22 @@ const PropertiesPanelDynamic = defineComponent({
       return _.assign(res, data);
     };
     let data = ref(
-      formatProperties(FieldProperties.get(type), props.config.data)
+      formatProperties(FieldProperties.get(type.value), props.config.data)
     );
-    let getData = () => {
-      context.emit('updateData', _.cloneDeep(data.value));
+    return {
+      properties,
+      type,
+      data,
+      getData() {
+        context.emit('updateData', _.cloneDeep(data.value));
+      },
+      extendPanel(dt: any) {
+        context.emit('extendPanel', dt);
+      },
+      backPanel(dt: any) {
+        context.emit('backPanel', dt);
+      },
     };
-    return { properties, type, data, getData };
   },
 });
 export default PropertiesPanelDynamic;

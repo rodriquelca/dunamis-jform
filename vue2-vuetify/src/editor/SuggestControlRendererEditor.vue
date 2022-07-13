@@ -15,12 +15,25 @@
         item-text="label"
         item-value="value"
         :label="computedLabel"
-        :placeholder="appliedOptions.placeholder"
+        :placeholder="control.uischema.options.placeholder"
         prepend-icon="mdi-database-search"
         return-object
         :clearable="hover"
         @input="onChange"
-      ></v-autocomplete>
+      >
+        <v-tooltip
+          v-if="
+            control.uischema.options.hint && control.uischema.options.hint != ''
+          "
+          slot="append-outer"
+          top
+        >
+          <template v-slot:activator="{ on }">
+            <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
+          </template>
+          <span class="">{{ control.uischema.options.hint }}</span>
+        </v-tooltip>
+      </v-autocomplete>
     </v-hover>
   </control-wrapper>
 </template>
@@ -41,7 +54,7 @@ import {
 
 import { default as ControlWrapper } from '../controls/ControlWrapper.vue';
 import { useVuetifyControl } from '../util';
-import { VHover, VAutocomplete } from 'vuetify/lib';
+import { VHover, VAutocomplete, VIcon, VTooltip } from 'vuetify/lib';
 
 const controlRenderer = defineComponent({
   name: 'suggest-control-renderer-editor',
@@ -60,6 +73,8 @@ const controlRenderer = defineComponent({
     ControlWrapper,
     VAutocomplete,
     VHover,
+    VIcon,
+    VTooltip,
   },
   setup(props: RendererProps<ControlElement>) {
     return useVuetifyControl(

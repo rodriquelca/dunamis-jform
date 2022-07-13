@@ -6,50 +6,47 @@
     :appliedOptions="appliedOptions"
   >
     <v-hover v-slot="{ hover }">
-      <v-select
-        v-if="appliedOptions.autocomplete === false"
+      <v-textarea
         v-disabled-icon-focus
         :id="control.id + '-input'"
         :class="styles.control.input"
         :disabled="!control.enabled"
+        :rows="control.uischema.options.rows"
         :autofocus="appliedOptions.focus"
-        :placeholder="appliedOptions.placeholder"
+        :placeholder="control.uischema.options.placeholder"
         :label="computedLabel"
         :hint="control.description"
         :persistent-hint="persistentHint()"
         :required="control.required"
         :error-messages="control.errors"
-        :clearable="hover"
         :value="control.data"
-        :items="control.options"
-        item-text="label"
-        item-value="value"
+        :maxlength="
+          appliedOptions.restrict ? control.schema.maxLength : undefined
+        "
+        :size="
+          appliedOptions.trim && control.schema.maxLength !== undefined
+            ? control.schema.maxLength
+            : undefined
+        "
+        :clearable="hover"
+        multi-line
         @change="onChange"
         @focus="isFocused = true"
         @blur="isFocused = false"
-      />
-      <v-autocomplete
-        v-else
-        v-disabled-icon-focus
-        :id="control.id + '-input'"
-        :class="styles.control.input"
-        :disabled="!control.enabled"
-        :autofocus="appliedOptions.focus"
-        :placeholder="appliedOptions.placeholder"
-        :label="computedLabel"
-        :hint="control.description"
-        :persistent-hint="persistentHint()"
-        :required="control.required"
-        :error-messages="control.errors"
-        :clearable="hover"
-        :value="control.data"
-        :items="control.options"
-        item-text="label"
-        item-value="value"
-        @change="onChange"
-        @focus="isFocused = true"
-        @blur="isFocused = false"
-      />
+      >
+        <v-tooltip
+          v-if="
+            control.uischema.options.hint && control.uischema.options.hint != ''
+          "
+          slot="append"
+          top
+        >
+          <template v-slot:activator="{ on }">
+            <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
+          </template>
+          <span class="">{{ control.uischema.options.hint }}</span>
+        </v-tooltip>
+      </v-textarea>
     </v-hover>
   </control-wrapper>
 </template>
@@ -59,26 +56,27 @@ import {
   ControlElement,
   JsonFormsRendererRegistryEntry,
   rankWith,
-  isOneOfEnumControl,
+  uiTypeIs,
 } from '@jsonforms/core';
 import { defineComponent } from '../vue';
 import {
   rendererProps,
-  useJsonFormsOneOfEnumControl,
+  useJsonFormsControl,
   RendererProps,
 } from '@jsonforms/vue2';
 import { default as ControlWrapper } from '../controls/ControlWrapper.vue';
 import { useVuetifyControl } from '../util';
-import { VSelect, VHover, VAutocomplete } from 'vuetify/lib';
+import { VHover, VTextarea, VTooltip, VIcon } from 'vuetify/lib';
 import { DisabledIconFocus } from '../controls/directives';
 
 const controlRenderer = defineComponent({
-  name: 'autocomplete-oneof-enum-control-renderer',
+  name: 'text-area-control-renderer-editor',
   components: {
     ControlWrapper,
-    VSelect,
-    VAutocomplete,
     VHover,
+    VTextarea,
+    VTooltip,
+    VIcon,
   },
   directives: {
     DisabledIconFocus,
@@ -88,7 +86,7 @@ const controlRenderer = defineComponent({
   },
   setup(props: RendererProps<ControlElement>) {
     return useVuetifyControl(
-      useJsonFormsOneOfEnumControl(props),
+      useJsonFormsControl(props),
       (value) => value || undefined
     );
   },
@@ -98,6 +96,6 @@ export default controlRenderer;
 
 export const entry: JsonFormsRendererRegistryEntry = {
   renderer: controlRenderer,
-  tester: rankWith(10, isOneOfEnumControl),
+  tester: rankWith(2, uiTypeIs('TextArea')),
 };
 </script>

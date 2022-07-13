@@ -26,5 +26,4 @@ const TextareaProp = defineComponent({
 });
 export default TextareaProp;
 </script>
-<style>
-</style>
+<style></style>
