@@ -36,7 +36,7 @@ import { useVuetifyControl } from '../composition';
 import { VBtn } from 'vuetify/lib';
 
 const controlRenderer = defineComponent({
-  name: 'SubmitButtonControlRenderer',
+  name: 'submit-button-control-renderer',
   components: {
     ControlWrapper,
     VBtn,

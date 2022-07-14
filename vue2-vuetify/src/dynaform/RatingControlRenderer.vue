@@ -5,7 +5,26 @@
     :isFocused="isFocused"
     :appliedOptions="appliedOptions"
   >
-    <v-container v-html="appliedOptions.content"></v-container>
+    <v-rating
+      hover
+      length="5"
+      size="40"
+      :step="step"
+      :id="control.id + '-input'"
+      :class="styles.control.input"
+      :disabled="!control.enabled"
+      :autofocus="appliedOptions.focus"
+      :placeholder="appliedOptions.placeholder"
+      :label="computedLabel"
+      :hint="control.description"
+      :persistent-hint="persistentHint()"
+      :required="control.required"
+      :error-messages="control.errors"
+      :value="control.data"
+      @change="onChange"
+      @focus="isFocused = true"
+      @blur="isFocused = false"
+    ></v-rating>
   </control-wrapper>
 </template>
 
@@ -24,17 +43,14 @@ import {
 } from '@jsonforms/vue2';
 import { default as ControlWrapper } from '../controls/ControlWrapper.vue';
 import { useVuetifyControl } from '../util';
-import { DisabledIconFocus } from '../controls/directives';
-import { VContainer } from 'vuetify/lib';
+import { VRating } from 'vuetify/lib';
 
 const controlRenderer = defineComponent({
-  name: 'html-viewer-control-renderer',
+  name: 'rating-control-renderer',
   components: {
     ControlWrapper,
-    VContainer,
-  },
-  directives: {
-    DisabledIconFocus,
+
+    VRating,
   },
   props: {
     ...rendererProps<ControlElement>(),
@@ -42,16 +58,21 @@ const controlRenderer = defineComponent({
   setup(props: RendererProps<ControlElement>) {
     return useVuetifyControl(
       useJsonFormsControl(props),
-      (value) => value || undefined
+      (value) => parseInt(value, 10) || undefined
     );
   },
-  computed: {},
+  computed: {
+    step(): number {
+      const options: any = this.appliedOptions;
+      return options.step ?? 1;
+    },
+  },
 });
 
 export default controlRenderer;
 
 export const entry: JsonFormsRendererRegistryEntry = {
   renderer: controlRenderer,
-  tester: rankWith(2, uiTypeIs('RichText')),
+  tester: rankWith(1, uiTypeIs('Rating')),
 };
 </script>
