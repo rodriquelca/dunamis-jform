@@ -70,7 +70,6 @@ const controlElements = [
       const control = {
         type: 'string',
         format: 'date-time',
-        uiOptions: {},
       };
       return {
         control,
