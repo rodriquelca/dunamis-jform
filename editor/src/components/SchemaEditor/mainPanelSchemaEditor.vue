@@ -105,5 +105,4 @@ const MainPanelSchemaEditor = defineComponent({
 });
 export default MainPanelSchemaEditor;
 </script>
-<style>
-</style>
+<style></style>
