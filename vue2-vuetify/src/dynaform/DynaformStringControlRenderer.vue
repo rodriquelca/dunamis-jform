@@ -73,7 +73,7 @@ import {
   ControlElement,
   JsonFormsRendererRegistryEntry,
   rankWith,
-  isStringControl,
+  uiTypeIs,
 } from '@jsonforms/core';
 import { defineComponent } from '../vue';
 import {
@@ -186,6 +186,6 @@ export default controlRenderer;
 
 export const entry: JsonFormsRendererRegistryEntry = {
   renderer: controlRenderer,
-  tester: rankWith(2, isStringControl),
+  tester: rankWith(2, uiTypeIs('Text')),
 };
 </script>

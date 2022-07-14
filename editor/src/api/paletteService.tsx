@@ -90,6 +90,7 @@ const controlElements = [
       return {
         control,
         variable: 'datetime',
+        uiOptions: {},
       };
     },
   },
@@ -106,6 +107,7 @@ const controlElements = [
       return {
         control,
         variable: 'time',
+        uiOptions: {},
       };
     },
   },

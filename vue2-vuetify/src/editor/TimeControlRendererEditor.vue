@@ -43,7 +43,7 @@ import { useVuetifyControl } from '../util';
 import { VTextField } from 'vuetify/lib';
 
 const controlRenderer = defineComponent({
-  name: 'time-control-renderer',
+  name: 'time-control-renderer-editor',
   components: {
     ControlWrapper,
     VTextField,

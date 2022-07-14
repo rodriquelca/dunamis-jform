@@ -5,7 +5,23 @@
     :isFocused="isFocused"
     :appliedOptions="appliedOptions"
   >
-    <v-container v-html="appliedOptions.content"></v-container>
+    <v-text-field
+      type="time"
+      :id="control.id + '-input'"
+      :class="styles.control.input"
+      :disabled="!control.enabled"
+      :autofocus="appliedOptions.focus"
+      :placeholder="control.uischema.options.placeholder"
+      :label="computedLabel"
+      :hint="control.description"
+      :persistent-hint="persistentHint()"
+      :required="control.required"
+      :error-messages="control.errors"
+      :value="control.data"
+      @change="onChange"
+      @focus="isFocused = true"
+      @blur="isFocused = false"
+    />
   </control-wrapper>
 </template>
 
@@ -24,34 +40,26 @@ import {
 } from '@jsonforms/vue2';
 import { default as ControlWrapper } from '../controls/ControlWrapper.vue';
 import { useVuetifyControl } from '../util';
-import { DisabledIconFocus } from '../controls/directives';
-import { VContainer } from 'vuetify/lib';
+import { VTextField } from 'vuetify/lib';
 
 const controlRenderer = defineComponent({
-  name: 'html-viewer-control-renderer',
+  name: 'time-control-renderer',
   components: {
     ControlWrapper,
-    VContainer,
-  },
-  directives: {
-    DisabledIconFocus,
+    VTextField,
   },
   props: {
     ...rendererProps<ControlElement>(),
   },
   setup(props: RendererProps<ControlElement>) {
-    return useVuetifyControl(
-      useJsonFormsControl(props),
-      (value) => value || undefined
-    );
+    return useVuetifyControl(useJsonFormsControl(props));
   },
-  computed: {},
 });
 
 export default controlRenderer;
 
 export const entry: JsonFormsRendererRegistryEntry = {
   renderer: controlRenderer,
-  tester: rankWith(2, uiTypeIs('RichText')),
+  tester: rankWith(2, uiTypeIs('TimePicker')),
 };
 </script>
