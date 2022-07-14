@@ -10,10 +10,9 @@
       <v-icon class="me-1" small>mdi-arrow-left</v-icon>
       Back
     </v-btn>
-    <div class="v-expansion-panel-header">
-      <div>
-        <span class="caption font-weight-bold">Items</span>
-      </div>
+
+    <div class="pb-2 px-5">
+      <span class="caption font-weight-bold">Items</span>
     </div>
 
     <v-card elevation="0" color="transparent" class="mx-4">
@@ -26,6 +25,13 @@
         outlined
         dense
       ></v-combobox>
+
+      <component
+        ref="configurationView"
+        :data="dataConfigView"
+        v-bind:is="configDataSourceView"
+      ></component>
+
       <v-row dense>
         <list-options
           ref="refList"
@@ -43,7 +49,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, onMounted, ref } from '@vue/composition-api';
+import {
+  computed,
+  defineComponent,
+  inject,
+  onMounted,
+  ref,
+} from '@vue/composition-api';
 import ListOptions from '../../Generic/ListOptions.vue';
 import { dynamicPropertyDefault } from '../PropertiesPanelComp';
 const ItemPropExt = defineComponent({
@@ -59,7 +71,7 @@ const ItemPropExt = defineComponent({
     );
     const serviceProvider = inject<any>('serviceProvider');
     const dataSources = serviceProvider.get('dataSources');
-
+    const configurationView = ref(null);
     const titles = ref({
       value: 'Value',
       label: 'Label',
@@ -69,6 +81,7 @@ const ItemPropExt = defineComponent({
       label: 'label',
     });
     const refList = ref(null);
+    const sources = ref(dataSources.get());
 
     let select = ref(
       props.config && props.config.dataSource
@@ -77,10 +90,28 @@ const ItemPropExt = defineComponent({
             text: props.config.dataSource.name,
             type: props.config.dataSource.type,
           }
-        : []
+        : null
     );
+    let dataConfigView = ref(
+      props.config && props.config.dataSource ? props.config.dataSource : {}
+    );
+
+    let configDataSourceView = computed(() => {
+      let src;
+      if (select.value && select.value.render) {
+        return select.value.render;
+      } else if (props.config && props.config.dataSource) {
+        src = sources.value.find((el) => el.id === props.config.dataSource.id);
+        if (src) {
+          return src.render;
+        }
+      }
+      return 'div';
+    });
     return {
+      configurationView,
       refList,
+      dataConfigView,
       ...dynamicPropertyDefault(props, context),
       backPanel() {
         let items = {
@@ -92,6 +123,9 @@ const ItemPropExt = defineComponent({
             id: select.value.id,
             name: select.value.text,
             type: select.value.type,
+            config: configurationView.value.getData
+              ? configurationView.value.getData()
+              : {},
           };
         }
         context.emit('backPanel', { items });
@@ -100,7 +134,8 @@ const ItemPropExt = defineComponent({
       select,
       titles,
       keys,
-      sources: ref(dataSources.get()),
+      configDataSourceView,
+      sources,
     };
   },
 });
