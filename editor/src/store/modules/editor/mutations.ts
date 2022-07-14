@@ -22,5 +22,8 @@ const mutations = {
   REMOVE_UISCHEMA_ELEMENT: (state: any, value: any) => {
     state.editor.uiSchema = value;
   },
+  SET_INFORMATION: (state: any, value: any) => {
+    state.editor.information = value;
+  },
 };
 export default mutations;

@@ -75,7 +75,10 @@ export default {
     return {
       actions: [
         {
-          title: 'Form Title',
+          title:
+            (this.$store.get('app/editor@information') &&
+              this.$store.get('app/editor@information').name) ||
+            'Form Editor',
           type: 'title',
         },
         {
