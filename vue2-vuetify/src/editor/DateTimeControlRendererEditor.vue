@@ -76,7 +76,7 @@ import {
   RendererProps,
 } from '@jsonforms/vue2';
 import { default as ControlWrapper } from '../controls/ControlWrapper.vue';
-import { parseDateTime, useVuetifyControl } from '../util';
+import { useVuetifyControl } from '../util';
 import { VTextField, VMenu, VDatePicker, VTimePicker, VBtn } from 'vuetify/lib';
 
 const controlRenderer = defineComponent({
@@ -104,12 +104,13 @@ const controlRenderer = defineComponent({
   },
   computed: {
     date: {
-      get(): string | null | undefined {
-        const dateFormat = this.appliedOptions.dateSaveFormat ?? 'YYYY-MM-DD';
-        const value = (this.control.data as string | undefined | null) || '';
-        const parsedDate = parseDateTime(value, dateFormat);
-        console.log('Parsed Date:', parsedDate);
-        return parsedDate ? parsedDate.local().format(dateFormat) : '';
+      get(): string | null {
+        // const dateFormat = this.appliedOptions.dateSaveFormat ?? 'YYYY-MM-DD';
+        // const value = (this.control.data as string | undefined | null) || '';
+        // const parsedDate = parseDateTime(value, dateFormat);
+        // console.log('Parsed Date:', parsedDate);
+        // return parsedDate ? parsedDate.local().format(dateFormat) : '';
+        return this.control.data.split('T')[0];
       },
       set(newDate: string) {
         // const saveFormat =
@@ -123,11 +124,13 @@ const controlRenderer = defineComponent({
       },
     },
     time: {
-      get(): string | null | undefined {
-        const timeFormat = this.appliedOptions.timeSaveFormat ?? 'HH:mm';
-        const value = (this.control.data as string | undefined | null) || '';
-        const parsedTime = parseDateTime(value, timeFormat);
-        return parsedTime ? parsedTime.local().format(timeFormat) : '';
+      get(): string | null {
+        // const timeFormat = this.appliedOptions.timeSaveFormat ?? 'HH:mm';
+        // const value = (this.control.data as string | undefined | null) || '';
+        // const parsedTime = parseDateTime(value, timeFormat);
+        // console.log('Parsed Time:', parsedTime);
+        // return parsedTime ? parsedTime.local().format(timeFormat) : '';
+        return this.control.data.split('T')[1].split('Z')[0];
       },
       set(newTime: string) {
         // const saveFormat = this.appliedOptions.dateTimeSaveFormat ?? 'HH:mm:ss';
@@ -140,18 +143,18 @@ const controlRenderer = defineComponent({
         // }
       },
     },
-    dateTime(): string | null | undefined {
-      const datetimeFormats = [
-        'YYYY-MM-DDTHH:mm:ssZ',
-        'YYYY-MM-DD',
-        'HH:mm:ss',
-      ];
-      const value = (this.date ?? '') + (this.time ?? '');
-      const dateTime = parseDateTime(value, datetimeFormats);
-      const result = dateTime?.format(datetimeFormats[0]) ?? value;
-      console.log(result);
-      return result;
-    },
+    // dateTime(): string | null | undefined {
+    //   const datetimeFormats = [
+    //     'YYYY-MM-DDTHH:mm:ssZ',
+    //     'YYYY-MM-DD',
+    //     'HH:mm:ss',
+    //   ];
+    //   const value = (this.date ?? '') + (this.time ?? '');
+    //   const dateTime = parseDateTime(value, datetimeFormats);
+    //   const result = dateTime?.format(datetimeFormats[0]) ?? value;
+    //   console.log(result);
+    //   return result;
+    // },
     inputFormat(): string | undefined {
       return this.control.schema.format === 'date-time'
         ? 'datetime-local'
