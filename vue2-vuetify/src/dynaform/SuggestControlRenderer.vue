@@ -15,12 +15,19 @@
         item-text="label"
         item-value="value"
         :label="computedLabel"
-        :placeholder="appliedOptions.placeholder"
+        :placeholder="placeholder"
         prepend-icon="mdi-database-search"
         return-object
         :clearable="hover"
         @input="onChange"
-      ></v-autocomplete>
+      >
+        <v-tooltip v-if="hint && hint != ''" slot="append-outer" top>
+          <template v-slot:activator="{ on }">
+            <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
+          </template>
+          <span class="">{{ hint }}</span>
+        </v-tooltip>
+      </v-autocomplete>
     </v-hover>
   </control-wrapper>
 </template>
@@ -41,7 +48,7 @@ import {
 
 import { default as ControlWrapper } from '../controls/ControlWrapper.vue';
 import { useVuetifyControlExt } from '../composition';
-import { VHover, VAutocomplete } from 'vuetify/lib';
+import { VHover, VAutocomplete, VIcon, VTooltip } from 'vuetify/lib';
 import { isFunction } from 'lodash';
 import _ from 'lodash';
 
@@ -62,6 +69,8 @@ const controlRenderer = defineComponent({
     ControlWrapper,
     VAutocomplete,
     VHover,
+    VIcon,
+    VTooltip,
   },
   setup(props: RendererProps<ControlElement>) {
     return useVuetifyControlExt(
@@ -70,7 +79,14 @@ const controlRenderer = defineComponent({
       (value) => value || undefined
     );
   },
-  computed: {},
+  computed: {
+    hint(): string {
+      return this.control.uischema.options?.hint ?? '';
+    },
+    placeholder(): string {
+      return this.control.uischema.options?.placeholder ?? '';
+    },
+  },
   methods: {},
   watch: {
     search(query) {
@@ -84,7 +100,7 @@ const controlRenderer = defineComponent({
           ...{ [this.controlBuilder.scope]: query },
         };
         prom = this.controlBuilder.itemsBuilder(_, clonePayload);
-        if (Boolean(prom && typeof prom.then === 'function')) {
+        if (prom && typeof prom.then === 'function') {
           prom
             .then((res: any) => {
               this.controlBuilder.items = res;

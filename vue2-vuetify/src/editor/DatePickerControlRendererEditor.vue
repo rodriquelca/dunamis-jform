@@ -20,7 +20,7 @@
           :class="styles.control.input"
           :disabled="!control.enabled"
           :autofocus="appliedOptions.focus"
-          :placeholder="control.uischema.options.placeholder"
+          :placeholder="placeholder"
           :label="computedLabel"
           :hint="control.description"
           :persistent-hint="persistentHint()"
@@ -33,7 +33,14 @@
           readonly
           v-bind="attrs"
           v-on="on"
-        ></v-text-field>
+        >
+          <v-tooltip v-if="hint && hint != ''" slot="append-outer" top>
+            <template v-slot:activator="{ on }">
+              <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
+            </template>
+            <span class="">{{ hint }}</span>
+          </v-tooltip>
+        </v-text-field>
       </template>
       <v-date-picker
         v-model="date"
@@ -65,7 +72,14 @@ import {
 } from '@jsonforms/vue2';
 import { default as ControlWrapper } from '../controls/ControlWrapper.vue';
 import { useVuetifyControl } from '../util';
-import { VTextField, VMenu, VDatePicker, VBtn } from 'vuetify/lib';
+import {
+  VTextField,
+  VMenu,
+  VDatePicker,
+  VBtn,
+  VIcon,
+  VTooltip,
+} from 'vuetify/lib';
 
 const controlRenderer = defineComponent({
   name: 'date-picker-control-renderer-editor',
@@ -75,6 +89,8 @@ const controlRenderer = defineComponent({
     VMenu,
     VDatePicker,
     VBtn,
+    VIcon,
+    VTooltip,
   },
   props: {
     ...rendererProps<ControlElement>(),
@@ -87,8 +103,11 @@ const controlRenderer = defineComponent({
     };
   },
   computed: {
-    setDefault(): string {
-      return '1992-01-29';
+    hint(): string {
+      return this.control.uischema.options?.hint ?? '';
+    },
+    placeholder(): string {
+      return this.control.uischema.options?.placeholder ?? '';
     },
   },
   methods: {

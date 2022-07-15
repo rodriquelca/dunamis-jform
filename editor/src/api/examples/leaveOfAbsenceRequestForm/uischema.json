@@ -2,7 +2,7 @@
   "type": "VerticalLayout",
   "elements": [
     {
-      "type": "Control",
+      "type": "Text",
       "scope": "#/properties/title",
       "options": {
         "isHtmlViewer": true,
@@ -10,7 +10,7 @@
       }
     },
     {
-      "type": "Control",
+      "type": "RichText",
       "scope": "#/properties/richText",
       "options": {
         "isHtmlViewer": true,
@@ -21,17 +21,17 @@
       "type": "HorizontalLayout",
       "elements": [
         {
-          "type": "Control",
+          "type": "Text",
           "scope": "#/properties/employeeName"
         },
         {
-          "type": "Control",
+          "type": "Text",
           "scope": "#/properties/employeeEmail"
         }
       ]
     },
     {
-      "type": "Control",
+      "type": "RichText",
       "scope": "#/properties/richText",
       "options": {
         "isHtmlViewer": true,
@@ -42,11 +42,11 @@
       "type": "HorizontalLayout",
       "elements": [
         {
-          "type": "Control",
+          "type": "DateTime",
           "scope": "#/properties/leaveStart"
         },
         {
-          "type": "Control",
+          "type": "DateTime",
           "scope": "#/properties/leaveEnd"
         }
       ]
@@ -97,7 +97,7 @@
           "label": "Reason For Leave"
         },
         {
-          "type": "Control",
+          "type": "TextArea",
           "scope": "#/properties/moreInfo",
           "options": {
             "multi": true

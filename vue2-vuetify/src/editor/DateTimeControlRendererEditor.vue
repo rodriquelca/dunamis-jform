@@ -11,7 +11,7 @@
       :class="styles.control.input"
       :disabled="!control.enabled"
       :autofocus="appliedOptions.focus"
-      :placeholder="control.uischema.options.placeholder"
+      :placeholder="placeholder"
       :label="computedLabel"
       :hint="control.description"
       :persistent-hint="persistentHint()"
@@ -21,17 +21,11 @@
       @focus="isFocused = true"
       @blur="isFocused = false"
     >
-      <v-tooltip
-        v-if="
-          control.uischema.options.hint && control.uischema.options.hint != ''
-        "
-        slot="append"
-        top
-      >
+      <v-tooltip v-if="hint && hint != ''" slot="append" top>
         <template v-slot:activator="{ on }">
           <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
         </template>
-        <span class="">{{ control.uischema.options.hint }}</span>
+        <span class="">{{ hint }}</span>
       </v-tooltip>
     </v-text-field>
   </control-wrapper>
@@ -66,9 +60,17 @@ const controlRenderer = defineComponent({
     ...rendererProps<ControlElement>(),
   },
   setup(props: RendererProps<ControlElement>) {
-    return useVuetifyControl(useJsonFormsControl(props));
+    return {
+      ...useVuetifyControl(useJsonFormsControl(props)),
+    };
   },
   computed: {
+    hint(): string {
+      return this.control.uischema.options?.hint ?? '';
+    },
+    placeholder(): string {
+      return this.control.uischema.options?.placeholder ?? '';
+    },
     dataTime: {
       get(): string | null | undefined {
         const datetimeLocalFormat = 'YYYY-MM-DDTHH:mm:ss.SSS';

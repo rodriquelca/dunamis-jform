@@ -5,7 +5,7 @@
       "type": "VerticalLayout",
       "elements": [
         {
-          "type": "Control",
+          "type": "RichText",
           "scope": "#/properties/richText_0",
           "options": {
             "isHtmlViewer": true,
@@ -21,7 +21,7 @@
           "type": "HorizontalLayout",
           "elements": [
             {
-              "type": "Control",
+              "type": "DateTime",
               "scope": "#/properties/dateRequest",
               "label": "Today's Date"
             }
@@ -37,34 +37,34 @@
                   "type": "HorizontalLayout",
                   "elements": [
                     {
-                      "type": "Control",
+                      "type": "Text",
                       "scope": "#/properties/firstName",
                       "label": "First Name"
                     },
                     {
-                      "type": "Control",
+                      "type": "Text",
                       "scope": "#/properties/lastName",
                       "label": "Last Name"
                     }
                   ]
                 },
                 {
-                  "type": "Control",
+                  "type": "Text",
                   "scope": "#/properties/email",
                   "label": "Email"
                 },
                 {
-                  "type": "Control",
+                  "type": "Text",
                   "scope": "#/properties/phoneNumber",
                   "label": "Phone Number"
                 },
                 {
-                  "type": "Control",
+                  "type": "Text",
                   "scope": "#/properties/officeLocation",
                   "label": "Office Location (city)"
                 },
                 {
-                  "type": "Control",
+                  "type": "Text",
                   "scope": "#/properties/briefIssue",
                   "label": "Brief Issue Description"
                 },
@@ -137,7 +137,7 @@
                   "label": "What are you having issues with?"
                 },
                 {
-                  "type": "Control",
+                  "type": "MultipleFile",
                   "scope": "#/properties/photoIssue",
                   "options": {
                     "multipleFile": true,
@@ -149,7 +149,7 @@
                   "label": "If applicable, upload a photo of the issue:"
                 },
                 {
-                  "type": "Control",
+                  "type": "TextArea",
                   "scope": "#/properties/comments",
                   "options": {
                     "multi": true

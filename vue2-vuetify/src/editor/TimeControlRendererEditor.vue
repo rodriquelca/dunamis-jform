@@ -11,7 +11,7 @@
       :class="styles.control.input"
       :disabled="!control.enabled"
       :autofocus="appliedOptions.focus"
-      :placeholder="control.uischema.options.placeholder"
+      :placeholder="placeholder"
       :label="computedLabel"
       :hint="control.description"
       :persistent-hint="persistentHint()"
@@ -21,7 +21,14 @@
       @change="onChange"
       @focus="isFocused = true"
       @blur="isFocused = false"
-    />
+    >
+      <v-tooltip v-if="hint && hint != ''" slot="append" top>
+        <template v-slot:activator="{ on }">
+          <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
+        </template>
+        <span class="">{{ hint }}</span>
+      </v-tooltip>
+    </v-text-field>
   </control-wrapper>
 </template>
 
@@ -40,19 +47,29 @@ import {
 } from '@jsonforms/vue2';
 import { default as ControlWrapper } from '../controls/ControlWrapper.vue';
 import { useVuetifyControl } from '../util';
-import { VTextField } from 'vuetify/lib';
+import { VTextField, VIcon, VTooltip } from 'vuetify/lib';
 
 const controlRenderer = defineComponent({
   name: 'time-control-renderer-editor',
   components: {
     ControlWrapper,
     VTextField,
+    VIcon,
+    VTooltip,
   },
   props: {
     ...rendererProps<ControlElement>(),
   },
   setup(props: RendererProps<ControlElement>) {
     return useVuetifyControl(useJsonFormsControl(props));
+  },
+  computed: {
+    hint(): string {
+      return this.control.uischema.options?.hint ?? '';
+    },
+    placeholder(): string {
+      return this.control.uischema.options?.placeholder ?? '';
+    },
   },
 });
 

@@ -85,7 +85,6 @@ const controlElements = [
       const control = {
         type: 'string',
         format: 'date-time',
-        uiOptions: {},
       };
       return {
         control,
@@ -102,7 +101,6 @@ const controlElements = [
       const control = {
         type: 'string',
         format: 'time',
-        uiOptions: {},
       };
       return {
         control,

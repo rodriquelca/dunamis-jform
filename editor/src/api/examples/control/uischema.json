@@ -2,35 +2,35 @@
   "type": "VerticalLayout",
   "elements": [
     {
-      "type": "Control",
+      "type": "Text",
       "scope": "#/properties/string"
     },
     {
-      "type": "Control",
+      "type": "Checkbox",
       "scope": "#/properties/boolean"
     },
     {
-      "type": "Control",
+      "type": "Text",
       "scope": "#/properties/number"
     },
     {
-      "type": "Control",
+      "type": "Text",
       "scope": "#/properties/integer"
     },
     {
-      "type": "Control",
+      "type": "DatePicker",
       "scope": "#/properties/date"
     },
     {
-      "type": "Control",
+      "type": "TimePicker",
       "scope": "#/properties/time"
     },
     {
-      "type": "Control",
+      "type": "DateTime",
       "scope": "#/properties/dateTime"
     },
     {
-      "type": "Control",
+      "type": "Dropdown",
       "scope": "#/properties/enum"
     }
   ]

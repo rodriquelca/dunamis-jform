@@ -15,23 +15,17 @@
         item-text="label"
         item-value="value"
         :label="computedLabel"
-        :placeholder="control.uischema.options.placeholder"
+        :placeholder="placeholder"
         prepend-icon="mdi-database-search"
         return-object
         :clearable="hover"
         @input="onChange"
       >
-        <v-tooltip
-          v-if="
-            control.uischema.options.hint && control.uischema.options.hint != ''
-          "
-          slot="append-outer"
-          top
-        >
+        <v-tooltip v-if="hint && hint != ''" slot="append-outer" top>
           <template v-slot:activator="{ on }">
             <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
           </template>
-          <span class="">{{ control.uischema.options.hint }}</span>
+          <span class="">{{ hint }}</span>
         </v-tooltip>
       </v-autocomplete>
     </v-hover>
@@ -82,7 +76,14 @@ const controlRenderer = defineComponent({
       (value) => value || undefined
     );
   },
-  computed: {},
+  computed: {
+    hint(): string {
+      return this.control.uischema.options?.hint ?? '';
+    },
+    placeholder(): string {
+      return this.control.uischema.options?.placeholder ?? '';
+    },
+  },
   methods: {},
   watch: {
     search() {},

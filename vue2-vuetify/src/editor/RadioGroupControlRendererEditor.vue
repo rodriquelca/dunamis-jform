@@ -11,7 +11,7 @@
       :class="styles.control.input"
       :disabled="!control.enabled"
       :autofocus="appliedOptions.focus"
-      :placeholder="appliedOptions.placeholder"
+      :placeholder="placeholder"
       :hint="control.description"
       :persistent-hint="persistentHint()"
       :required="control.required"
@@ -22,22 +22,16 @@
       @blur="isFocused = false"
     >
       <v-radio
-        v-for="o in control.options"
+        v-for="o in items"
         :key="o.value"
         :label="o.label"
         :value="o.value"
       ></v-radio>
-      <v-tooltip
-        v-if="
-          control.uischema.options.hint && control.uischema.options.hint != ''
-        "
-        slot="append"
-        top
-      >
+      <v-tooltip v-if="hint && hint != ''" slot="append" top>
         <template v-slot:activator="{ on }">
           <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
         </template>
-        <span class="">{{ control.uischema.options.hint }}</span>
+        <span class="">{{ hint }}</span>
       </v-tooltip>
     </v-radio-group>
   </control-wrapper>
@@ -75,6 +69,23 @@ const controlRenderer = defineComponent({
   },
   setup(props: RendererProps<ControlElement>) {
     return useVuetifyControl(useJsonFormsEnumControl(props));
+  },
+  computed: {
+    hint(): string {
+      return this.control.uischema.options?.hint ?? '';
+    },
+    placeholder(): string {
+      return this.control.uischema.options?.placeholder ?? '';
+    },
+    items(): string[] {
+      if (this.control.schema.enum) {
+        return this.control.schema?.enum;
+      } else if (this.control.uischema.options?.items) {
+        return this.control.uischema.options?.items;
+      } else {
+        return [];
+      }
+    },
   },
 });
 export default controlRenderer;

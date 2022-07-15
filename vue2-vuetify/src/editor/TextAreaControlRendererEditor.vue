@@ -11,9 +11,9 @@
         :id="control.id + '-input'"
         :class="styles.control.input"
         :disabled="!control.enabled"
-        :rows="control.uischema.options.rows"
+        :rows="rows"
         :autofocus="appliedOptions.focus"
-        :placeholder="control.uischema.options.placeholder"
+        :placeholder="placeholder"
         :label="computedLabel"
         :hint="control.description"
         :persistent-hint="persistentHint()"
@@ -34,17 +34,11 @@
         @focus="isFocused = true"
         @blur="isFocused = false"
       >
-        <v-tooltip
-          v-if="
-            control.uischema.options.hint && control.uischema.options.hint != ''
-          "
-          slot="append"
-          top
-        >
+        <v-tooltip v-if="hint && hint != ''" slot="append" top>
           <template v-slot:activator="{ on }">
             <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
           </template>
-          <span class="">{{ control.uischema.options.hint }}</span>
+          <span class="">{{ hint }}</span>
         </v-tooltip>
       </v-textarea>
     </v-hover>
@@ -89,6 +83,17 @@ const controlRenderer = defineComponent({
       useJsonFormsControl(props),
       (value) => value || undefined
     );
+  },
+  computed: {
+    hint(): string {
+      return this.control.uischema.options?.hint ?? '';
+    },
+    placeholder(): string {
+      return this.control.uischema.options?.placeholder ?? '';
+    },
+    rows(): string | number {
+      return this.control.uischema.options?.rows ?? 2;
+    },
   },
 });
 
