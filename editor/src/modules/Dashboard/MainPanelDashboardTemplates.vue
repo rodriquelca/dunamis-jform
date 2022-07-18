@@ -53,6 +53,8 @@ import { computed, defineComponent, ref } from '@vue/composition-api';
 import Templates from './Templates.vue';
 import TemplatePreview from './TemplatePreview.vue';
 import store from '../../store';
+import { v4 as uuid } from 'uuid';
+import { useExportSchema, useExportUiSchema } from '../../util';
 
 const MainPanelDashboard = defineComponent({
   name: 'MainPanelDashboard',
@@ -63,6 +65,9 @@ const MainPanelDashboard = defineComponent({
       let loaded = this.$store.get('preview/uiSchema').elements;
       return loaded === undefined || loaded.length == 0;
     },
+    information() {
+      return this.$store.get('app/editor@information');
+    },
   },
   setup(props: any) {
     let key = ref(0);
@@ -71,9 +76,23 @@ const MainPanelDashboard = defineComponent({
     };
     return { previewTemplate, key };
   },
+
   methods: {
     selectTemplate() {
       // Load the form editor view with the 'Use This Template' button.
+      this.$store.dispatch('dashboard/addForm', {
+        uuid: uuid(),
+        name: this.information.name,
+        description: this.information.description,
+        category: this.information.category,
+        type: this.information.type,
+        modified: new Date().toJSON().slice(0, 10),
+        created: new Date().toJSON().slice(0, 10),
+        schemas: {
+          schema: useExportSchema(this.$store.get('app/editor@schema')),
+          uiSchema: useExportUiSchema(this.$store.get('app/editor@uiSchema')),
+        },
+      });
       let activityBar = { id: 'activity-json-form-editor' },
         mainPanel = { id: 'main-editor' },
         actionsBar = { id: 'actions-editor' },

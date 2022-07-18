@@ -99,6 +99,9 @@ const actions = {
     const clone = updateSchemaDefaultDate(state, payload);
     commit('SET_SCHEMA', clone.schema);
   },
+  setInfomation: ({ commit, state }: any, payload: any) => {
+    commit('SET_INFORMATION', payload);
+  },
 };
 
 export default actions;

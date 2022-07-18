@@ -21,6 +21,7 @@ export interface AppState {
     settings: boolean | undefined;
     selectedElement: string | undefined;
     element: any | undefined;
+    name: string;
   };
   jsonforms: {
     readonly: boolean;
