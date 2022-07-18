@@ -12,6 +12,8 @@
       <span class="">{{ hint }}</span>
     </v-tooltip>
     <v-img
+      :title="alt"
+      :alt="alt"
       :max-height="appliedOptions.height || 150"
       :max-width="appliedOptions.width || 150"
       :src="appliedOptions.image"
@@ -62,6 +64,10 @@ const controlRenderer = defineComponent({
   computed: {
     hint(): string {
       return this.control.uischema.options?.hint ?? '';
+    },
+    alt(): string {
+      // This property is required
+      return this.control.uischema.options?.alt ?? 'Image';
     },
   },
 });
