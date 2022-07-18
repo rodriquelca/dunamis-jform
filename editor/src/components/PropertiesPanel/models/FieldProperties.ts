@@ -83,7 +83,12 @@ const FieldProperties: any = {
     Props.build('placeholder'),
   ],
   Grid: [Props.build('type'), Props.build('variable')],
-  Image: [Props.build('type'), Props.build('variable'), Props.build('hint')],
+  Image: [
+    Props.build('type'),
+    Props.build('variable'),
+    Props.build('hint'),
+    Props.build('alt'),
+  ],
   MultipleFile: [Props.build('type'), Props.build('variable')],
   RadioGroup: [
     Props.build('type'),
