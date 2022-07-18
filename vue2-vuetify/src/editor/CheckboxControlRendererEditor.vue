@@ -5,11 +5,7 @@
     :isFocused="isFocused"
     :appliedOptions="appliedOptions"
   >
-    <v-rating
-      hover
-      length="5"
-      size="40"
-      :step="step"
+    <v-checkbox
       :id="control.id + '-input'"
       :class="styles.control.input"
       :disabled="!control.enabled"
@@ -20,11 +16,20 @@
       :persistent-hint="persistentHint()"
       :required="control.required"
       :error-messages="control.errors"
+      :indeterminate="control.data === undefined"
       :value="control.data"
+      :input-value="control.data"
       @change="onChange"
       @focus="isFocused = true"
       @blur="isFocused = false"
-    ></v-rating>
+    >
+      <v-tooltip v-if="hint && hint != ''" slot="append" top>
+        <template v-slot:activator="{ on }">
+          <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
+        </template>
+        <span class="">{{ hint }}</span>
+      </v-tooltip>
+    </v-checkbox>
   </control-wrapper>
 </template>
 
@@ -43,14 +48,15 @@ import {
 } from '@jsonforms/vue2';
 import { default as ControlWrapper } from '../controls/ControlWrapper.vue';
 import { useVuetifyControl } from '../util';
-import { VRating } from 'vuetify/lib';
+import { VCheckbox, VIcon, VTooltip } from 'vuetify/lib';
 
 const controlRenderer = defineComponent({
-  name: 'rating-control-renderer-editor',
+  name: 'checkbox-control-renderer-editor',
   components: {
+    VCheckbox,
+    VIcon,
+    VTooltip,
     ControlWrapper,
-
-    VRating,
   },
   props: {
     ...rendererProps<ControlElement>(),
@@ -58,13 +64,15 @@ const controlRenderer = defineComponent({
   setup(props: RendererProps<ControlElement>) {
     return useVuetifyControl(
       useJsonFormsControl(props),
-      (value) => parseInt(value, 10) || undefined
+      (newValue) => newValue || false
     );
   },
   computed: {
-    step(): number {
-      const options: any = this.appliedOptions;
-      return options.step ?? 1;
+    hint(): string {
+      return this.control.uischema.options?.hint ?? '';
+    },
+    placeholder(): string {
+      return this.control.uischema.options?.placeholder ?? '';
     },
   },
 });
@@ -73,6 +81,6 @@ export default controlRenderer;
 
 export const entry: JsonFormsRendererRegistryEntry = {
   renderer: controlRenderer,
-  tester: rankWith(1, uiTypeIs('Rating')),
+  tester: rankWith(1, uiTypeIs('Checkbox')),
 };
 </script>

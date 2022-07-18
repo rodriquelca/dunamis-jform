@@ -2,7 +2,7 @@
   "type": "VerticalLayout",
   "elements": [
     {
-      "type": "Control",
+      "type": "RichText",
       "scope": "#/properties/richText_1",
       "options": {
         "isHtmlViewer": true,
@@ -10,7 +10,7 @@
       }
     },
     {
-      "type": "Control",
+      "type": "RichText",
       "scope": "#/properties/richText_0",
       "options": {
         "isHtmlViewer": true,
@@ -18,7 +18,7 @@
       }
     },
     {
-      "type": "Control",
+      "type": "Text",
       "scope": "#/properties/Number",
       "options": {
         "mask": "######"
@@ -26,7 +26,7 @@
       "label": "Number"
     },
     {
-      "type": "Control",
+      "type": "Text",
       "scope": "#/properties/US Phone",
       "options": {
         "mask": "+1 (###) ###-####"
@@ -34,7 +34,7 @@
       "label": "US Phone"
     },
     {
-      "type": "Control",
+      "type": "Text",
       "scope": "#/properties/vehicleIdentification",
       "options": {
         "mask": "XX.XX.X####.#.#.######"
@@ -42,7 +42,7 @@
       "label": "Vehicle Identification"
     },
     {
-      "type": "Control",
+      "type": "Text",
       "scope": "#/properties/custom",
       "options": {
         "mask": {

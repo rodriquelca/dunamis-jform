@@ -12,7 +12,7 @@
       :disabled="!control.enabled"
       :autofocus="appliedOptions.focus"
       :return-object="true"
-      :placeholder="appliedOptions.placeholder"
+      :placeholder="placeholder"
       :hint="control.description"
       :persistent-hint="persistentHint()"
       :required="control.required"
@@ -29,6 +29,12 @@
         :value="o.value"
         @change="onChange"
       ></v-checkbox>
+      <v-tooltip v-if="hint && hint != ''" slot="append" top>
+        <template v-slot:activator="{ on }">
+          <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
+        </template>
+        <span class="">{{ hint }}</span>
+      </v-tooltip>
     </v-radio-group>
   </control-wrapper>
 </template>
@@ -48,7 +54,7 @@ import {
 } from '@jsonforms/vue2';
 import { default as ControlWrapper } from '../controls/ControlWrapper.vue';
 import { useVuetifyControlExt } from '../composition';
-import { VRadioGroup, VCheckbox, VLabel } from 'vuetify/lib';
+import { VRadioGroup, VCheckbox, VLabel, VIcon, VTooltip } from 'vuetify/lib';
 import { reactive } from '@vue/composition-api';
 
 const controlRenderer = defineComponent({
@@ -58,6 +64,8 @@ const controlRenderer = defineComponent({
     VRadioGroup,
     VCheckbox,
     VLabel,
+    VIcon,
+    VTooltip,
   },
   props: {
     ...rendererProps<ControlElement>(),
@@ -73,7 +81,14 @@ const controlRenderer = defineComponent({
     input.data = reactive([]);
     return input;
   },
-  methods: {},
+  computed: {
+    hint(): string {
+      return this.control.uischema.options?.hint ?? '';
+    },
+    placeholder(): string {
+      return this.control.uischema.options?.placeholder ?? '';
+    },
+  },
 });
 
 export default controlRenderer;

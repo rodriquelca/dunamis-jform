@@ -12,7 +12,7 @@
         :class="styles.control.input"
         :disabled="!control.enabled"
         :autofocus="appliedOptions.focus"
-        :placeholder="appliedOptions.placeholder"
+        :placeholder="placeholder"
         :label="computedLabel"
         :return-object="true"
         :hint="control.description"
@@ -21,13 +21,20 @@
         :error-messages="control.errors"
         :clearable="hover"
         :value="control.data"
-        :items="controlBuilder.items"
+        :items="items"
         item-text="label"
         item-value="value"
         @input="onChange"
         @focus="isFocused = true"
         @blur="isFocused = false"
-      />
+      >
+        <v-tooltip v-if="hint && hint != ''" slot="append-outer" top>
+          <template v-slot:activator="{ on }">
+            <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
+          </template>
+          <span class="">{{ hint }}</span>
+        </v-tooltip>
+      </v-select>
     </v-hover>
   </control-wrapper>
 </template>
@@ -46,9 +53,9 @@ import {
   RendererProps,
 } from '@jsonforms/vue2';
 import { default as ControlWrapper } from './../controls/ControlWrapper.vue';
-import { VSelect, VHover } from 'vuetify/lib';
+import { VSelect, VHover, VIcon, VTooltip } from 'vuetify/lib';
 import { DisabledIconFocus } from './../controls/directives';
-import { useVuetifyControlExt } from '../composition';
+import { useVuetifyControl } from '../composition';
 
 const controlRenderer = defineComponent({
   name: 'dropdown-control-renderer',
@@ -56,6 +63,8 @@ const controlRenderer = defineComponent({
     ControlWrapper,
     VSelect,
     VHover,
+    VIcon,
+    VTooltip,
   },
   directives: {
     DisabledIconFocus,
@@ -64,11 +73,27 @@ const controlRenderer = defineComponent({
     ...rendererProps<ControlElement>(),
   },
   setup(props: RendererProps<ControlElement>) {
-    return useVuetifyControlExt(
-      props,
+    return useVuetifyControl(
       useJsonFormsEnumControl(props),
       (value) => value || undefined
     );
+  },
+  computed: {
+    hint(): string {
+      return this.control.uischema.options?.hint ?? '';
+    },
+    placeholder(): string {
+      return this.control.uischema.options?.placeholder ?? '';
+    },
+    items(): string[] {
+      if (this.control.schema.enum) {
+        return this.control.schema?.enum ?? [];
+      } else if (this.control.uischema.options?.items) {
+        return this.control.uischema.options?.items ?? [];
+      } else {
+        return [];
+      }
+    },
   },
 });
 

@@ -5,7 +5,7 @@
       "type": "VerticalLayout",
       "elements": [
         {
-          "type": "Control",
+          "type": "Text",
           "scope": "#/properties/title",
           "options": {
             "isHtmlViewer": true,
@@ -13,7 +13,7 @@
           }
         },
         {
-          "type": "Control",
+          "type": "Text",
           "scope": "#/properties/contentTitle",
           "options": {
             "isHtmlViewer": true,
@@ -29,12 +29,12 @@
           "type": "HorizontalLayout",
           "elements": [
             {
-              "type": "Control",
+              "type": "Text",
               "scope": "#/properties/firstName",
               "label": "First Name"
             },
             {
-              "type": "Control",
+              "type": "Text",
               "scope": "#/properties/lastName",
               "label": "Last Name"
             }
@@ -46,7 +46,7 @@
       "type": "VerticalLayout",
       "elements": [
         {
-          "type": "Control",
+          "type": "Text",
           "scope": "#/properties/address",
           "label": "Address"
         },
@@ -54,17 +54,17 @@
           "type": "HorizontalLayout",
           "elements": [
             {
-              "type": "Control",
+              "type": "Text",
               "scope": "#/properties/city",
               "label": "City"
             },
             {
-              "type": "Control",
+              "type": "Text",
               "scope": "#/properties/state",
               "label": "State"
             },
             {
-              "type": "Control",
+              "type": "Text",
               "scope": "#/properties/zipCode",
               "label": "Zip Code"
             }
@@ -74,17 +74,17 @@
           "type": "VerticalLayout",
           "elements": [
             {
-              "type": "Control",
+              "type": "Text",
               "scope": "#/properties/homePhone",
               "label": "Home Phone"
             },
             {
-              "type": "Control",
+              "type": "Text",
               "scope": "#/properties/email",
               "label": "Email"
             },
             {
-              "type": "Control",
+              "type": "Text",
               "scope": "#/properties/position",
               "label": "Position Applying For"
             },

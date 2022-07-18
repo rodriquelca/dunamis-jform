@@ -13,7 +13,7 @@
         :class="styles.control.input"
         :disabled="!control.enabled"
         :autofocus="appliedOptions.focus"
-        :placeholder="appliedOptions.placeholder"
+        :placeholder="placeholder"
         :label="computedLabel"
         :hint="control.description"
         :persistent-hint="persistentHint()"
@@ -42,7 +42,7 @@
         :class="styles.control.input"
         :disabled="!control.enabled"
         :autofocus="appliedOptions.focus"
-        :placeholder="appliedOptions.placeholder"
+        :placeholder="placeholder"
         :label="computedLabel"
         :hint="control.description"
         :persistent-hint="persistentHint()"
@@ -63,7 +63,14 @@
         @focus="isFocused = true"
         @blur="isFocused = false"
         v-mask="inputMask"
-      />
+      >
+        <v-tooltip v-if="hint && hint != ''" slot="append" top>
+          <template v-slot:activator="{ on }">
+            <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
+          </template>
+          <span class="">{{ hint }}</span>
+        </v-tooltip>
+      </v-text-field>
     </v-hover>
   </control-wrapper>
 </template>
@@ -83,7 +90,7 @@ import {
 } from '@jsonforms/vue2';
 import { default as ControlWrapper } from '../controls/ControlWrapper.vue';
 import { useVuetifyControl } from '../util';
-import { VHover, VTextField, VCombobox } from 'vuetify/lib';
+import { VHover, VTextField, VCombobox, VIcon, VTooltip } from 'vuetify/lib';
 import { DisabledIconFocus } from '../controls/directives';
 import isArray from 'lodash/isArray';
 import every from 'lodash/every';
@@ -97,6 +104,8 @@ const controlRenderer = defineComponent({
     VHover,
     VTextField,
     VCombobox,
+    VIcon,
+    VTooltip,
   },
   directives: {
     DisabledIconFocus,
@@ -130,6 +139,12 @@ const controlRenderer = defineComponent({
     });
   },
   computed: {
+    hint(): string {
+      return this.control.uischema.options?.hint ?? '';
+    },
+    placeholder(): string {
+      return this.control.uischema.options?.placeholder ?? '';
+    },
     inputMask(): any {
       const mask = this.control.uischema.options?.mask || '';
       if (mask && typeof mask !== 'string') {

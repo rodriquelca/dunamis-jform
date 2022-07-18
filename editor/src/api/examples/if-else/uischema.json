@@ -6,7 +6,7 @@
       "label": "Shape Type",
       "elements": [
         {
-          "type": "Control",
+          "type": "Dropdown",
           "label": "Shape Type",
           "scope": "#/properties/shapeType"
         }
@@ -17,18 +17,18 @@
       "label": "Shape Properties",
       "elements": [
         {
-          "type": "Control",
+          "type": "Text",
           "label": "Radius",
           "example": "Ex: 5467234786",
           "scope": "#/properties/shapeProperties/properties/radius"
         },
         {
-          "type": "Control",
+          "type": "Text",
           "label": "Height",
           "scope": "#/properties/shapeProperties/properties/height"
         },
         {
-          "type": "Control",
+          "type": "Text",
           "label": "Width",
           "scope": "#/properties/shapeProperties/properties/width"
         }

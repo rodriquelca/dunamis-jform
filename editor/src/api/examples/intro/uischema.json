@@ -6,7 +6,7 @@
       "label": "Intro",
       "elements": [
         {
-          "type": "Control",
+          "type": "RichText",
           "scope": "#/properties/richText1",
           "options": {
             "isHtmlViewer": true,
@@ -29,11 +29,11 @@
               "elements": []
             },
             {
-              "type": "Control",
+              "type": "Text",
               "scope": "#/properties/firstName"
             },
             {
-              "type": "Control",
+              "type": "Text",
               "scope": "#/properties/secondName"
             },
             {
@@ -50,11 +50,11 @@
               "elements": []
             },
             {
-              "type": "Control",
+              "type": "DateTime",
               "scope": "#/properties/birthDate"
             },
             {
-              "type": "Control",
+              "type": "Dropdown",
               "scope": "#/properties/nationality"
             },
             {
@@ -70,7 +70,7 @@
       "label": "What is Dynaform",
       "elements": [
         {
-          "type": "Control",
+          "type": "RichText",
           "scope": "#/properties/richText2",
           "options": {
             "isHtmlViewer": true,
@@ -81,11 +81,11 @@
           "type": "HorizontalLayout",
           "elements": [
             {
-              "type": "Control",
+              "type": "Text",
               "scope": "#/properties/address/properties/street"
             },
             {
-              "type": "Control",
+              "type": "Text",
               "scope": "#/properties/address/properties/streetNumber"
             }
           ]
@@ -94,11 +94,11 @@
           "type": "HorizontalLayout",
           "elements": [
             {
-              "type": "Control",
+              "type": "Text",
               "scope": "#/properties/address/properties/city"
             },
             {
-              "type": "Control",
+              "type": "Text",
               "scope": "#/properties/address/properties/postalCode"
             }
           ]
@@ -121,7 +121,7 @@
           "type": "HorizontalLayout",
           "elements": [
             {
-              "type": "Control",
+              "type": "RichText",
               "scope": "#/properties/richText4",
               "options": {
                 "isHtmlViewer": true,
@@ -129,7 +129,7 @@
               }
             },
             {
-              "type": "Control",
+              "type": "RichText",
               "scope": "#/properties/richText5",
               "options": {
                 "isHtmlViewer": true,
@@ -140,25 +140,25 @@
               "type": "VerticalLayout",
               "elements": [
                 {
-                  "type": "Control",
+                  "type": "Text",
                   "scope": "#/properties/firstName"
                 },
                 {
-                  "type": "Control",
+                  "type": "Text",
                   "scope": "#/properties/secondName"
                 },
                 {
-                  "type": "Control",
+                  "type": "DateTime",
                   "scope": "#/properties/birthDate"
                 },
                 {
-                  "type": "Control",
+                  "type": "Dropdown",
                   "scope": "#/properties/nationality"
                 }
               ]
             },
             {
-              "type": "Control",
+              "type": "RichText",
               "scope": "#/properties/richText6",
               "options": {
                 "isHtmlViewer": true,
@@ -174,7 +174,7 @@
       "label": "Architecture",
       "elements": [
         {
-          "type": "Control",
+          "type": "RichText",
           "scope": "#/properties/richText7",
           "options": {
             "isHtmlViewer": true,
@@ -191,7 +191,7 @@
           }
         },
         {
-          "type": "Control",
+          "type": "RichText",
           "scope": "#/properties/richText8",
           "options": {
             "isHtmlViewer": true,

@@ -13,7 +13,7 @@
         :class="styles.control.input"
         :disabled="!control.enabled"
         :autofocus="appliedOptions.focus"
-        :placeholder="control.uischema.options.placeholder"
+        :placeholder="placeholder"
         :label="computedLabel"
         :hint="control.description"
         :persistent-hint="persistentHint()"
@@ -42,7 +42,7 @@
         :class="styles.control.input"
         :disabled="!control.enabled"
         :autofocus="appliedOptions.focus"
-        :placeholder="control.uischema.options.placeholder"
+        :placeholder="placeholder"
         :label="computedLabel"
         :hint="control.hint"
         :persistent-hint="persistentHint()"
@@ -64,17 +64,11 @@
         @blur="isFocused = false"
         v-mask="inputMask"
       >
-        <v-tooltip
-          v-if="
-            control.uischema.options.hint && control.uischema.options.hint != ''
-          "
-          slot="append"
-          top
-        >
+        <v-tooltip v-if="hint && hint != ''" slot="append" top>
           <template v-slot:activator="{ on }">
             <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
           </template>
-          <span class="">{{ control.uischema.options.hint }}</span>
+          <span class="">{{ hint }}</span>
         </v-tooltip>
       </v-text-field>
     </v-hover>
@@ -146,6 +140,12 @@ const controlRenderer = defineComponent({
   },
 
   computed: {
+    hint(): string {
+      return this.control.uischema.options?.hint ?? '';
+    },
+    placeholder(): string {
+      return this.control.uischema.options?.placeholder ?? '';
+    },
     inputMask(): any {
       const mask = this.control.uischema.options?.mask || '';
       if (mask && typeof mask !== 'string') {

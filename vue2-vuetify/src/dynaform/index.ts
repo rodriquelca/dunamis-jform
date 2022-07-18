@@ -1,6 +1,7 @@
 export { default as SuggestControlRenderer } from './SuggestControlRenderer.vue';
 export { default as DatePickerControlRenderer } from './DatePickerControlRenderer.vue';
 export { default as DateTimeControlRendererPreview } from './DateTimeControlRenderer.vue';
+export { default as CheckboxControlRenderer } from './CheckboxControlRenderer.vue';
 export { default as DropdownControlRenderer } from './DropdownControlRenderer.vue';
 export { default as RadioGroupControlRenderer } from './RadioGroupControlRenderer.vue';
 export { default as RatingControlRenderer } from './RatingControlRenderer.vue';
@@ -16,6 +17,7 @@ export { default as SubmitButtonControlRenderer } from './SubmitButtonControlRen
 import { entry as suggestControlRendererEntry } from './SuggestControlRenderer.vue';
 import { entry as datePickerControlRendererEntry } from './DatePickerControlRenderer.vue';
 import { entry as dateTimeControlRendererEntry } from './DateTimeControlRenderer.vue';
+import { entry as checkboxControlRendererEntry } from './CheckboxControlRenderer.vue';
 import { entry as dropdownControlRendererEntry } from './DropdownControlRenderer.vue';
 import { entry as radioGroupControlRendererEntry } from './RadioGroupControlRenderer.vue';
 import { entry as ratingControlRendererEntry } from './RatingControlRenderer.vue';
@@ -32,6 +34,7 @@ export const dynaformRenderers = [
   suggestControlRendererEntry,
   datePickerControlRendererEntry,
   dateTimeControlRendererEntry,
+  checkboxControlRendererEntry,
   dropdownControlRendererEntry,
   htmlViewerControlRendererEntry,
   radioGroupControlRendererEntry,

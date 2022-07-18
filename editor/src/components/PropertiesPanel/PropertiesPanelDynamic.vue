@@ -7,7 +7,7 @@
         no-gutters
         dense
         class="caption"
-        :key="selectedElement.edit"
+        :key="key"
       >
         <v-expansion-panel>
           <v-expansion-panel-header>
@@ -57,6 +57,7 @@ const PropertiesPanel = defineComponent({
   },
   data() {
     return {
+      key: 1,
       step: 1,
       panel: [0, 1, 2, 3, 4],
       generalData: null,
@@ -88,6 +89,7 @@ const PropertiesPanel = defineComponent({
   watch: {
     selectedElement(newSelection, oldSelection) {
       this.setSelection(newSelection.selected);
+      this.key++;
     },
   },
   methods: {
