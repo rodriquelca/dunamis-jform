@@ -31,6 +31,13 @@ const PropertiesPanel = [
     items: [],
   } as PropertyPanel,
   {
+    id: 'defaultValue',
+    type: 'text',
+    name: 'Default Value',
+    options: {},
+    items: [],
+  } as PropertyPanel,
+  {
     id: 'hint',
     type: 'text',
     name: 'Hint',
