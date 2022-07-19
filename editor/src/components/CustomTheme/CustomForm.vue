@@ -137,7 +137,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api';
+import store from '../../store';
+import { computed, defineComponent } from '@vue/composition-api';
 import { mask } from '@titou10/v-mask';
 
 const CustomForm = defineComponent({
@@ -147,17 +148,29 @@ const CustomForm = defineComponent({
   },
   setup() {
     let maxPixel = 400;
+    const paddings = computed(() => {
+      return store.getters['themes/getMargins'];
+    });
+    const margins = computed(() => {
+      return store.getters['themes/getPaddings'];
+    });
+    const backgroundImage = computed(() => {
+      return store.getters['themes/getBackground'];
+    });
+    const backgroundColor = computed(() => {
+      return store.getters['themes/getBackgroundColor'];
+    });
     return {
       maxPixel,
-      background: '',
-      marginLeft: '',
-      marginTop: '',
-      marginBottom: '',
-      marginRight: '',
-      paddingLeft: '',
-      paddingTop: '',
-      paddingBottom: '',
-      paddingRight: '',
+      background: backgroundImage.value.background,
+      marginLeft: margins.value.left,
+      marginTop: margins.value.top,
+      marginBottom: margins.value.bottom,
+      marginRight: margins.value.right,
+      paddingLeft: paddings.value.left,
+      paddingTop: paddings.value.top,
+      paddingBottom: paddings.value.bottom,
+      paddingRight: paddings.value.right,
       rules: {
         maxValue: (val) => {
           return val <= maxPixel || 'Max margin is 100';
@@ -165,7 +178,7 @@ const CustomForm = defineComponent({
       },
       errors: '',
       inputMask: '###',
-      color: '#FFFFFFFF',
+      color: backgroundColor.value.color,
       menu: false,
     };
   },

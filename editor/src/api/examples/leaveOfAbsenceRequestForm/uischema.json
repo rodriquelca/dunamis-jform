@@ -2,7 +2,7 @@
   "type": "VerticalLayout",
   "elements": [
     {
-      "type": "Text",
+      "type": "RichText",
       "scope": "#/properties/title",
       "options": {
         "isHtmlViewer": true,
