@@ -1,35 +1,6 @@
 <template>
   <div>
     <v-container>
-      <v-row><v-col>Theme</v-col></v-row>
-      <v-row>
-        <v-col>
-          <v-btn-toggle
-            v-model="$vuetify.theme.dark"
-            borderless
-            mandatory
-            group
-            style="display: grid; grid-template-columns: 1fr 1fr"
-          >
-            <v-btn :value="false">
-              <span class="hidden-sm-and-down">Light</span>
-
-              <v-icon right> mdi-weather-sunny </v-icon>
-            </v-btn>
-
-            <v-btn :value="true">
-              <span class="hidden-sm-and-down">Dark</span>
-
-              <v-icon right> mdi-weather-night </v-icon>
-            </v-btn>
-          </v-btn-toggle>
-        </v-col>
-      </v-row>
-    </v-container>
-
-    <v-divider />
-
-    <v-container>
       <v-row><v-col>Direction</v-col></v-row>
       <v-row>
         <v-col>
@@ -110,35 +81,6 @@
           </v-tooltip>
         </v-col>
       </v-row>
-      <!--<v-row>
-        <v-col>
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on: onTooltip }">
-              <v-switch
-                v-model="showUnfocusedDescription"
-                label="Show Unfocused Description"
-                v-on="onTooltip"
-              ></v-switch>
-            </template>
-            If input descriptions should hide when not focused
-          </v-tooltip>
-        </v-col>
-      </v-row>-->
-      <!--<v-row>
-        <v-col>
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on: onTooltip }">
-              <v-switch
-                v-model="restrict"
-                label="Restrict"
-                v-on="onTooltip"
-              ></v-switch>
-            </template>
-            Whether to restrict the number of characters to maxLength, if
-            specified in the JSON schema
-          </v-tooltip>
-        </v-col>
-      </v-row>-->
       <v-row>
         <v-col>
           <v-tooltip bottom>
@@ -153,20 +95,6 @@
           </v-tooltip>
         </v-col>
       </v-row>
-      <!--<v-row>
-        <v-col>
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on: onTooltip }">
-              <v-switch
-                v-model="locale"
-                label="Switch beetwen english and german locale"
-                v-on="onTooltip"
-              ></v-switch>
-            </template>
-            Only applies to basic example
-          </v-tooltip>
-        </v-col>
-      </v-row>-->
     </v-container>
   </div>
 </template>
