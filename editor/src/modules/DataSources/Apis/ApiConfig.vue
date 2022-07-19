@@ -15,7 +15,7 @@
 
         <div v-else class="v-stepper__label font-weight-bold">
           Edit an API
-          <small>{{ api.name }} {{ api.id }}</small>
+          <small>{{ api.name }}</small>
         </div>
 
         <v-btn
@@ -30,37 +30,17 @@
         </v-btn>
       </div>
       <div class="px-10">
-        <v-row>
-          <v-col>
-            <v-text-field
-              outlined
-              dense
-              label="Api ID"
-              persistent-placeholder
-              class="caption"
-              v-model="id"
-              :rules="rules"
-              prepend-icon="mdi-fingerprint"
-            >
-              <v-icon @click="autogenerateID" slot="append" color="warning">
-                mdi-code-not-equal-variant
-              </v-icon>
-            </v-text-field>
-          </v-col>
-          <v-col>
-            <v-text-field
-              outlined
-              dense
-              :rules="rules"
-              v-model="name"
-              persistent-placeholder
-              label="Name"
-              class="caption"
-              prepend-icon="mdi-format-text-variant"
-            >
-            </v-text-field>
-          </v-col>
-        </v-row>
+        <v-text-field
+          outlined
+          dense
+          :rules="rules"
+          v-model="name"
+          persistent-placeholder
+          label="Name"
+          class="caption"
+          prepend-icon="mdi-format-text-variant"
+        >
+        </v-text-field>
 
         <v-combobox
           v-model="dataInputVariables"
@@ -122,7 +102,6 @@ const ApiConfig = defineComponent({
   setup(props: any, context: any) {
     //Get the data for API
     let api = ref(props.data);
-    let id = ref(api.value.id);
     let name = ref(api.value.name);
     let request = ref(api.value.data);
     let requestRef = ref(null);
@@ -135,7 +114,7 @@ const ApiConfig = defineComponent({
     let save = () => {
       let dataRequest = requestRef.value.getData();
       let dt = {
-        id: id.value,
+        id: autogenerateID(),
         name: name.value,
         data: {
           url: dataRequest.url,
@@ -160,11 +139,10 @@ const ApiConfig = defineComponent({
     }
 
     function autogenerateID() {
-      this.id = Math.random().toString(36).substr(2, 10);
+      return Math.random().toString(36).substr(2, 10);
     }
 
     return {
-      id,
       name,
       dataInputVariables,
       requestRef,
