@@ -57,6 +57,7 @@ import ActionsBar from './ActionsBar.vue';
 import SideBar from './SideBar.vue';
 import MainPanel from './MainPanel.vue';
 import Vue from 'vue';
+import store from './../../../store';
 import ServicesProvider from '../../../services/ServicesProvider';
 
 export default {
@@ -73,6 +74,7 @@ export default {
     return {
       bus: new Vue(),
       serviceProvider: ServicesProvider,
+      store: store,
     };
   },
 };

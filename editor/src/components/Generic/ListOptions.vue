@@ -112,6 +112,7 @@ const ListOptions = defineComponent({
         label: '',
       },
     ]);
+
     return {
       items,
       slots: ref(['value', 'label']),

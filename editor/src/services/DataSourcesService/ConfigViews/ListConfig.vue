@@ -6,7 +6,7 @@
     <v-row>
       <v-col>
         <v-text-field
-          v-model="dataConfig.id"
+          v-model="data.id"
           persistent-placeholder
           :label="titles.id"
           outlined
@@ -17,7 +17,7 @@
       </v-col>
       <v-col>
         <v-text-field
-          v-model="dataConfig.value"
+          v-model="data.value"
           persistent-placeholder
           dense
           outlined
@@ -35,15 +35,15 @@ import { defineComponent, ref, onMounted } from '@vue/composition-api';
 const ListConfig = defineComponent({
   name: 'ListConfig',
   components: {},
-  props: ['data'],
+  props: ['dataSource', 'dataConfig'],
   setup(props: any, context: any) {
     let titles = {
       id: 'ID',
       value: 'Value',
     };
-    let dataConfig = ref(
-      props.data && props.data.config
-        ? props.data.config
+    let data = ref(
+      props.dataConfig && props.dataConfig
+        ? props.dataConfig
         : {
             id: '',
             value: '',
@@ -51,9 +51,9 @@ const ListConfig = defineComponent({
     );
     return {
       titles,
-      dataConfig,
+      data,
       getData() {
-        return dataConfig.value;
+        return data.value;
       },
     };
   },
