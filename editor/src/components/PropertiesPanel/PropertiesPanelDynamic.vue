@@ -119,14 +119,36 @@ const PropertiesPanel = defineComponent({
       ]);
       fieldData['variable'] = getVariableName(this.uiElement);
       if (elementSchema && elementSchema.schema) {
-        // Get the required property
-        fieldData['required'] =
-          this.schema.schema.required &&
-          this.schema.schema.required.includes(getVariableName(this.uiElement));
+        // Get the Type property
+        fieldData['type'] = this.uiElement.type ? this.uiElement.type : '';
+        // Get the placeholder property
+        fieldData['placeholder'] = this.uiElement.options
+          ? this.uiElement.options.placeholder
+          : null;
+        // Get the hint property
+        fieldData['hint'] = this.uiElement.options
+          ? this.uiElement.options.hint
+          : null;
+        // Get the label property
+        fieldData['label'] = this.uiElement.options
+          ? this.uiElement.options.label
+          : null;
+        // Get the rows property
+        fieldData['rows'] = this.uiElement.options
+          ? this.uiElement.options.rows
+          : null;
+        // Get the alt text property
+        fieldData['alt'] = this.uiElement.options
+          ? this.uiElement.options.alt
+          : null;
         // Get the description property
         fieldData['description'] = elementSchema.schema.description
           ? elementSchema.schema.description
           : '';
+        // Get the required property
+        fieldData['required'] =
+          this.schema.schema.required &&
+          this.schema.schema.required.includes(getVariableName(this.uiElement));
         // Get the maxLength property
         fieldData['maxLength'] = elementSchema.schema.maxLength
           ? elementSchema.schema.maxLength
@@ -263,6 +285,13 @@ const PropertiesPanel = defineComponent({
         this.$store.dispatch('app/updateUISchemaElementOption', {
           elementUUID: this.uiElement.uuid,
           changedProperties: { rows: data.rows },
+        });
+      }
+      // alt text for Image -> to options
+      if (data.alt) {
+        this.$store.dispatch('app/updateUISchemaElementOption', {
+          elementUUID: this.uiElement.uuid,
+          changedProperties: { alt: data.alt },
         });
       }
       // placeholder -> to options

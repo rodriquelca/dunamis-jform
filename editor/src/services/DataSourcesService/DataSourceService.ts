@@ -54,7 +54,6 @@ export class DataSourceService implements Service {
     const api = this.apis.find((el: any) => {
       return el.id === config.id;
     });
-    console.log('API');
     return fetch(api.data.url, {
       method: api.data.method,
       body: JSON.stringify(api.data.body),

@@ -55,6 +55,13 @@ const PropertiesPanel = [
     items: [],
   } as PropertyPanel,
   {
+    id: 'alt',
+    type: 'text',
+    name: 'Alt. Text',
+    options: {},
+    items: [],
+  } as PropertyPanel,
+  {
     id: 'description',
     type: 'textarea',
     name: 'Description',
