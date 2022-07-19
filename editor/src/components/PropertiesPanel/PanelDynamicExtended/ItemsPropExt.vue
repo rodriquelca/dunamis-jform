@@ -16,6 +16,19 @@
     </div>
 
     <v-card elevation="0" color="transparent" class="mx-4">
+      <v-row dense>
+        <list-options
+          ref="refList"
+          :options="items"
+          :value="keys.value"
+          :label="keys.label"
+          :valueTitle="titles.value"
+          :labelTitle="titles.label"
+          :hideFooter="false"
+        />
+      </v-row>
+      <div class="pt-4"></div>
+
       <v-combobox
         class="caption"
         persistent-placeholder
@@ -32,19 +45,6 @@
         :dataConfig="dataConfig"
         v-bind:is="dataSourceView"
       ></component>
-
-      <v-row dense>
-        <list-options
-          ref="refList"
-          :options="items"
-          :value="keys.value"
-          :label="keys.label"
-          :valueTitle="titles.value"
-          :labelTitle="titles.label"
-          :hideFooter="false"
-        />
-      </v-row>
-      <v-row> </v-row>
     </v-card>
   </div>
 </template>

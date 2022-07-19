@@ -61,7 +61,11 @@ export class DataSourceService implements Service {
     })
       .then((res) => res.json())
       .then((res) => {
-        return this.indexByDots(res, api.data.output);
+        const formatRes = this.indexByDots(res, api.data.output);
+        return formatRes.map((el: any) => ({
+          value: this.indexByDots(el, config.config.value),
+          label: this.indexByDots(el, config.config.label),
+        }));
       });
   }
   formatDataSources() {

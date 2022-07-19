@@ -32,7 +32,6 @@ export const itemsBuilder = (uiSchema: any) => {
 export const items = (config: any) => {
   let localItems: any = [];
   let dataSource: any;
-
   //Local Items
   if (
     config.uischema &&
@@ -49,13 +48,11 @@ export const items = (config: any) => {
     config.uischema.options.items.dataSource
   ) {
     dataSource = config.uischema.options.items.dataSource;
-    return config.dataSources.call(dataSource).then((res: any) => {
-      let formatRes = res.map((el: any) => ({
-        value: indexByDots(el, dataSource.config.value),
-        label: indexByDots(el, dataSource.config.label),
-      }));
-      return localItems.concat(formatRes);
-    });
+    return config.dataSources
+      .call(dataSource)
+      .then((res: any) => localItems.concat(res));
+  } else {
+    return Promise.resolve(localItems);
   }
 };
 
@@ -166,15 +163,3 @@ export const dependencies = (uiSchema: any) => {
 export const pathControlSchema = (input: string): string => {
   return input.split('/').pop() || '';
 };
-
-function indexByDots(obj: any, is: any, value?: any): any {
-  if (typeof is == 'string' && is.length != 0) {
-    return indexByDots(obj, is.split('.'), value);
-  } else if (is.length == 1 && value !== undefined) {
-    return (obj[is[0]] = value);
-  } else if (is.length == 0) {
-    return obj;
-  } else {
-    return indexByDots(obj[is[0]], is.slice(1), value);
-  }
-}
