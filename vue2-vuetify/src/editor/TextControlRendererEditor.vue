@@ -48,7 +48,7 @@
         :persistent-hint="persistentHint()"
         :required="control.required"
         :error-messages="control.errors"
-        :value="control.data"
+        :value="control.uischema.options.defaultValue || ''"
         :maxlength="
           appliedOptions.restrict ? control.schema.maxLength : undefined
         "
@@ -138,7 +138,6 @@ const controlRenderer = defineComponent({
       return value || undefined;
     });
   },
-
   computed: {
     hint(): string {
       return this.control.uischema.options?.hint ?? '';
