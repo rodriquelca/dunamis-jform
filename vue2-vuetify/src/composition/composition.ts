@@ -201,13 +201,17 @@ export const useVuetifyControlExt = <
   const appliedOptions = useControlAppliedOptions(input);
 
   const controlBuilder = reactive({
-    items: Controlbuilder.items({
-      uischema: input.control.value.uischema,
-      dataSources,
-    }),
+    items: [],
     itemsBuilder: Controlbuilder.itemsBuilder(input.control.value.uischema),
     scope: Controlbuilder.pathControlSchema(input.control.value.uischema.scope),
     payload: {},
+  });
+
+  Controlbuilder.items({
+    uischema: input.control.value.uischema,
+    dataSources,
+  }).then((res: any) => {
+    controlBuilder.items = res;
   });
 
   const isFocused = ref(false);

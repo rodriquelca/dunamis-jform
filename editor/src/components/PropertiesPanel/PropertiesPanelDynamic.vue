@@ -7,7 +7,6 @@
         no-gutters
         dense
         class="caption"
-        :key="key"
       >
         <v-expansion-panel>
           <v-expansion-panel-header>
@@ -18,6 +17,7 @@
           </v-expansion-panel-header>
           <v-expansion-panel-content>
             <PropertiesPanelDynamic
+              :key="key"
               v-if="generalData"
               :config="generalData"
               @updateData="updateData"
@@ -157,6 +157,15 @@ const PropertiesPanel = defineComponent({
         fieldData['readOnly'] = elementSchema.schema.readOnly
           ? elementSchema.schema.readOnly
           : false;
+        // Get the Type property
+        fieldData['type'] = this.uiElement.type ? this.uiElement.type : '';
+        // Get the items property
+        fieldData['items'] = this.uiElement.options
+          ? this.uiElement.options.items
+          : null;
+        fieldData['hint'] = this.uiElement.options
+          ? this.uiElement.options.hint
+          : null;
       }
       this.generalData = {
         type: this.uiElement.type,

@@ -16,6 +16,19 @@
     </div>
 
     <v-card elevation="0" color="transparent" class="mx-4">
+      <v-row dense>
+        <list-options
+          ref="refList"
+          :options="items"
+          :value="keys.value"
+          :label="keys.label"
+          :valueTitle="titles.value"
+          :labelTitle="titles.label"
+          :hideFooter="false"
+        />
+      </v-row>
+      <div class="pt-4"></div>
+
       <v-combobox
         class="caption"
         persistent-placeholder
@@ -28,22 +41,10 @@
 
       <component
         ref="configurationView"
-        :data="dataConfigView"
-        v-bind:is="configDataSourceView"
+        :dataSource="dataSource"
+        :dataConfig="dataConfig"
+        v-bind:is="dataSourceView"
       ></component>
-
-      <v-row dense>
-        <list-options
-          ref="refList"
-          :options="items"
-          :value="keys.value"
-          :label="keys.label"
-          :valueTitle="titles.value"
-          :labelTitle="titles.label"
-          :hideFooter="false"
-        />
-      </v-row>
-      <v-row> </v-row>
     </v-card>
   </div>
 </template>
@@ -55,6 +56,7 @@ import {
   inject,
   onMounted,
   ref,
+  watch,
 } from '@vue/composition-api';
 import ListOptions from '../../Generic/ListOptions.vue';
 import { dynamicPropertyDefault } from '../PropertiesPanelComp';
@@ -66,9 +68,7 @@ const ItemPropExt = defineComponent({
   emits: ['input', 'change', 'backPanel'],
   props: ['value', 'config'],
   setup(props: any, context: any) {
-    let items = ref(
-      props.config && props.config.local ? props.config.local : []
-    );
+    //Init variables
     const serviceProvider = inject<any>('serviceProvider');
     const dataSources = serviceProvider.get('dataSources');
     const configurationView = ref(null);
@@ -80,46 +80,51 @@ const ItemPropExt = defineComponent({
       value: 'value',
       label: 'label',
     });
+    let items = ref(
+      props.config && props.config.local ? props.config.local : []
+    );
     const refList = ref(null);
     const sources = ref(dataSources.get());
+    let select = ref(null);
+    let dataSource = ref(null);
+    let dataConfig = ref(null);
 
-    let select = ref(
-      props.config && props.config.dataSource
-        ? {
-            id: props.config.dataSource.id,
-            text: props.config.dataSource.name,
-            type: props.config.dataSource.type,
-          }
-        : null
-    );
-    let dataConfigView = ref(
-      props.config && props.config.dataSource ? props.config.dataSource : {}
-    );
-
-    let configDataSourceView = computed(() => {
-      let src;
+    let dataSourceView = computed(() => {
       if (select.value && select.value.render) {
         return select.value.render;
-      } else if (props.config && props.config.dataSource) {
-        src = sources.value.find((el) => el.id === props.config.dataSource.id);
-        if (src) {
-          return src.render;
-        }
+      } else if (dataSource) {
+        return dataSource.render;
       }
       return 'div';
     });
+
+    watch(select, (val, nval) => {
+      dataSource.value = val;
+    });
+
+    onMounted(() => {
+      //Set the dropdown select value
+      if (props.config && props.config.dataSource) {
+        dataSource.value = sources.value.find(
+          (el) => el.id === props.config.dataSource.id
+        );
+        select.value = dataSource.value;
+        dataConfig.value = props.config.dataSource.config || null;
+      }
+    });
+
     return {
       configurationView,
       refList,
-      dataConfigView,
+      dataConfig,
       ...dynamicPropertyDefault(props, context),
       backPanel() {
-        let items = {
+        let res = {
           dataSource: null,
           local: refList.value.getData(),
         };
         if (select.value) {
-          items.dataSource = {
+          res.dataSource = {
             id: select.value.id,
             name: select.value.text,
             type: select.value.type,
@@ -128,14 +133,15 @@ const ItemPropExt = defineComponent({
               : {},
           };
         }
-        context.emit('backPanel', { items });
+        context.emit('backPanel', { items: res });
       },
       items,
       select,
       titles,
       keys,
-      configDataSourceView,
+      dataSourceView,
       sources,
+      dataSource,
     };
   },
 });

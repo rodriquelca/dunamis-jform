@@ -21,7 +21,7 @@
         :error-messages="control.errors"
         :clearable="hover"
         :value="control.data"
-        :items="items"
+        :items="controlBuilder.items"
         item-text="label"
         item-value="value"
         @input="onChange"
@@ -55,7 +55,7 @@ import {
 import { default as ControlWrapper } from './../controls/ControlWrapper.vue';
 import { VSelect, VHover, VIcon, VTooltip } from 'vuetify/lib';
 import { DisabledIconFocus } from './../controls/directives';
-import { useVuetifyControl } from '../composition';
+import { useVuetifyControlExt } from '../composition';
 
 const controlRenderer = defineComponent({
   name: 'dropdown-control-renderer',
@@ -73,7 +73,8 @@ const controlRenderer = defineComponent({
     ...rendererProps<ControlElement>(),
   },
   setup(props: RendererProps<ControlElement>) {
-    return useVuetifyControl(
+    return useVuetifyControlExt(
+      props,
       useJsonFormsEnumControl(props),
       (value) => value || undefined
     );

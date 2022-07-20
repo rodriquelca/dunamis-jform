@@ -30,8 +30,8 @@ export const itemsBuilder = (uiSchema: any) => {
  * @returns
  */
 export const items = (config: any) => {
-  let localItems = [],
-    dataSourceItems = [];
+  let localItems: any = [];
+  let dataSource: any;
   //Local Items
   if (
     config.uischema &&
@@ -47,12 +47,13 @@ export const items = (config: any) => {
     config.uischema.options.items &&
     config.uischema.options.items.dataSource
   ) {
-    dataSourceItems = config.dataSources.call(
-      config.uischema.options.items.dataSource
-    );
+    dataSource = config.uischema.options.items.dataSource;
+    return config.dataSources
+      .call(dataSource)
+      .then((res: any) => localItems.concat(res));
+  } else {
+    return Promise.resolve(localItems);
   }
-
-  return localItems.concat(dataSourceItems);
 };
 
 export const onChange = (uiSchema: any) => {

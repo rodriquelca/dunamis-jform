@@ -73,10 +73,11 @@ const FieldProperties: any = {
     Props.build('trim'),
     Props.build('restrictMaxLength'),
   ],
-  CheckGroup: [
+  CheckboxGroup: [
     Props.build('type'),
     Props.build('variable'),
     Props.build('hint'),
+    Props.build('items'),
   ],
   DatePicker: [
     Props.build('type'),
@@ -96,6 +97,7 @@ const FieldProperties: any = {
     Props.build('type'),
     Props.build('variable'),
     Props.build('hint'),
+    Props.build('items'),
   ],
   Rating: [Props.build('type'), Props.build('variable')],
   RichText: [
