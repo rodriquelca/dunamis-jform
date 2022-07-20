@@ -30,11 +30,13 @@
             },
             {
               "type": "Text",
-              "scope": "#/properties/firstName"
+              "scope": "#/properties/firstName",
+              "options": {}
             },
             {
               "type": "Text",
-              "scope": "#/properties/secondName"
+              "scope": "#/properties/secondName",
+              "options": {}
             },
             {
               "type": "HorizontalLayout",
@@ -82,11 +84,13 @@
           "elements": [
             {
               "type": "Text",
-              "scope": "#/properties/address/properties/street"
+              "scope": "#/properties/address/properties/street",
+              "options": {}
             },
             {
               "type": "Text",
-              "scope": "#/properties/address/properties/streetNumber"
+              "scope": "#/properties/address/properties/streetNumber",
+              "options": {}
             }
           ]
         },
@@ -95,11 +99,13 @@
           "elements": [
             {
               "type": "Text",
-              "scope": "#/properties/address/properties/city"
+              "scope": "#/properties/address/properties/city",
+              "options": {}
             },
             {
               "type": "Text",
-              "scope": "#/properties/address/properties/postalCode"
+              "scope": "#/properties/address/properties/postalCode",
+              "options": {}
             }
           ]
         }
@@ -110,7 +116,7 @@
       "label": "How does it work?",
       "elements": [
         {
-          "type": "Control",
+          "type": "RichText",
           "scope": "#/properties/richText3",
           "options": {
             "isHtmlViewer": true,
@@ -141,19 +147,23 @@
               "elements": [
                 {
                   "type": "Text",
-                  "scope": "#/properties/firstName"
+                  "scope": "#/properties/firstName",
+                  "options": {}
                 },
                 {
                   "type": "Text",
-                  "scope": "#/properties/secondName"
+                  "scope": "#/properties/secondName",
+                  "options": {}
                 },
                 {
                   "type": "DateTime",
-                  "scope": "#/properties/birthDate"
+                  "scope": "#/properties/birthDate",
+                  "options": {}
                 },
                 {
                   "type": "Dropdown",
-                  "scope": "#/properties/nationality"
+                  "scope": "#/properties/nationality",
+                  "options": {}
                 }
               ]
             },

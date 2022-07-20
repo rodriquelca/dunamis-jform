@@ -2,7 +2,7 @@
   "type": "VerticalLayout",
   "elements": [
     {
-      "type": "Text",
+      "type": "RichText",
       "scope": "#/properties/title",
       "options": {
         "isHtmlViewer": true,
@@ -10,7 +10,7 @@
       }
     },
     {
-      "type": "Label",
+      "type": "RichText",
       "scope": "#/properties/label",
       "options": {
         "isHtmlViewer": true,
@@ -21,22 +21,26 @@
     {
       "type": "Text",
       "scope": "#/properties/employeeID",
-      "label": "Employee ID"
+      "label": "Employee ID",
+      "options": {}
     },
     {
       "type": "Text",
       "scope": "#/properties/employeeFirstName",
-      "label": "Employee First Name"
+      "label": "Employee First Name",
+      "options": {}
     },
     {
       "type": "Text",
       "scope": "#/properties/employeeLastName",
-      "label": "Employee Last Name"
+      "label": "Employee Last Name",
+      "options": {}
     },
     {
       "type": "DateTime",
       "scope": "#/properties/employeeBirthDate",
-      "label": "Employee Birth Date"
+      "label": "Employee Birth Date",
+      "options": {}
     },
     {
       "type": "TextArea",
