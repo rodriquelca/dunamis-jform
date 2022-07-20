@@ -69,8 +69,10 @@ import { defineComponent, ref, onMounted, inject } from '@vue/composition-api';
 const ApiConfig = defineComponent({
   name: 'ApiConfig',
   components: {},
-  props: ['dataConfig', 'dataSource'],
-
+  props: {
+    dataConfig: { required: false, type: Object },
+    dataSource: { required: false, type: Object },
+  },
   setup(props: any, context: any) {
     const dataInputVariables = ref([]);
     const serviceProvider = inject<any>('serviceProvider');

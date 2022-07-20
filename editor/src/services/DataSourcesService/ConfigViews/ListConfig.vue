@@ -35,7 +35,10 @@ import { defineComponent, ref, onMounted } from '@vue/composition-api';
 const ListConfig = defineComponent({
   name: 'ListConfig',
   components: {},
-  props: ['dataSource', 'dataConfig'],
+  props: {
+    dataConfig: { required: false, type: Object },
+    dataSource: { required: false, type: Object },
+  },
   setup(props: any, context: any) {
     let titles = {
       id: 'ID',

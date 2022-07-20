@@ -23,7 +23,7 @@
       @blur="isFocused = false"
     >
       <v-radio
-        v-for="o in items"
+        v-for="o in controlBuilder.items"
         :key="o.value"
         :label="o.label"
         :value="o.value"

@@ -119,12 +119,12 @@ const ItemPropExt = defineComponent({
       dataConfig,
       ...dynamicPropertyDefault(props, context),
       backPanel() {
-        let it = {
+        let res = {
           dataSource: null,
           local: refList.value.getData(),
         };
         if (select.value) {
-          it.dataSource = {
+          res.dataSource = {
             id: select.value.id,
             name: select.value.text,
             type: select.value.type,
@@ -133,7 +133,7 @@ const ItemPropExt = defineComponent({
               : {},
           };
         }
-        context.emit('backPanel', { items: it });
+        context.emit('backPanel', { items: res });
       },
       items,
       select,
