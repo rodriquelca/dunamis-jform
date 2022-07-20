@@ -178,7 +178,7 @@ const CustomForm = defineComponent({
       },
       errors: '',
       inputMask: '###',
-      color: backgroundColor.value.color,
+      color: backgroundColor.value.color || '#FFFFFFFF',
       menu: false,
     };
   },
