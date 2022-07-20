@@ -94,8 +94,38 @@ import _ from 'lodash';
 const UploadJson = defineComponent({
   name: 'upload-json',
   setup() {
+    const defaultTheme = {
+      name: 'Default',
+      light: {
+        primary: '#1976D2',
+        secondary: '#424242',
+        accent: '#82B1FF',
+        error: '#FF5252',
+        info: '#2196F3',
+        success: '#4CAF50',
+        warning: '#FB8C00',
+      },
+      fontFamily: 'Roboto',
+      paddings: {
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
+      },
+      margins: {
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
+      },
+      background: {
+        imgSrc: '',
+        color: '#FFFFFF',
+      },
+    };
+
     function openDialog() {
-      this.file = {};
+      this.file = [];
       this.uploadedFile = [];
       this.contentFile = '';
       this.dialog = true;
@@ -121,6 +151,7 @@ const UploadJson = defineComponent({
       this.contentFile = event.target.result;
       const schemaUpload = JSON.parse(this.contentFile)['schema'] || '';
       const uiSchemaUpload = JSON.parse(this.contentFile)['uischema'] || '';
+      const themeUpload = JSON.parse(this.contentFile)['theme'] || '';
       if (schemaUpload !== '' && uiSchemaUpload !== '') {
         this.$store.dispatch('app/setSchema', {
           schema: schemaUpload,
@@ -131,11 +162,23 @@ const UploadJson = defineComponent({
         this.$store.dispatch('locales/setSchema', {
           properties: _.keys(schemaUpload.properties),
         });
+        if (themeUpload !== '') {
+          this.$store.set('themes/updateTheme', themeUpload);
+          this.setDefaultTheme(themeUpload);
+        } else {
+          this.setDefaultTheme(defaultTheme);
+        }
         this.dialog = false;
       } else {
         this.message = 'Json format not valid.';
         this.showToast = true;
       }
+    }
+    function setDefaultTheme(theme) {
+      Object.keys(theme.light).forEach((i) => {
+        this.$vuetify.theme.themes.light[i] = theme.light[i];
+      });
+      this.$vuetify.theme.currentTheme.name = theme.name;
     }
     function onDrop(e) {
       this.dragover = false;
@@ -157,6 +200,7 @@ const UploadJson = defineComponent({
       uploadFile,
       handleFileLoad,
       onDrop,
+      setDefaultTheme,
     };
   },
   methods: {},

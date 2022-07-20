@@ -252,6 +252,13 @@ export default {
         );
       }
     },
+    getCurrentTheme(): string {
+      return JSON.stringify(
+        this.$store.getters['themes/getThemeSelected'],
+        null,
+        2
+      );
+    },
     /**
      * Get a JSON with the uiSchema and Schema
      */
@@ -264,9 +271,11 @@ export default {
         this.$store.get('app/editor@schema'),
         'schema'
       );
+      let jsonTheme = this.getCurrentTheme();
       let jsonData = {
         schema: JSON.parse(jsonSchema),
         uischema: JSON.parse(jsonUiSchema),
+        theme: JSON.parse(jsonTheme),
       };
       return jsonData;
     },

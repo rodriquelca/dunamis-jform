@@ -28,6 +28,7 @@ export const preset: Partial<VuetifyPreset> = {
         info: '#2196F3',
         success: '#4CAF50',
         warning: '#FB8C00',
+        customPrimary: '#4CAF50',
       },
       dark: {
         primary: '#2196F3',
