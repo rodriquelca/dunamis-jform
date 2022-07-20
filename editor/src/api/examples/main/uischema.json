@@ -5,11 +5,11 @@
       "type": "HorizontalLayout",
       "elements": [
         {
-          "type": "Control",
+          "type": "Text",
           "scope": "#/properties/firstName"
         },
         {
-          "type": "Control",
+          "type": "Text",
           "scope": "#/properties/lastName"
         }
       ]
@@ -18,11 +18,11 @@
       "type": "HorizontalLayout",
       "elements": [
         {
-          "type": "Control",
+          "type": "Text",
           "scope": "#/properties/age"
         },
         {
-          "type": "Control",
+          "type": "DateTime",
           "scope": "#/properties/dateOfBirth"
         }
       ]
@@ -31,15 +31,15 @@
       "type": "HorizontalLayout",
       "elements": [
         {
-          "type": "Control",
+          "type": "Text",
           "scope": "#/properties/height"
         },
         {
-          "type": "Control",
+          "type": "Text",
           "scope": "#/properties/gender"
         },
         {
-          "type": "Control",
+          "type": "Checkbox",
           "scope": "#/properties/committer"
         }
       ]
@@ -52,11 +52,11 @@
           "type": "HorizontalLayout",
           "elements": [
             {
-              "type": "Control",
+              "type": "Text",
               "scope": "#/properties/address/properties/street"
             },
             {
-              "type": "Control",
+              "type": "Text",
               "scope": "#/properties/address/properties/streetnumber"
             }
           ]
@@ -65,11 +65,11 @@
           "type": "HorizontalLayout",
           "elements": [
             {
-              "type": "Control",
+              "type": "Text",
               "scope": "#/properties/address/properties/postalCode"
             },
             {
-              "type": "Control",
+              "type": "Text",
               "scope": "#/properties/address/properties/city"
             }
           ]

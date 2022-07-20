@@ -61,8 +61,14 @@
     </div>
     <div>
       <v-list dense color="transparent">
-        <v-list-item-group v-model="selectedItem" color="primary">
-          <v-list-item v-for="item in temples" :key="item.title" dense>
+        <v-list-item-group color="primary">
+          <v-list-item
+            v-for="item in temples"
+            :key="item.title"
+            dense
+            @dblclick="createFromTemplate(item)"
+            @click="previewTemplate(item)"
+          >
             <v-list-item-avatar size="25" color="accent">
               <v-icon class="grey lighten-1" x-small color="white">
                 mdi-card
@@ -70,7 +76,7 @@
             </v-list-item-avatar>
 
             <v-list-item-content>
-              <v-list-item-title v-text="item.title"></v-list-item-title>
+              <v-list-item-title> {{ item.title }} </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list-item-group>
@@ -84,6 +90,8 @@ import _ from 'lodash';
 import { computed, defineComponent, ref, watch } from '@vue/composition-api';
 import { TemplateSchemaService } from '../../api/schemaService';
 import store from '../../store';
+import { v4 as uuid } from 'uuid';
+import { useExportSchema, useExportUiSchema, createLayout } from '../../util';
 
 const Templates = defineComponent({
   name: 'Templates',
@@ -108,20 +116,43 @@ const Templates = defineComponent({
       },
     ]);
 
-    watch(selectedItem, async (n: any, o: any) => {
+    let createBlankForm = () => {
+      let schema = {
+          type: 'object',
+          title: 'Dynaform',
+          properties: {},
+        },
+        uiSchema = createLayout('VerticalLayout');
       store.dispatch('app/setSchema', {
-        schema: temples.value[n].input.schema,
+        schema: schema,
       });
       store.dispatch('app/setUiSchema', {
-        uiSchema: temples.value[n].input.uischema,
+        uiSchema: uiSchema,
       });
-      store.dispatch('locales/setSchema', {
-        properties: _.keys(temples.value[n].input.schema.properties),
+      store.dispatch('dashboard/addForm', {
+        uuid: uuid(),
+        name: 'Blank form',
+        description: '',
+        category: 'General',
+        type: 'Form',
+        modified: new Date().toJSON().slice(0, 10),
+        created: new Date().toJSON().slice(0, 10),
+        schemas: {
+          schema,
+          uiSchema,
+        },
       });
-      context.emit('preview', {});
-    });
-
-    let createBlankForm = () => {
+      // Load the form editor view with the 'Use This Template' button.
+      let activityBar = { id: 'activity-json-form-editor' },
+        mainPanel = { id: 'main-editor' },
+        actionsBar = { id: 'actions-editor' },
+        sideBar = { id: 'side-bar-pallete' };
+      store.dispatch('viewManager/setAllViews', {
+        activityBar,
+        sideBar,
+        mainPanel,
+        actionsBar,
+      });
       return;
     };
 
@@ -172,8 +203,42 @@ const Templates = defineComponent({
       this.$store.dispatch('locales/setSchema', {
         properties: _.keys(item.input.schema.properties),
       });
-
+      //set form information
+      this.$store.dispatch('app/setInfomation', {
+        name: item.title,
+        description: '',
+        category: 'General',
+        type: 'Form',
+        modified: new Date().toJSON().slice(0, 10),
+        created: new Date().toJSON().slice(0, 10),
+      });
       this.$emit('preview', {});
+    },
+    createFromTemplate: function (template) {
+      store.dispatch('dashboard/addForm', {
+        name: template.title,
+        description: '',
+        category: 'General',
+        type: 'Form',
+        modified: new Date().toJSON().slice(0, 10),
+        created: new Date().toJSON().slice(0, 10),
+        schemas: {
+          schema: useExportSchema(this.$store.get('app/editor@schema')),
+          uiSchema: useExportUiSchema(this.$store.get('app/editor@uiSchema')),
+        },
+      });
+
+      // Load the form editor view with the 'Use This Template' button.
+      let activityBar = { id: 'activity-json-form-editor' },
+        mainPanel = { id: 'main-editor' },
+        actionsBar = { id: 'actions-editor' },
+        sideBar = { id: 'side-bar-pallete' };
+      store.dispatch('viewManager/setAllViews', {
+        activityBar,
+        sideBar,
+        mainPanel,
+        actionsBar,
+      });
     },
   },
 });

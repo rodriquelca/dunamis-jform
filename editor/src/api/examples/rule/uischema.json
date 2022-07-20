@@ -2,7 +2,7 @@
   "type": "VerticalLayout",
   "elements": [
     {
-      "type": "Control",
+      "type": "Text",
       "scope": "#/properties/name",
       "rule": {
         "effect": "DISABLE",
@@ -35,7 +35,7 @@
       }
     },
     {
-      "type": "Control",
+      "type": "Dropdown",
       "scope": "#/properties/yesOrNo"
     }
   ]

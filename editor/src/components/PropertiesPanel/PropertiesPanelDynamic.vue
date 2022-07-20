@@ -7,7 +7,6 @@
         no-gutters
         dense
         class="caption"
-        :key="selectedElement.edit"
       >
         <v-expansion-panel>
           <v-expansion-panel-header>
@@ -18,6 +17,7 @@
           </v-expansion-panel-header>
           <v-expansion-panel-content>
             <PropertiesPanelDynamic
+              :key="key"
               v-if="generalData"
               :config="generalData"
               @updateData="updateData"
@@ -57,6 +57,7 @@ const PropertiesPanel = defineComponent({
   },
   data() {
     return {
+      key: 1,
       step: 1,
       panel: [0, 1, 2, 3, 4],
       generalData: null,
@@ -88,6 +89,7 @@ const PropertiesPanel = defineComponent({
   watch: {
     selectedElement(newSelection, oldSelection) {
       this.setSelection(newSelection.selected);
+      this.key++;
     },
   },
   methods: {
@@ -117,14 +119,36 @@ const PropertiesPanel = defineComponent({
       ]);
       fieldData['variable'] = getVariableName(this.uiElement);
       if (elementSchema && elementSchema.schema) {
-        // Get the required property
-        fieldData['required'] =
-          this.schema.schema.required &&
-          this.schema.schema.required.includes(getVariableName(this.uiElement));
+        // Get the Type property
+        fieldData['type'] = this.uiElement.type ? this.uiElement.type : '';
+        // Get the placeholder property
+        fieldData['placeholder'] = this.uiElement.options
+          ? this.uiElement.options.placeholder
+          : null;
+        // Get the hint property
+        fieldData['hint'] = this.uiElement.options
+          ? this.uiElement.options.hint
+          : null;
+        // Get the label property
+        fieldData['label'] = this.uiElement.options
+          ? this.uiElement.options.label
+          : null;
+        // Get the rows property
+        fieldData['rows'] = this.uiElement.options
+          ? this.uiElement.options.rows
+          : null;
+        // Get the alt text property
+        fieldData['alt'] = this.uiElement.options
+          ? this.uiElement.options.alt
+          : null;
         // Get the description property
         fieldData['description'] = elementSchema.schema.description
           ? elementSchema.schema.description
           : '';
+        // Get the required property
+        fieldData['required'] =
+          this.schema.schema.required &&
+          this.schema.schema.required.includes(getVariableName(this.uiElement));
         // Get the maxLength property
         fieldData['maxLength'] = elementSchema.schema.maxLength
           ? elementSchema.schema.maxLength
@@ -138,6 +162,9 @@ const PropertiesPanel = defineComponent({
         // Get the items property
         fieldData['items'] = this.uiElement.options
           ? this.uiElement.options.items
+          : null;
+        fieldData['hint'] = this.uiElement.options
+          ? this.uiElement.options.hint
           : null;
       }
       this.generalData = {
@@ -260,8 +287,15 @@ const PropertiesPanel = defineComponent({
           changedProperties: { rows: data.rows },
         });
       }
+      // alt text for Image -> to options
+      if (data.alt || data.alt == '') {
+        this.$store.dispatch('app/updateUISchemaElementOption', {
+          elementUUID: this.uiElement.uuid,
+          changedProperties: { alt: data.alt },
+        });
+      }
       // placeholder -> to options
-      if (data.placeholder) {
+      if (data.placeholder || data.placeholder == '') {
         this.$store.dispatch('app/updateUISchemaElementOption', {
           elementUUID: this.uiElement.uuid,
           changedProperties: { placeholder: data.placeholder },
@@ -272,6 +306,13 @@ const PropertiesPanel = defineComponent({
         this.$store.dispatch('app/updateSchemaElement', {
           elementUUID: this.uiElement.uuid,
           changedProperties: { format: data.format.format },
+        });
+      }
+      // default value -> to options
+      if (data.defaultValue || data.defaultValue == '') {
+        this.$store.dispatch('app/updateUISchemaElementOption', {
+          elementUUID: this.uiElement.uuid,
+          changedProperties: { defaultValue: data.defaultValue },
         });
       }
     },

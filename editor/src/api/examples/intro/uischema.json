@@ -6,7 +6,7 @@
       "label": "Intro",
       "elements": [
         {
-          "type": "Control",
+          "type": "RichText",
           "scope": "#/properties/richText1",
           "options": {
             "isHtmlViewer": true,
@@ -29,12 +29,14 @@
               "elements": []
             },
             {
-              "type": "Control",
-              "scope": "#/properties/firstName"
+              "type": "Text",
+              "scope": "#/properties/firstName",
+              "options": {}
             },
             {
-              "type": "Control",
-              "scope": "#/properties/secondName"
+              "type": "Text",
+              "scope": "#/properties/secondName",
+              "options": {}
             },
             {
               "type": "HorizontalLayout",
@@ -50,11 +52,11 @@
               "elements": []
             },
             {
-              "type": "Control",
+              "type": "DateTime",
               "scope": "#/properties/birthDate"
             },
             {
-              "type": "Control",
+              "type": "Dropdown",
               "scope": "#/properties/nationality"
             },
             {
@@ -70,7 +72,7 @@
       "label": "What is Dynaform",
       "elements": [
         {
-          "type": "Control",
+          "type": "RichText",
           "scope": "#/properties/richText2",
           "options": {
             "isHtmlViewer": true,
@@ -81,12 +83,14 @@
           "type": "HorizontalLayout",
           "elements": [
             {
-              "type": "Control",
-              "scope": "#/properties/address/properties/street"
+              "type": "Text",
+              "scope": "#/properties/address/properties/street",
+              "options": {}
             },
             {
-              "type": "Control",
-              "scope": "#/properties/address/properties/streetNumber"
+              "type": "Text",
+              "scope": "#/properties/address/properties/streetNumber",
+              "options": {}
             }
           ]
         },
@@ -94,12 +98,14 @@
           "type": "HorizontalLayout",
           "elements": [
             {
-              "type": "Control",
-              "scope": "#/properties/address/properties/city"
+              "type": "Text",
+              "scope": "#/properties/address/properties/city",
+              "options": {}
             },
             {
-              "type": "Control",
-              "scope": "#/properties/address/properties/postalCode"
+              "type": "Text",
+              "scope": "#/properties/address/properties/postalCode",
+              "options": {}
             }
           ]
         }
@@ -110,7 +116,7 @@
       "label": "How does it work?",
       "elements": [
         {
-          "type": "Control",
+          "type": "RichText",
           "scope": "#/properties/richText3",
           "options": {
             "isHtmlViewer": true,
@@ -121,7 +127,7 @@
           "type": "HorizontalLayout",
           "elements": [
             {
-              "type": "Control",
+              "type": "RichText",
               "scope": "#/properties/richText4",
               "options": {
                 "isHtmlViewer": true,
@@ -129,7 +135,7 @@
               }
             },
             {
-              "type": "Control",
+              "type": "RichText",
               "scope": "#/properties/richText5",
               "options": {
                 "isHtmlViewer": true,
@@ -140,25 +146,29 @@
               "type": "VerticalLayout",
               "elements": [
                 {
-                  "type": "Control",
-                  "scope": "#/properties/firstName"
+                  "type": "Text",
+                  "scope": "#/properties/firstName",
+                  "options": {}
                 },
                 {
-                  "type": "Control",
-                  "scope": "#/properties/secondName"
+                  "type": "Text",
+                  "scope": "#/properties/secondName",
+                  "options": {}
                 },
                 {
-                  "type": "Control",
-                  "scope": "#/properties/birthDate"
+                  "type": "DateTime",
+                  "scope": "#/properties/birthDate",
+                  "options": {}
                 },
                 {
-                  "type": "Control",
-                  "scope": "#/properties/nationality"
+                  "type": "Dropdown",
+                  "scope": "#/properties/nationality",
+                  "options": {}
                 }
               ]
             },
             {
-              "type": "Control",
+              "type": "RichText",
               "scope": "#/properties/richText6",
               "options": {
                 "isHtmlViewer": true,
@@ -174,7 +184,7 @@
       "label": "Architecture",
       "elements": [
         {
-          "type": "Control",
+          "type": "RichText",
           "scope": "#/properties/richText7",
           "options": {
             "isHtmlViewer": true,
@@ -191,7 +201,7 @@
           }
         },
         {
-          "type": "Control",
+          "type": "RichText",
           "scope": "#/properties/richText8",
           "options": {
             "isHtmlViewer": true,

@@ -12,7 +12,7 @@
         :class="styles.control.input"
         :disabled="!control.enabled"
         :autofocus="appliedOptions.focus"
-        :placeholder="control.uischema.options.placeholder"
+        :placeholder="placeholder"
         :label="computedLabel"
         :hint="control.description"
         :persistent-hint="persistentHint()"
@@ -20,24 +20,18 @@
         :error-messages="control.errors"
         :clearable="hover"
         :value="control.data"
-        :items="control.options"
+        :items="[]"
         item-text="label"
         item-value="value"
         @change="onChange"
         @focus="isFocused = true"
         @blur="isFocused = false"
       >
-        <v-tooltip
-          v-if="
-            control.uischema.options.hint && control.uischema.options.hint != ''
-          "
-          slot="append-outer"
-          top
-        >
+        <v-tooltip v-if="hint && hint != ''" slot="append-outer" top>
           <template v-slot:activator="{ on }">
             <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
           </template>
-          <span class="">{{ control.uischema.options.hint }}</span>
+          <span class="">{{ hint }}</span>
         </v-tooltip>
       </v-select>
     </v-hover>
@@ -82,6 +76,23 @@ const controlRenderer = defineComponent({
       useJsonFormsOneOfEnumControl(props),
       (value) => value || undefined
     );
+  },
+  computed: {
+    hint(): string {
+      return this.control.uischema.options?.hint ?? '';
+    },
+    placeholder(): string {
+      return this.control.uischema.options?.placeholder ?? '';
+    },
+    items(): string[] {
+      if (this.control.schema.enum) {
+        return this.control.schema?.enum;
+      } else if (this.control.uischema.options?.items) {
+        return this.control.uischema.options?.items ?? [];
+      } else {
+        return [];
+      }
+    },
   },
 });
 

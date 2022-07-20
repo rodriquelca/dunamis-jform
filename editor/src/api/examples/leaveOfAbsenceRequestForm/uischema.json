@@ -2,7 +2,7 @@
   "type": "VerticalLayout",
   "elements": [
     {
-      "type": "Control",
+      "type": "RichText",
       "scope": "#/properties/title",
       "options": {
         "isHtmlViewer": true,
@@ -10,7 +10,7 @@
       }
     },
     {
-      "type": "Control",
+      "type": "RichText",
       "scope": "#/properties/richText",
       "options": {
         "isHtmlViewer": true,
@@ -21,17 +21,19 @@
       "type": "HorizontalLayout",
       "elements": [
         {
-          "type": "Control",
-          "scope": "#/properties/employeeName"
+          "type": "Text",
+          "scope": "#/properties/employeeName",
+          "options": {}
         },
         {
-          "type": "Control",
-          "scope": "#/properties/employeeEmail"
+          "type": "Text",
+          "scope": "#/properties/employeeEmail",
+          "options": {}
         }
       ]
     },
     {
-      "type": "Control",
+      "type": "RichText",
       "scope": "#/properties/richText",
       "options": {
         "isHtmlViewer": true,
@@ -42,11 +44,11 @@
       "type": "HorizontalLayout",
       "elements": [
         {
-          "type": "Control",
+          "type": "DateTime",
           "scope": "#/properties/leaveStart"
         },
         {
-          "type": "Control",
+          "type": "DateTime",
           "scope": "#/properties/leaveEnd"
         }
       ]
@@ -58,46 +60,68 @@
           "type": "RadioGroup",
           "scope": "#/properties/leaveType",
           "options": {
+            "items": {
+              "local": [
+                {
+                  "value": "medical",
+                  "label": "Medical Leave"
+                },
+                {
+                  "value": "dead",
+                  "label": "Dead or Illness in Family"
+                },
+                {
+                  "value": "marriage",
+                  "label": "Marriage"
+                },
+                {
+                  "value": "matternity",
+                  "label": "Matternity/Paternity"
+                },
+                {
+                  "value": "skill",
+                  "label": "Skill or Work Training"
+                },
+                {
+                  "value": "other",
+                  "label": "Other"
+                }
+              ]
+            }
+          },
+          "label": "Reason For Leave"
+        },
+        {
+          "type": "Dropdown",
+          "scope": "#/properties/dropdown_0",
+          "label": "Travel to:",
+          "options": {
             "events": {
               "onChange": {
                 "arguments": "JForm, nval, oval",
                 "body": ""
               }
             },
-            "items": [
-              {
-                "value": "medical",
-                "label": "Medical Leave"
+            "items": {
+              "dataSource": {
+                "id": "api-1",
+                "name": "Processmaker",
+                "type": "api",
+                "config": {
+                  "value": "value",
+                  "label": "text",
+                  "dataInputVariables": []
+                }
               },
-              {
-                "value": "dead",
-                "label": "Dead or Illness in Family"
-              },
-              {
-                "value": "marriage",
-                "label": "Marriage"
-              },
-              {
-                "value": "matternity",
-                "label": "Matternity/Paternity"
-              },
-              {
-                "value": "skill",
-                "label": "Skill or Work Training"
-              },
-              {
-                "value": "other",
-                "label": "Other"
-              }
-            ],
+              "local": []
+            },
             "request": null,
-            "source": "static",
+            "source": null,
             "dependencies": []
-          },
-          "label": "Reason For Leave"
+          }
         },
         {
-          "type": "Control",
+          "type": "TextArea",
           "scope": "#/properties/moreInfo",
           "options": {
             "multi": true

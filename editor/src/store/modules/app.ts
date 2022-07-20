@@ -10,6 +10,7 @@ import actionsEditor from './editor/actions';
 const ajv = createAjv({ useDefaults: true });
 const state: AppState = {
   editor: {
+    name: '',
     paletteElements: [],
     uiSchema: undefined,
     schema: undefined,

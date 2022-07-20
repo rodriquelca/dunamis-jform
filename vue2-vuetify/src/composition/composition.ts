@@ -193,13 +193,25 @@ export const useVuetifyControlExt = <
   input: I,
   adaptValue: (target: any) => any = (v) => v
 ) => {
+  const JForm = inject<any>('JForm');
+  const store = inject<any>('store');
+  const JReactivex = inject<any>('JReactivex');
+  const serviceProvider = inject<any>('serviceProvider');
+  const dataSources = serviceProvider.get('dataSources');
   const appliedOptions = useControlAppliedOptions(input);
 
   const controlBuilder = reactive({
-    items: Controlbuilder.items(input.control.value.uischema),
+    items: [],
     itemsBuilder: Controlbuilder.itemsBuilder(input.control.value.uischema),
     scope: Controlbuilder.pathControlSchema(input.control.value.uischema.scope),
     payload: {},
+  });
+
+  Controlbuilder.items({
+    uischema: input.control.value.uischema,
+    dataSources,
+  }).then((res: any) => {
+    controlBuilder.items = res;
   });
 
   const isFocused = ref(false);
@@ -227,9 +239,6 @@ export const useVuetifyControlExt = <
   const styles = useStyles(input.control.value.uischema);
 
   // Extension for dependents fields
-  const JForm = inject<any>('JForm');
-  const store = inject<any>('store');
-  const JReactivex = inject<any>('JReactivex');
 
   //Watch for execute onchange
   const unwatch = Controlbuilder.watchScope(store, props.uischema, {

@@ -5,18 +5,15 @@
     :isFocused="isFocused"
     :appliedOptions="appliedOptions"
   >
-    <v-tooltip
-      v-if="
-        control.uischema.options.hint && control.uischema.options.hint != ''
-      "
-      top
-    >
+    <v-tooltip v-if="hint && hint != ''" top>
       <template v-slot:activator="{ on }">
         <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
       </template>
-      <span class="">{{ control.uischema.options.hint }}</span>
+      <span class="">{{ hint }}</span>
     </v-tooltip>
     <v-img
+      :title="alt"
+      :alt="alt"
       :max-height="appliedOptions.height || 150"
       :max-width="appliedOptions.width || 150"
       :src="appliedOptions.image"
@@ -64,7 +61,15 @@ const controlRenderer = defineComponent({
       (value) => value || undefined
     );
   },
-  computed: {},
+  computed: {
+    hint(): string {
+      return this.control.uischema.options?.hint ?? '';
+    },
+    alt(): string {
+      // This property is required
+      return this.control.uischema.options?.alt ?? 'Image';
+    },
+  },
 });
 
 export default controlRenderer;

@@ -11,7 +11,7 @@
       :class="styles.control.input"
       :disabled="!control.enabled"
       :autofocus="appliedOptions.focus"
-      :placeholder="appliedOptions.placeholder"
+      :placeholder="placeholder"
       :hint="control.description"
       :persistent-hint="persistentHint()"
       :required="control.required"
@@ -30,17 +30,11 @@
         @change="onChange"
       >
       </v-checkbox>
-      <v-tooltip
-        v-if="
-          control.uischema.options.hint && control.uischema.options.hint != ''
-        "
-        slot="append"
-        top
-      >
+      <v-tooltip v-if="hint && hint != ''" slot="append" top>
         <template v-slot:activator="{ on }">
           <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
         </template>
-        <span class="">{{ control.uischema.options.hint }}</span>
+        <span class="">{{ hint }}</span>
       </v-tooltip>
     </v-radio-group>
   </control-wrapper>
@@ -88,7 +82,14 @@ const controlRenderer = defineComponent({
     input.data = reactive([]);
     return input;
   },
-  methods: {},
+  computed: {
+    hint(): string {
+      return this.control.uischema.options?.hint ?? '';
+    },
+    placeholder(): string {
+      return this.control.uischema.options?.placeholder ?? '';
+    },
+  },
 });
 
 export default controlRenderer;

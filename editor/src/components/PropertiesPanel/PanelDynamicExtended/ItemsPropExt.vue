@@ -10,22 +10,12 @@
       <v-icon class="me-1" small>mdi-arrow-left</v-icon>
       Back
     </v-btn>
-    <div class="v-expansion-panel-header">
-      <div>
-        <span class="caption font-weight-bold">Items</span>
-      </div>
+
+    <div class="pb-2 px-5">
+      <span class="caption font-weight-bold">Items</span>
     </div>
 
     <v-card elevation="0" color="transparent" class="mx-4">
-      <v-combobox
-        class="caption"
-        persistent-placeholder
-        v-model="select"
-        :items="sources"
-        label="Data Source"
-        outlined
-        dense
-      ></v-combobox>
       <v-row dense>
         <list-options
           ref="refList"
@@ -37,13 +27,37 @@
           :hideFooter="false"
         />
       </v-row>
-      <v-row> </v-row>
+      <div class="pt-4"></div>
+
+      <v-combobox
+        class="caption"
+        persistent-placeholder
+        v-model="select"
+        :items="sources"
+        label="Data Source"
+        outlined
+        dense
+      ></v-combobox>
+
+      <component
+        ref="configurationView"
+        :dataSource="dataSource"
+        :dataConfig="dataConfig"
+        v-bind:is="dataSourceView"
+      ></component>
     </v-card>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, onMounted, ref } from '@vue/composition-api';
+import {
+  computed,
+  defineComponent,
+  inject,
+  onMounted,
+  ref,
+  watch,
+} from '@vue/composition-api';
 import ListOptions from '../../Generic/ListOptions.vue';
 import { dynamicPropertyDefault } from '../PropertiesPanelComp';
 const ItemPropExt = defineComponent({
@@ -54,12 +68,10 @@ const ItemPropExt = defineComponent({
   emits: ['input', 'change', 'backPanel'],
   props: ['value', 'config'],
   setup(props: any, context: any) {
-    let items = ref(
-      props.config && props.config.local ? props.config.local : []
-    );
+    //Init variables
     const serviceProvider = inject<any>('serviceProvider');
     const dataSources = serviceProvider.get('dataSources');
-
+    const configurationView = ref(null);
     const titles = ref({
       value: 'Value',
       label: 'Label',
@@ -68,39 +80,68 @@ const ItemPropExt = defineComponent({
       value: 'value',
       label: 'label',
     });
-    const refList = ref(null);
-
-    let select = ref(
-      props.config && props.config.dataSource
-        ? {
-            id: props.config.dataSource.id,
-            text: props.config.dataSource.name,
-            type: props.config.dataSource.type,
-          }
-        : []
+    let items = ref(
+      props.config && props.config.local ? props.config.local : []
     );
+    const refList = ref(null);
+    const sources = ref(dataSources.get());
+    let select = ref(null);
+    let dataSource = ref(null);
+    let dataConfig = ref(null);
+
+    let dataSourceView = computed(() => {
+      if (select.value && select.value.render) {
+        return select.value.render;
+      } else if (dataSource) {
+        return dataSource.render;
+      }
+      return 'div';
+    });
+
+    watch(select, (val, nval) => {
+      dataSource.value = val;
+    });
+
+    onMounted(() => {
+      //Set the dropdown select value
+      if (props.config && props.config.dataSource) {
+        dataSource.value = sources.value.find(
+          (el) => el.id === props.config.dataSource.id
+        );
+        select.value = dataSource.value;
+        dataConfig.value = props.config.dataSource.config || null;
+      }
+    });
+
     return {
+      configurationView,
       refList,
+      dataConfig,
       ...dynamicPropertyDefault(props, context),
       backPanel() {
-        let items = {
+        let res = {
           dataSource: null,
           local: refList.value.getData(),
         };
         if (select.value) {
-          items.dataSource = {
+          res.dataSource = {
             id: select.value.id,
             name: select.value.text,
             type: select.value.type,
+            config: configurationView.value.getData
+              ? configurationView.value.getData()
+              : {},
           };
         }
-        context.emit('backPanel', { items });
+        context.emit('backPanel', { items: res });
       },
       items,
       select,
       titles,
       keys,
-      sources: ref(dataSources.get()),
+      dataSourceView,
+      sources,
+      dataSource,
     };
   },
 });

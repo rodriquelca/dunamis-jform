@@ -13,7 +13,6 @@
     <v-toolbar-items>
       <v-container fill-height fluid justify-end
         ><v-row dense>
-          <v-col><Templates /></v-col>
           <v-col><settings /> </v-col>
           <v-col><theme-changer /> </v-col>
         </v-row>
@@ -27,14 +26,12 @@ import { sync } from 'vuex-pathify';
 import Settings from '@/components/Settings.vue';
 import ThemeChanger from '@/components/ThemeChanger.vue';
 import { AppStore } from '../store/modules/types';
-import Templates from '@/components/Templates.vue';
 
 export default {
   name: 'DefaultAppBar',
   components: {
     ThemeChanger,
     Settings,
-    Templates,
   },
   computed: {
     app: sync<AppStore>('app/'),

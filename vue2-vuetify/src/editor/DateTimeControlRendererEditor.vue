@@ -143,6 +143,19 @@ const controlRenderer = defineComponent({
         // }
       },
     },
+    // dataTime: {
+    //   get(): string | null | undefined {
+    //     const datetimeLocalFormat = 'YYYY-MM-DDTHH:mm:ss.SSS';
+    //     const saveFormat = this.appliedOptions.dateTimeSaveFormat ?? undefined;
+    //     const value = this.control.data as string | undefined | null;
+
+    //     const dateTime = parseDateTime(value, saveFormat);
+    //     return dateTime ? dateTime.local().format(datetimeLocalFormat) : value;
+    //   },
+    //   set(newData: string) {
+    //     return '';
+    //   },
+    // },
     // dateTime(): string | null | undefined {
     //   const datetimeFormats = [
     //     'YYYY-MM-DDTHH:mm:ssZ',
@@ -155,6 +168,12 @@ const controlRenderer = defineComponent({
     //   console.log(result);
     //   return result;
     // },
+    hint(): string {
+      return this.control.uischema.options?.hint ?? '';
+    },
+    placeholder(): string {
+      return this.control.uischema.options?.placeholder ?? '';
+    },
     inputFormat(): string | undefined {
       return this.control.schema.format === 'date-time'
         ? 'datetime-local'

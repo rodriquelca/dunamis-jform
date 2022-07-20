@@ -1,5 +1,14 @@
 <template>
   <v-row>
+    <v-col>
+      <v-text-field
+        v-model="customThemeName"
+        label="Name of the Theme"
+        required
+        @blur="updateTheme"
+      >
+      </v-text-field>
+    </v-col>
     <v-col cols="12" sm="12" md="12">
       <v-select
         :items="selectFont"
@@ -251,15 +260,6 @@
             </v-card>
           </v-menu>
         </template>
-      </v-text-field>
-    </v-col>
-    <v-col>
-      <v-text-field
-        v-model="customThemeName"
-        label="Name of the Theme"
-        required
-        @blur="updateTheme"
-      >
       </v-text-field>
     </v-col>
   </v-row>

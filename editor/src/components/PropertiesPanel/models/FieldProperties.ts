@@ -8,6 +8,7 @@ const FieldProperties: any = {
     Props.build('type'),
     Props.build('variable'),
     Props.build('placeholder'),
+    Props.build('defaultValue'),
     Props.build('hint'),
     Props.build('label'),
     Props.build('description'),
@@ -26,6 +27,7 @@ const FieldProperties: any = {
     Props.build('type'),
     Props.build('variable'),
     Props.build('placeholder'),
+    Props.build('defaultValue'),
     Props.build('hint'),
     Props.build('rows'),
     Props.build('label'),
@@ -72,10 +74,11 @@ const FieldProperties: any = {
     Props.build('trim'),
     Props.build('restrictMaxLength'),
   ],
-  CheckGroup: [
+  CheckboxGroup: [
     Props.build('type'),
     Props.build('variable'),
     Props.build('hint'),
+    Props.build('items'),
   ],
   DatePicker: [
     Props.build('type'),
@@ -83,14 +86,21 @@ const FieldProperties: any = {
     Props.build('format'),
     Props.build('hint'),
     Props.build('placeholder'),
+    Props.build('hint'),
   ],
   Grid: [Props.build('type'), Props.build('variable')],
-  Image: [Props.build('type'), Props.build('variable'), Props.build('hint')],
+  Image: [
+    Props.build('type'),
+    Props.build('variable'),
+    Props.build('hint'),
+    Props.build('alt'),
+  ],
   MultipleFile: [Props.build('type'), Props.build('variable')],
   RadioGroup: [
     Props.build('type'),
     Props.build('variable'),
     Props.build('hint'),
+    Props.build('items'),
   ],
   Rating: [Props.build('type'), Props.build('variable')],
   RichText: [

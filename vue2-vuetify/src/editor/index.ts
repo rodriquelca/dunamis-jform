@@ -1,3 +1,4 @@
+export { default as CheckboxControlRendererEditor } from './CheckboxControlRendererEditor.vue';
 export { default as CheckboxGroupControlRendererEditor } from './CheckboxGroupControlRendererEditor.vue';
 export { default as DateTimeControlRendererEditor } from './DateTimeControlRendererEditor.vue';
 export { default as DropdownControlRendererEditor } from './DropdownControlRendererEditor.vue';
@@ -11,6 +12,7 @@ export { default as TextAreaControlRendererEditor } from './TextAreaControlRende
 export { default as TextControlRenderer } from './TextControlRenderer.vue';
 export { default as RichTextControlRendererEditor } from './RichTextControlRendererEditor.vue';
 
+import { entry as checkboxControlRendererEditorEntry } from './CheckboxControlRendererEditor.vue';
 import { entry as checkboxGroupControlRendererEditorEntry } from './CheckboxGroupControlRendererEditor.vue';
 import { entry as dateTimeControlRendererEditorEntry } from './DateTimeControlRendererEditor.vue';
 import { entry as dropdownControlRendererEditorEntry } from './DropdownControlRendererEditor.vue';
@@ -25,6 +27,7 @@ import { entry as textAreaControlRendererEditorEntry } from './TextAreaControlRe
 import { entry as textControlRendererEntry } from './TextControlRenderer.vue';
 
 export const editorRenderers = [
+  checkboxControlRendererEditorEntry,
   checkboxGroupControlRendererEditorEntry,
   dateTimeControlRendererEditorEntry,
   dropdownControlRendererEditorEntry,

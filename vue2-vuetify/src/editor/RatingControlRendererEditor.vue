@@ -5,24 +5,6 @@
     :isFocused="isFocused"
     :appliedOptions="appliedOptions"
   >
-    <!-- <v-text-field
-      type="number"
-      :step="step"
-      :id="control.id + '-input'"
-      :class="styles.control.input"
-      :disabled="!control.enabled"
-      :autofocus="appliedOptions.focus"
-      :placeholder="appliedOptions.placeholder"
-      :label="computedLabel"
-      :hint="control.description"
-      :persistent-hint="persistentHint()"
-      :required="control.required"
-      :error-messages="control.errors"
-      :value="control.data"
-      @change="onChange"
-      @focus="isFocused = true"
-      @blur="isFocused = false"
-    /> -->
     <v-rating
       hover
       length="5"
@@ -32,7 +14,7 @@
       :class="styles.control.input"
       :disabled="!control.enabled"
       :autofocus="appliedOptions.focus"
-      :placeholder="appliedOptions.placeholder"
+      :placeholder="placeholder"
       :label="computedLabel"
       :hint="control.description"
       :persistent-hint="persistentHint()"

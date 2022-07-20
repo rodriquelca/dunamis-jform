@@ -2,15 +2,15 @@
   "type": "VerticalLayout",
   "elements": [
     {
-      "type": "Control",
-      "scope": "#/properties/tittle",
+      "type": "RichText",
+      "scope": "#/properties/title",
       "options": {
         "isHtmlViewer": true,
         "content": "<h1>Employee Information</h1>"
       }
     },
     {
-      "type": "Control",
+      "type": "RichText",
       "scope": "#/properties/label",
       "options": {
         "isHtmlViewer": true,
@@ -19,27 +19,31 @@
       "label": "Fill your personal information below:"
     },
     {
-      "type": "Control",
+      "type": "Text",
       "scope": "#/properties/employeeID",
-      "label": "Employee ID"
+      "label": "Employee ID",
+      "options": {}
     },
     {
-      "type": "Control",
+      "type": "Text",
       "scope": "#/properties/employeeFirstName",
-      "label": "Employee First Name"
+      "label": "Employee First Name",
+      "options": {}
     },
     {
-      "type": "Control",
+      "type": "Text",
       "scope": "#/properties/employeeLastName",
-      "label": "Employee Last Name"
+      "label": "Employee Last Name",
+      "options": {}
     },
     {
-      "type": "Control",
+      "type": "DateTime",
       "scope": "#/properties/employeeBirthDate",
-      "label": "Employee Birth Date"
+      "label": "Employee Birth Date",
+      "options": {}
     },
     {
-      "type": "Control",
+      "type": "TextArea",
       "scope": "#/properties/employeeHomeAddress",
       "options": {
         "multi": true

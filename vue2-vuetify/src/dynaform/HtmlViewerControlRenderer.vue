@@ -14,9 +14,7 @@ import {
   ControlElement,
   JsonFormsRendererRegistryEntry,
   rankWith,
-  isStringControl,
-  and,
-  optionIs,
+  uiTypeIs,
 } from '@jsonforms/core';
 import { defineComponent } from '../vue';
 import {
@@ -54,6 +52,6 @@ export default controlRenderer;
 
 export const entry: JsonFormsRendererRegistryEntry = {
   renderer: controlRenderer,
-  tester: rankWith(2, and(isStringControl, optionIs('isHtmlViewer', true))),
+  tester: rankWith(2, uiTypeIs('RichText')),
 };
 </script>
