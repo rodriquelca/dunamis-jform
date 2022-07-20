@@ -81,7 +81,7 @@
           :theme="'vs-dark'"
           :options="{ minimap: { enabled: false }, fontSize: 10 }"
           height="40vh"
-          width="100%"
+          width="95%"
           :language="`json`"
         ></monaco-editor>
       </div>
