@@ -3,26 +3,40 @@
 	"title": "Dynaform",
 	"properties": {
 		"employeeID": {
-			"type": "string"
+			"type": "string",
+			"description": "",
+			"i18n": "employeeID"
 		},
 		"employeeLastName": {
-			"type": "string"
+			"type": "string",
+			"description": "",
+			"i18n": "employeeLastName"
 		},
 		"employeeFirstName": {
-			"type": "string"
+			"type": "string",
+			"description": "",
+			"i18n": "employeeFirstName"
 		},
 		"employeeBirthDate": {
 			"type": "string",
-			"format": "date"
+			"format": "date",
+			"description": "",
+			"i18n": "employeeBirthDate"
 		},
 		"employeeHomeAddress": {
-			"type": "string"
+			"type": "string",
+			"description": "",
+			"i18n": "employeeHomeAddress"
 		},
 		"label": {
-			"type": "string"
+			"type": "string",
+			"description": "",
+			"i18n": "label"
 		},
 		"title": {
-			"type": "string"
+			"type": "string",
+			"description": "",
+			"i18n": "title"
 		}
 	}
 }

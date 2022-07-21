@@ -95,7 +95,7 @@
         },
         {
           "type": "Dropdown",
-          "scope": "#/properties/dropdown_0",
+          "scope": "#/properties/country",
           "label": "Travel to:",
           "options": {
             "events": {

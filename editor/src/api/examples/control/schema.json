@@ -2,31 +2,47 @@
   "type": "object",
   "properties": {
     "string": {
-      "type": "string"
+      "type": "string",
+      "description": "",
+      "i18n": "string"
     },
     "boolean": {
-      "type": "boolean"
+      "type": "boolean",
+      "description": "",
+      "i18n": "boolean"
     },
     "number": {
-      "type": "number"
+      "type": "number",
+      "description": "",
+      "i18n": "number"
     },
     "integer": {
-      "type": "integer"
+      "type": "integer",
+      "description": "",
+      "i18n": "integer"
     },
     "date": {
       "type": "string",
-      "format": "date"
+      "description": "",
+      "format": "date",
+      "i18n": "date"
     },
     "time": {
       "type": "string",
-      "format": "time"
+      "description": "",
+      "format": "time",
+      "i18n": "time"
     },
     "dateTime": {
       "type": "string",
-      "format": "date-time"
+      "description": "",
+      "format": "date-time",
+      "i18n": "dateTime"
     },
     "enum": {
       "type": "string",
+      "description": "",
+      "i18n": "enum",
       "enum": [
         "One",
         "Two",

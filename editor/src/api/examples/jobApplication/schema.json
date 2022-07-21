@@ -3,46 +3,74 @@
   "title": "Dynaform",
   "properties": {
     "title": {
-      "type": "string"
+      "type": "string",
+      "description": "",
+      "i18n": "title"
     },
     "contentTitle": {
-      "type": "string"
+      "type": "string",
+      "description": "",
+      "i18n": "contentTitle"
     },
     "firstName": {
-      "type": "string"
+      "type": "string",
+      "description": "",
+      "i18n": "firstName"
     },
     "lastName": {
-      "type": "string"
+      "type": "string",
+      "description": "",
+      "i18n": "lastName"
     },
     "address": {
-      "type": "string"
+      "type": "string",
+      "description": "",
+      "i18n": "address"
     },
     "city": {
-      "type": "string"
+      "type": "string",
+      "description": "",
+      "i18n": "city"
     },
     "state": {
-      "type": "string"
+      "type": "string",
+      "description": "",
+      "i18n": "state"
     },
     "zipCode": {
-      "type": "number"
+      "type": "number",
+      "description": "",
+      "i18n": "zipCode"
     },
     "homePhone": {
-      "type": "string"
+      "type": "string",
+      "description": "",
+      "i18n": "homePhone"
     },
     "email": {
-      "type": "string"
+      "type": "string",
+      "description": "",
+      "i18n": "email"
     },
     "position": {
-      "type": "string"
+      "type": "string",
+      "description": "",
+      "i18n": "position"
     },
     "employment": {
-      "type": "string"
+      "type": "string",
+      "description": "",
+      "i18n": "employment"
     },
     "workNight": {
-      "type": "string"
+      "type": "string",
+      "description": "",
+      "i18n": "workNight"
     },
     "older": {
-      "type": "string"
+      "type": "string",
+      "description": "",
+      "i18n": "older"
     }
   }
 }
