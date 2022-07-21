@@ -4,6 +4,7 @@
     {
       "type": "Text",
       "scope": "#/properties/name",
+      "options": {},
       "rule": {
         "effect": "DISABLE",
         "condition": {
@@ -36,7 +37,8 @@
     },
     {
       "type": "Dropdown",
-      "scope": "#/properties/yesOrNo"
+      "scope": "#/properties/yesOrNo",
+      "options": {}
     }
   ]
 }

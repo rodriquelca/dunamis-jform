@@ -23,7 +23,8 @@
             {
               "type": "DateTime",
               "scope": "#/properties/dateRequest",
-              "label": "Today's Date"
+              "label": "Today's Date",
+              "options": {}
             }
           ]
         },
@@ -39,34 +40,40 @@
                     {
                       "type": "Text",
                       "scope": "#/properties/firstName",
-                      "label": "First Name"
+                      "label": "First Name",
+                      "options": {}
                     },
                     {
                       "type": "Text",
                       "scope": "#/properties/lastName",
-                      "label": "Last Name"
+                      "label": "Last Name",
+                      "options": {}
                     }
                   ]
                 },
                 {
                   "type": "Text",
                   "scope": "#/properties/email",
-                  "label": "Email"
+                  "label": "Email",
+                  "options": {}
                 },
                 {
                   "type": "Text",
                   "scope": "#/properties/phoneNumber",
-                  "label": "Phone Number"
+                  "label": "Phone Number",
+                  "options": {}
                 },
                 {
                   "type": "Text",
                   "scope": "#/properties/officeLocation",
-                  "label": "Office Location (city)"
+                  "label": "Office Location (city)",
+                  "options": {}
                 },
                 {
                   "type": "Text",
                   "scope": "#/properties/briefIssue",
-                  "label": "Brief Issue Description"
+                  "label": "Brief Issue Description",
+                  "options": {}
                 },
                 {
                   "type": "Dropdown",

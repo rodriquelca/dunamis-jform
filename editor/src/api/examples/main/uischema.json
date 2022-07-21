@@ -6,11 +6,13 @@
       "elements": [
         {
           "type": "Text",
-          "scope": "#/properties/firstName"
+          "scope": "#/properties/firstName",
+          "options": {}
         },
         {
           "type": "Text",
-          "scope": "#/properties/lastName"
+          "scope": "#/properties/lastName",
+          "options": {}
         }
       ]
     },
@@ -19,11 +21,13 @@
       "elements": [
         {
           "type": "Text",
-          "scope": "#/properties/age"
+          "scope": "#/properties/age",
+          "options": {}
         },
         {
           "type": "DateTime",
-          "scope": "#/properties/dateOfBirth"
+          "scope": "#/properties/dateOfBirth",
+          "options": {}
         }
       ]
     },
@@ -32,15 +36,18 @@
       "elements": [
         {
           "type": "Text",
-          "scope": "#/properties/height"
+          "scope": "#/properties/height",
+          "options": {}
         },
         {
           "type": "Text",
-          "scope": "#/properties/gender"
+          "scope": "#/properties/gender",
+          "options": {}
         },
         {
           "type": "Checkbox",
-          "scope": "#/properties/committer"
+          "scope": "#/properties/committer",
+          "options": {}
         }
       ]
     },
@@ -53,11 +60,13 @@
           "elements": [
             {
               "type": "Text",
-              "scope": "#/properties/address/properties/street"
+              "scope": "#/properties/address/properties/street",
+              "options": {}
             },
             {
               "type": "Text",
-              "scope": "#/properties/address/properties/streetnumber"
+              "scope": "#/properties/address/properties/streetnumber",
+              "options": {}
             }
           ]
         },
@@ -66,11 +75,13 @@
           "elements": [
             {
               "type": "Text",
-              "scope": "#/properties/address/properties/postalCode"
+              "scope": "#/properties/address/properties/postalCode",
+              "options": {}
             },
             {
               "type": "Text",
-              "scope": "#/properties/address/properties/city"
+              "scope": "#/properties/address/properties/city",
+              "options": {}
             }
           ]
         }
@@ -79,6 +90,7 @@
         "effect": "ENABLE",
         "condition": {
           "scope": "#/properties/committer",
+          "options": {},
           "schema": {
             "const": true
           }
