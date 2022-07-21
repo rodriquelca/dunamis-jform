@@ -1,7 +1,7 @@
 <template>
   <v-card class="px-1" color="transparent" elevation="0">
     <v-row>
-      <v-simple-table>
+      <v-simple-table v-if="dataInputVariables.length != 0">
         <template v-slot:default>
           <thead>
             <tr>

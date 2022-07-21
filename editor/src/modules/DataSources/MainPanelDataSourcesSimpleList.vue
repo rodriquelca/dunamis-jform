@@ -1,7 +1,7 @@
 <template>
   <v-card elevation="0" class="fill-height">
     <v-row class="pa-2 fill-height" justify="space-between">
-      <v-col cols="4">
+      <v-col cols="6">
         <div
           tabindex="-1"
           class="v-stepper__step subtitle-2 v-stepper__step--active"
@@ -63,7 +63,7 @@
         </v-simple-table>
       </v-col>
       <v-divider vertical></v-divider>
-      <v-col class="d-flex justify-center">
+      <v-col cols="6" class="d-flex justify-center">
         <v-scroll-y-transition mode="out-in">
           <AddSimpleList v-if="addList" />
           <SimpleList
