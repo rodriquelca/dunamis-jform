@@ -147,8 +147,11 @@ const PropertiesPanel = defineComponent({
           : '';
         // Get the required property
         fieldData['required'] =
-          this.schema.schema.required &&
-          this.schema.schema.required.includes(getVariableName(this.uiElement));
+          (this.schema.schema.required &&
+            this.schema.schema.required.includes(
+              getVariableName(this.uiElement)
+            )) ??
+          false;
         // Get the maxLength property
         fieldData['maxLength'] = elementSchema.schema.maxLength
           ? elementSchema.schema.maxLength
@@ -163,6 +166,7 @@ const PropertiesPanel = defineComponent({
         fieldData['items'] = this.uiElement.options
           ? this.uiElement.options.items
           : null;
+        // Get the hint property
         fieldData['hint'] = this.uiElement.options
           ? this.uiElement.options.hint
           : null;
@@ -194,10 +198,10 @@ const PropertiesPanel = defineComponent({
         });
       }
       // required
-      if (data.required) {
+      if (typeof data.required !== 'undefined') {
         this.$store.dispatch('app/updateSchemaRequired', {
           elementUUID: this.uiElement.uuid,
-          required: data.required,
+          required: data.required ?? false,
         });
       }
       // readOnly

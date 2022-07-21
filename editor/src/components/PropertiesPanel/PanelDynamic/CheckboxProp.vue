@@ -6,8 +6,8 @@
     no-gutters
     class="caption"
     :value="value"
-    @input="input"
-    @change="change"
+    :input-value="val"
+    @change="twoBind"
   >
     <template v-slot:label>
       <div class="caption">
@@ -25,10 +25,16 @@ const CheckboxProp = defineComponent({
   emits: ['input', 'change'],
   props: ['value', 'config'],
   setup(props: any, context: any) {
-    return dynamicPropertyDefault(props, context);
+    return {
+      ...dynamicPropertyDefault(props, context),
+    };
+  },
+  computed: {
+    val() {
+      return this.$props.value ?? false;
+    },
   },
 });
 export default CheckboxProp;
 </script>
-<style>
-</style>
+<style></style>

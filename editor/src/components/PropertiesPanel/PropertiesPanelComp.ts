@@ -8,5 +8,9 @@ export const dynamicPropertyDefault = (props: any, context: any) => {
   const change = (value: string) => {
     context.emit('change', value);
   };
-  return { data, input, change };
+  const twoBind = (value: any) => {
+    context.emit('input', value);
+    context.emit('change', value);
+  };
+  return { data, input, change, twoBind };
 };

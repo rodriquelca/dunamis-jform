@@ -18,6 +18,7 @@
         :placeholder="placeholder"
         prepend-icon="mdi-database-search"
         return-object
+        :required="control.required"
         :clearable="hover"
         @input="onChange"
       >
