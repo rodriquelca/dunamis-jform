@@ -3,35 +3,43 @@
   "elements": [
     {
       "type": "Text",
-      "scope": "#/properties/string"
+      "scope": "#/properties/string",
+      "options": {}
     },
     {
       "type": "Checkbox",
-      "scope": "#/properties/boolean"
+      "scope": "#/properties/boolean",
+      "options": {}
     },
     {
       "type": "Text",
-      "scope": "#/properties/number"
+      "scope": "#/properties/number",
+      "options": {}
     },
     {
       "type": "Text",
-      "scope": "#/properties/integer"
+      "scope": "#/properties/integer",
+      "options": {}
     },
     {
       "type": "DatePicker",
-      "scope": "#/properties/date"
+      "scope": "#/properties/date",
+      "options": {}
     },
     {
       "type": "TimePicker",
-      "scope": "#/properties/time"
+      "scope": "#/properties/time",
+      "options": {}
     },
     {
       "type": "DateTime",
-      "scope": "#/properties/dateTime"
+      "scope": "#/properties/dateTime",
+      "options": {}
     },
     {
       "type": "Dropdown",
-      "scope": "#/properties/enum"
+      "scope": "#/properties/enum",
+      "options": {}
     }
   ]
 }
