@@ -111,10 +111,12 @@ const ApiConfig = defineComponent({
       (value) => (value && value.length >= 3) || 'Min 3 characters',
     ]);
 
+    /**
+     * Save the configuration for add or edit
+     */
     let save = () => {
       let dataRequest = requestRef.value.getData();
       let dt = {
-        id: autogenerateID(),
         name: name.value,
         data: {
           url: dataRequest.url,
@@ -128,6 +130,7 @@ const ApiConfig = defineComponent({
       };
 
       if (props.mode == 'add') {
+        dt['id'] = autogenerateID();
         context.emit('addApi', dt);
       } else {
         context.emit('updateApi', dt);

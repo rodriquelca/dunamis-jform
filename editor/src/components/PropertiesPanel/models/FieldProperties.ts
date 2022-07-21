@@ -117,6 +117,8 @@ const FieldProperties: any = {
     Props.build('variable'),
     Props.build('placeholder'),
   ],
+  Group: [Props.build('type'), Props.build('variable'), Props.build('label')],
+  Label: [Props.build('type'), Props.build('variable'), Props.build('label')],
 };
 
 export default FieldProperties;

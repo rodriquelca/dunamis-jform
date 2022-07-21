@@ -22,6 +22,8 @@ export class DataSourceService implements Service {
     this.apis = apis;
   }
   get(data?: any): void {
+    this.lists = store.getters['dataSources/getSimpleLists'];
+    this.apis = store.getters['dataSources/getApis'];
     if (data && data.id && data.type == 'api') {
       return this.apis.find((el: any) => el.id === data.id);
     }
