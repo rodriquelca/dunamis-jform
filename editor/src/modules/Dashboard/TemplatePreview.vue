@@ -1,25 +1,22 @@
 <template>
-  <v-parallax
-    :style="getPaddings"
-    height="auto"
-    :src="sourceBackground"
-    class="vpm-scale-preview"
-  >
-    <v-card :style="getStyles" elevation="0" plain>
-      <json-forms
-        class="pa-5"
-        :data="data"
-        :key="key"
-        :schema="useSchema"
-        :uischema="useUiSchema"
-        :renderers="renderers"
-        @change="onChange"
-        :i18n="i18n"
-        :cells="renderers"
-        v-bind:style="getCurrentFont"
-      />
-    </v-card>
-  </v-parallax>
+  <div class="vpm-scale-preview">
+    <v-parallax :style="getPaddings" height="auto" :src="sourceBackground">
+      <v-card :style="getStyles" elevation="0" plain>
+        <json-forms
+          class="pa-5"
+          :data="data"
+          :key="key"
+          :schema="useSchema"
+          :uischema="useUiSchema"
+          :renderers="renderers"
+          @change="onChange"
+          :i18n="i18n"
+          :cells="renderers"
+          v-bind:style="getCurrentFont"
+        />
+      </v-card>
+    </v-parallax>
+  </div>
 </template>
 
 <script lang="ts">
@@ -37,7 +34,11 @@ export default {
   components: {
     JsonForms,
   },
-  props: {},
+  props: {
+    theme: {
+      type: Object,
+    },
+  },
   data() {
     return {
       key: 1,
@@ -81,13 +82,13 @@ export default {
       let paddings = this.$store.getters['themes/getPaddings'];
       return {
         padding:
-          paddings.paddingTop +
+          paddings.top / 2 +
           'px ' +
-          paddings.paddingRight +
+          paddings.right / 2 +
           'px ' +
-          paddings.paddingBottom +
+          paddings.bottom / 2 +
           'px ' +
-          paddings.paddingLeft +
+          paddings.left / 2 +
           'px',
       };
     },
@@ -99,13 +100,13 @@ export default {
       let backgroundColor = this.$store.getters['themes/getBackgroundColor'];
       return {
         padding:
-          margins.top +
+          margins.top / 2 +
           'px ' +
-          margins.right +
+          margins.right / 2 +
           'px ' +
-          margins.bottom +
+          margins.bottom / 2 +
           'px ' +
-          margins.left +
+          margins.left / 2 +
           'px',
         'background-color': backgroundColor.color,
       };

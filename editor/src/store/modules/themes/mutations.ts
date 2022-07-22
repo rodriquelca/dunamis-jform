@@ -8,10 +8,12 @@ const mutations = {
     state.active = payload;
   },
   SET_UPDATE_THEME: (state: any, payload: any) => {
-    const customTheme = _.merge(
-      _.cloneDeep(state.themes[state.active]),
-      payload
-    );
+    let customTheme;
+    if (payload) {
+      customTheme = _.merge(_.cloneDeep(state.themes[state.active]), payload);
+    } else {
+      customTheme = _.cloneDeep(state.themes['Default']);
+    }
     if (!state.themes[custom]) {
       state.themes = { ...state.themes, form: customTheme };
       state.active = custom;
