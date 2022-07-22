@@ -81,6 +81,7 @@ const FieldProperties: any = {
     Props.build('hint'),
     Props.build('items'),
     Props.build('required'),
+    Props.build('orientation'),
   ],
   DatePicker: [
     Props.build('type'),

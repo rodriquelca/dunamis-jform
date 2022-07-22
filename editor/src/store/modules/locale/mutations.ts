@@ -12,7 +12,6 @@ const mutations = {
     state[payload.key] = payload;
   },
   UPDATE_PROPERTY: (state: any, payload: any) => {
-    debugger;
     _.map(state, (value, key) => {
       _.map(value.content, (val, property, obj) => {
         if (property == payload.oldProperty) {

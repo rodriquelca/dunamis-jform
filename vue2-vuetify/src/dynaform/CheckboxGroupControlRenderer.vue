@@ -11,24 +11,42 @@
       :class="styles.control.input"
       :disabled="!control.enabled"
       :autofocus="appliedOptions.focus"
-      :return-object="true"
       :placeholder="placeholder"
       :hint="control.description"
       :persistent-hint="persistentHint()"
       :required="control.required"
       :error-messages="control.errors"
+      :return-object="true"
       row
       @focus="isFocused = true"
       @blur="isFocused = false"
     >
-      <v-checkbox
-        v-for="o in controlBuilder.items"
-        v-model="data"
-        :key="o.value"
-        :label="o.label"
-        :value="o.value"
-        @change="onChange"
-      ></v-checkbox>
+      <div v-if="orientation === 'vertical'">
+        <v-row v-for="o in controlBuilder.items" :key="o.value">
+          <v-col class="pa-0">
+            <v-checkbox
+              class="shrink pb-0 mb-0 pt-0 mt-0"
+              v-model="data"
+              :label="o.label"
+              :value="o.value"
+              @change="onChange"
+            ></v-checkbox>
+          </v-col>
+        </v-row>
+      </div>
+      <div v-else>
+        <v-row>
+          <v-col class="pa-0" v-for="o in controlBuilder.items" :key="o.value">
+            <v-checkbox
+              v-model="data"
+              :label="o.label"
+              :value="o.value"
+              @change="onChange"
+            ></v-checkbox>
+          </v-col>
+        </v-row>
+      </div>
+
       <v-tooltip v-if="hint && hint != ''" slot="append" top>
         <template v-slot:activator="{ on }">
           <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
@@ -54,7 +72,15 @@ import {
 } from '@jsonforms/vue2';
 import { default as ControlWrapper } from '../controls/ControlWrapper.vue';
 import { useVuetifyControlExt } from '../composition';
-import { VRadioGroup, VCheckbox, VLabel, VIcon, VTooltip } from 'vuetify/lib';
+import {
+  VRadioGroup,
+  VCheckbox,
+  VLabel,
+  VRow,
+  VCol,
+  VIcon,
+  VTooltip,
+} from 'vuetify/lib';
 import { reactive } from '@vue/composition-api';
 
 const controlRenderer = defineComponent({
@@ -64,6 +90,8 @@ const controlRenderer = defineComponent({
     VRadioGroup,
     VCheckbox,
     VLabel,
+    VRow,
+    VCol,
     VIcon,
     VTooltip,
   },
@@ -87,6 +115,9 @@ const controlRenderer = defineComponent({
     },
     placeholder(): string {
       return this.control.uischema.options?.placeholder ?? '';
+    },
+    orientation(): string {
+      return this.control.uischema.options?.orientation ?? '';
     },
   },
 });
