@@ -178,7 +178,7 @@ const PropertiesPanel = defineComponent({
     },
     updateData(data: any) {
       const elementSchema = this.findElementSchema();
-      this.generalData['data'] = data;
+
       // type
       if (data.type) {
         this.$store.dispatch('app/updateUISchemaElement', {
@@ -187,7 +187,7 @@ const PropertiesPanel = defineComponent({
         });
       }
       // variable
-      if (data.variable) {
+      if (data.variable && this.generalData.data['variable'] != data.variable) {
         this.$store.dispatch('app/updateSchemaVariable', {
           elementUUID: this.uiElement.uuid,
           newVariable: data.variable,
@@ -312,6 +312,7 @@ const PropertiesPanel = defineComponent({
           changedProperties: { defaultValue: data.defaultValue },
         });
       }
+      this.generalData['data'] = data;
     },
     findElementSchema() {
       const linkedSchemaUUID = this.uiElement.linkedSchemaElement;
