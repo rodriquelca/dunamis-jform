@@ -49,6 +49,7 @@ const FieldProperties: any = {
     Props.build('format'),
     Props.build('hint'),
     Props.build('placeholder'),
+    Props.build('required'),
   ],
   Dropdown: [
     Props.build('type'),
@@ -56,6 +57,7 @@ const FieldProperties: any = {
     Props.build('hint'),
     Props.build('items'),
     Props.build('placeholder'),
+    Props.build('required'),
   ],
   Checkbox: [
     Props.build('type'),
@@ -79,6 +81,7 @@ const FieldProperties: any = {
     Props.build('variable'),
     Props.build('hint'),
     Props.build('items'),
+    Props.build('required'),
   ],
   DatePicker: [
     Props.build('type'),
@@ -87,6 +90,7 @@ const FieldProperties: any = {
     Props.build('hint'),
     Props.build('placeholder'),
     Props.build('hint'),
+    Props.build('required'),
   ],
   Grid: [Props.build('type'), Props.build('variable')],
   Image: [
@@ -95,12 +99,17 @@ const FieldProperties: any = {
     Props.build('hint'),
     Props.build('alt'),
   ],
-  MultipleFile: [Props.build('type'), Props.build('variable')],
+  MultipleFile: [
+    Props.build('type'),
+    Props.build('variable'),
+    Props.build('required'),
+  ],
   RadioGroup: [
     Props.build('type'),
     Props.build('variable'),
     Props.build('hint'),
     Props.build('items'),
+    Props.build('required'),
   ],
   Rating: [Props.build('type'), Props.build('variable')],
   RichText: [
@@ -121,6 +130,8 @@ const FieldProperties: any = {
     Props.build('variable'),
     Props.build('placeholder'),
   ],
+  Group: [Props.build('type'), Props.build('variable'), Props.build('label')],
+  Label: [Props.build('type'), Props.build('variable'), Props.build('label')],
 };
 
 export default FieldProperties;

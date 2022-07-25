@@ -5,7 +5,7 @@
     color="grey lighten-4"
   >
     <v-list dense nav>
-      <v-list-item-group v-model="active">
+      <v-list-item-group v-model="activeActivityBar">
         <v-list-item
           v-for="item in itemsActivityBar"
           :key="item.title"
@@ -40,56 +40,50 @@ export default {
   components: {},
   data() {
     return {
-      active: 0,
       mini: true,
     };
   },
-  mounted() {
-    //Load the active activity Bar
-    this.active = this.activeActivityBar;
-  },
   computed: {
     itemsActivityBar: sync('viewManager/activityBar.items'),
-    activeActivityBar: sync('viewManager/activityBar.active'),
+    activeActivityBar: {
+      get() {
+        return this.$store.get('viewManager/activityBar@active');
+      },
+      set(val: any) {
+        this.$store.set('viewManager/activityBar@active', val);
+        let id = this.itemsActivityBar[val].id,
+          mainPanel = { id: '' },
+          actionsBar = { id: '' },
+          sideBar = { id: '' };
+        switch (id) {
+          case 'activity-json-forms':
+            sideBar.id = 'side-bar-dashboard';
+            mainPanel.id = 'main-dashboard';
+            actionsBar.id = 'actions-dashboard';
+            break;
+          case 'activity-json-form-editor':
+            sideBar.id = 'side-bar-pallete';
+            mainPanel.id = 'main-editor';
+            actionsBar.id = 'actions-editor';
+            break;
+
+          case 'activity-data-sources':
+            sideBar.id = 'side-bar-data-sources';
+            mainPanel.id = 'main-data-sources-simple-lists';
+            actionsBar.id = 'actions-data-sources';
+            break;
+        }
+
+        this.$store.dispatch('viewManager/setAllViews', {
+          sideBar,
+          mainPanel,
+          actionsBar,
+        });
+      },
+    },
+    //sync('viewManager/activityBar.active'),
     itemsSideBar: sync('viewManager/sideBar.items'),
     activeSideBar: sync('viewManager/sideBar.active'),
-  },
-  watch: {
-    active(newValue: string): void {
-      let id = this.itemsActivityBar[newValue].id,
-        activityBar = { id: '' },
-        mainPanel = { id: '' },
-        actionsBar = { id: '' },
-        sideBar = { id: '' };
-      switch (id) {
-        case 'activity-json-forms':
-          activityBar.id = 'activity-json-forms';
-          sideBar.id = 'side-bar-dashboard';
-          mainPanel.id = 'main-dashboard';
-          actionsBar.id = 'actions-dashboard';
-          break;
-        case 'activity-json-form-editor':
-          activityBar.id = 'activity-json-form-editor';
-          sideBar.id = 'side-bar-pallete';
-          mainPanel.id = 'main-editor';
-          actionsBar.id = 'actions-editor';
-          break;
-
-        case 'activity-data-sources':
-          activityBar.id = 'activity-data-sources';
-          sideBar.id = 'side-bar-data-sources';
-          mainPanel.id = 'main-data-sources-simple-lists';
-          actionsBar.id = 'actions-data-sources';
-          break;
-      }
-
-      this.$store.dispatch('viewManager/setAllViews', {
-        activityBar,
-        sideBar,
-        mainPanel,
-        actionsBar,
-      });
-    },
   },
 };
 </script>

@@ -7,20 +7,28 @@
     "firstName": {
       "type": "string",
       "minLength": 2,
-      "maxLength": 20
+      "maxLength": 20,
+      "description": "",
+      "i18n": "firstName"
     },
     "lastName": {
       "type": "string",
       "minLength": 5,
-      "maxLength": 15
+      "maxLength": 15,
+      "description": "",
+      "i18n": "lastName"
     },
     "age": {
       "type": "integer",
       "minimum": 18,
-      "maximum": 100
+      "maximum": 100,
+      "description": "",
+      "i18n": "age"
     },
     "gender": {
       "type": "string",
+      "description": "",
+      "i18n": "gender",
       "enum": [
         "Male",
         "Female",
@@ -28,32 +36,50 @@
       ]
     },
     "height": {
-      "type": "number"
+      "type": "number",
+      "description": "",
+      "i18n": "height"
     },
     "dateOfBirth": {
       "type": "string",
-      "format": "date"
+      "format": "date",
+      "description": "",
+      "i18n": "dateOfBirth"
     },
     "rating": {
-      "type": "integer"
+      "type": "integer",
+      "description": "",
+      "i18n": "rating"
     },
     "committer": {
-      "type": "boolean"
+      "type": "boolean",
+      "description": "",
+      "i18n": "committer"
     },
     "address": {
       "type": "object",
+      "description": "",
+      "i18n": "address",
       "properties": {
         "street": {
-          "type": "string"
+          "type": "string",
+          "description": "",
+          "i18n": "street"
         },
         "streetnumber": {
-          "type": "string"
+          "type": "string",
+          "description": "",
+          "i18n": "streetnumber"
         },
         "postalCode": {
-          "type": "string"
+          "type": "string",
+          "description": "",
+          "i18n": "postalCode"
         },
         "city": {
-          "type": "string"
+          "type": "string",
+          "description": "",
+          "i18n": "city"
         }
       }
     }

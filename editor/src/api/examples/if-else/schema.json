@@ -3,6 +3,8 @@
   "properties": {
     "shapeType": {
       "type": "string",
+      "description": "",
+      "i18n": "shapeType",
       "enum": [
         "",
         "square",
@@ -13,13 +15,19 @@
     "shapeProperties": {
       "properties": {
         "radius": {
-          "type": "number"
+          "type": "number",
+          "description": "",
+          "i18n": "radius"
         },
         "height": {
-          "type": "number"
+          "type": "number",
+          "description": "",
+          "i18n": "height"
         },
         "width": {
-          "type": "number"
+          "type": "number",
+          "description": "",
+          "i18n": "width"
         }
       }
     }

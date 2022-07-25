@@ -53,11 +53,13 @@
             },
             {
               "type": "DateTime",
-              "scope": "#/properties/birthDate"
+              "scope": "#/properties/birthDate",
+              "options": {}
             },
             {
               "type": "Dropdown",
-              "scope": "#/properties/nationality"
+              "scope": "#/properties/nationality",
+              "options": {}
             },
             {
               "type": "HorizontalLayout",

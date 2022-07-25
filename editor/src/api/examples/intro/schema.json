@@ -11,10 +11,6 @@
       "description": "Please enter your second name",
       "i18n": "secondName"
     },
-    "vegetarian": {
-      "type": "boolean",
-      "i18n": "vegetarian"
-    },
     "birthDate": {
       "type": "string",
       "format": "date",
@@ -42,40 +38,25 @@
       "i18n": "address",
       "properties": {
         "street": {
-          "type": "string"
+          "type": "string",
+          "description": "",
+          "i18n": "street"
         },
         "streetNumber": {
-          "type": "string"
+          "type": "string",
+          "description": "",
+          "i18n": "streetNumber"
         },
         "city": {
-          "type": "string"
+          "type": "string",
+          "description": "",
+          "i18n": "city"
         },
         "postalCode": {
           "type": "string",
+          "description": "",
+          "i18n": "postalCode",
           "maxLength": 5
-        }
-      }
-    },
-    "vegetarianOptions": {
-      "type": "object",
-      "i18n": "vegetarianOptions",
-      "properties": {
-        "vegan": {
-          "type": "boolean"
-        },
-        "favoriteVegetable": {
-          "type": "string",
-          "enum": [
-            "Tomato",
-            "Potato",
-            "Salad",
-            "Aubergine",
-            "Cucumber",
-            "Other"
-          ]
-        },
-        "otherFavoriteVegetable": {
-          "type": "string"
         }
       }
     },

@@ -45,11 +45,13 @@
       "elements": [
         {
           "type": "DateTime",
-          "scope": "#/properties/leaveStart"
+          "scope": "#/properties/leaveStart",
+          "options": {}
         },
         {
           "type": "DateTime",
-          "scope": "#/properties/leaveEnd"
+          "scope": "#/properties/leaveEnd",
+          "options": {}
         }
       ]
     },
@@ -93,7 +95,7 @@
         },
         {
           "type": "Dropdown",
-          "scope": "#/properties/dropdown_0",
+          "scope": "#/properties/country",
           "label": "Travel to:",
           "options": {
             "events": {

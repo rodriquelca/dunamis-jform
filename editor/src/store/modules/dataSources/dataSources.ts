@@ -287,7 +287,30 @@ const state: DataSourcesState = {
   apis: [
     {
       id: 'api-1',
-      name: 'Processmaker',
+      name: 'Processmaker Countries',
+      type: 'api',
+      data: {
+        url: 'https://pm3-n275-dev.processmaker.net/api/1.0/workflow/project/289650576625433cc195332066440091/process-variable/dropdownVar001/execute-query',
+        method: 'POST',
+        params: {},
+        headers: {
+          authorization: 'Bearer 02efd5dd7fc793ffafe643038fb9837f28df1521',
+          'content-type': 'application/json',
+        },
+        body: {
+          dyn_uid: '307644763625433f6d07470067177319',
+          field_id: 'countries',
+          del_index: '',
+          app_uid: '',
+          filter: 'b',
+        },
+        dataInputVariables: [],
+        output: '',
+      },
+    },
+    {
+      id: 'api-location',
+      name: 'Processmaker Location',
       type: 'api',
       data: {
         url: 'https://pm3-n275-dev.processmaker.net/api/1.0/workflow/project/289650576625433cc195332066440091/process-variable/dropdownVar001/execute-query',
