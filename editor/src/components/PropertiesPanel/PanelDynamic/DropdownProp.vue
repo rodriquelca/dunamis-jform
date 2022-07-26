@@ -6,24 +6,26 @@
     persistent-placeholder
     class="caption"
     dense
-    :value="value"
+    :value="val"
     @input="input"
     @change="change"
   ></v-combobox>
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent, ref } from '@vue/composition-api';
 import { dynamicPropertyDefault } from '../PropertiesPanelComp';
 const DropdownProp = defineComponent({
   name: 'DropdownProp',
   emits: ['input', 'change'],
   props: ['value', 'config'],
   setup(props: any, context: any) {
-    return dynamicPropertyDefault(props, context);
+    return {
+      ...dynamicPropertyDefault(props, context),
+      val: ref(props.config.items.find((el) => el.id == props.value)),
+    };
   },
 });
 export default DropdownProp;
 </script>
-<style>
-</style>
+<style></style>

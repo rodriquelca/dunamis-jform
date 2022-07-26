@@ -30,6 +30,7 @@
         @change="onChange"
       >
       </v-checkbox>
+
       <v-tooltip v-if="hint && hint != ''" slot="append" top>
         <template v-slot:activator="{ on }">
           <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
@@ -88,6 +89,9 @@ const controlRenderer = defineComponent({
     },
     placeholder(): string {
       return this.control.uischema.options?.placeholder ?? '';
+    },
+    orientation(): string {
+      return this.control.uischema.options?.orientation ?? '';
     },
   },
 });
