@@ -50,7 +50,6 @@ import {
 import { default as ControlWrapper } from '../controls/ControlWrapper.vue';
 import { useVuetifyControlExt } from '../composition';
 import { VHover, VAutocomplete, VIcon, VTooltip } from 'vuetify/lib';
-import { isFunction } from 'lodash';
 import _ from 'lodash';
 
 const controlRenderer = defineComponent({
@@ -90,11 +89,11 @@ const controlRenderer = defineComponent({
   },
   methods: {},
   watch: {
-    search(query) {
+    search() {
       if (this.isLoading) return;
-      let prom, clonePayload;
+      //let prom, clonePayload;
       //Verify if the controlBuilder.itemsbuilder is a function
-      if (isFunction(this.controlBuilder.itemsBuilder)) {
+      /*if (isFunction(this.controlBuilder.itemsBuilder)) {
         this.isLoading = true;
         clonePayload = {
           ..._.clone(this.controlBuilder.payload),
@@ -114,7 +113,7 @@ const controlRenderer = defineComponent({
           this.controlBuilder.items = prom;
           this.isLoading = false;
         }
-      }
+      }*/
     },
   },
 });

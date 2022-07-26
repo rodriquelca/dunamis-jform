@@ -30,7 +30,6 @@ import { generateEmptyData } from '../../model';
 import { extendedVuetifyRenderers } from '@jsonforms/vue2-vuetify';
 import _ from 'lodash';
 import store from '../../store';
-import { JReactivex as JReact, JForm as JF } from '@jsonforms/vue2';
 import { sync } from 'vuex-pathify';
 export default {
   name: 'template-preview',
@@ -119,20 +118,6 @@ export default {
   },
   mounted() {
     this.copySchemasFromEditorToPreview();
-  },
-  /**
-   * Provide services for JSONFORM
-   */
-  provide: () => {
-    return {
-      store: store,
-      JReactivex: JReact,
-      JForm: new JF({
-        data: {
-          store: store,
-        },
-      }),
-    };
   },
   methods: {
     getFont(): string {

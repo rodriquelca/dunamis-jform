@@ -21,6 +21,22 @@ class JReactivex {
     this.events = this.events.concat(dif);
     return dif;
   }
+  unregister(arrJoin: any, arrEvents: any) {
+    if (arrJoin.length != 0) {
+      arrJoin.forEach((el: string) => {
+        _.remove(this.joinForkArray, (n) => {
+          return n.id === el;
+        });
+      });
+    }
+    if (arrEvents.length != 0) {
+      arrEvents.forEach((el: string) => {
+        _.remove(this.events, (n) => {
+          return n === el;
+        });
+      });
+    }
+  }
   joinFork(arr: any, handler: any, id: any) {
     const evs = this.diffEvents(arr);
     if (evs.length != 0 && !_.find(this.joinForkArray, { id: id })) {
@@ -47,6 +63,9 @@ class JReactivex {
         });
       });
     }
+    return () => {
+      this.unregister([id], arr);
+    };
   }
 }
 

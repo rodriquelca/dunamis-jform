@@ -26,6 +26,9 @@ export const itemsBuilder = (uiSchema: any) => {
 
 /**
  * Build items from JSON object Local or DataSources
+ * config.dataSources --> service DataSource
+ * config.uischema --> uiSchema
+ * config.getData --> for get the dependents field values
  * @param uiSchema
  * @returns
  */
@@ -56,6 +59,33 @@ export const items = (config: any) => {
   }
 };
 
+export const getReactiveItems = (
+  uiSchema: any,
+  dataSources: any,
+  data: any
+) => {
+  let localItems: any = [];
+  let dataSource: any;
+  //Local Items
+  if (
+    uiSchema &&
+    uiSchema.options.items &&
+    isArray(uiSchema.options.items.local)
+  ) {
+    localItems = uiSchema.options.items.local;
+  }
+
+  //DataSources Items
+  if (uiSchema && uiSchema.options.items && uiSchema.options.items.dataSource) {
+    dataSource = uiSchema.options.items.dataSource;
+    return dataSources
+      .call(dataSource, data)
+      .then((res: any) => localItems.concat(res));
+  } else {
+    return Promise.resolve(localItems);
+  }
+};
+
 export const onChange = (uiSchema: any) => {
   let fnOnchange = new Function();
   if (
@@ -73,18 +103,16 @@ export const onChange = (uiSchema: any) => {
 
 export const watchScope = (store: any, uiSchema: any, provider: any) => {
   const scope = pathControlSchema(uiSchema.scope);
-  const fnOnchange = onChange(uiSchema);
   return store.watch(
     (_state: any, getters: any) => {
       return getters['preview/getDataModel'](scope);
     },
-    (n: string, o: string) => {
-      Vue.nextTick(() => {
-        provider.JReactivex.emit(scope, n);
-      });
-      Vue.nextTick(() => {
-        fnOnchange(provider.JForm, n, o);
-      });
+    (n: any, o: any) => {
+      if (!_.isEqual(n, o)) {
+        Vue.nextTick(() => {
+          provider.JReactivex.emit(scope, n);
+        });
+      }
     }
   );
 };
@@ -99,17 +127,15 @@ export const watchScope = (store: any, uiSchema: any, provider: any) => {
 export const scopesHandler = (
   uiSchema: any,
   provider: any,
-  fn: any,
-  fnPayload: any
-) => {
+  fn: any, // To set value
+  fnPayload?: any
+): Function => {
   const fireItemsBuilder = ['Dropdown', 'RadioGroup', 'CheckboxGroup'];
   const deps = dependencies(uiSchema);
   const scope = pathControlSchema(uiSchema.scope);
   const type = uiSchema.type;
-  const builder = itemsBuilder(uiSchema);
   const functionJoinFork = (payload: any) => {
     try {
-      let fnPromise: any;
       // Save payload from dependencies
       if (isFunction(fnPayload)) {
         fnPayload(payload);
@@ -118,45 +144,38 @@ export const scopesHandler = (
       if (indexOf(fireItemsBuilder, type) === -1) {
         return;
       }
-      //Execute the fn for verify the promise
-      if (isFunction(builder)) {
-        fnPromise = builder(_, payload);
-      }
-
-      if (
-        Boolean(fnPromise && typeof fnPromise.then === 'function') &&
-        indexOf(fireItemsBuilder, type) !== -1 &&
-        isFunction(builder)
-      ) {
-        fnPromise.then((res: any) => {
-          const newArray = res || [];
-          Vue.nextTick(() => {
-            if (isFunction(fn)) {
-              fn(newArray);
-            }
-          });
-        });
-      } else if (
-        indexOf(fireItemsBuilder, type) !== -1 &&
-        isFunction(builder)
-      ) {
-        fn(fnPromise);
-      }
+      //Recovery the data
+      getReactiveItems(
+        uiSchema,
+        provider.dataSources,
+        provider.store.getters['preview/getMultipleData'](deps)
+      ).then((res: any) => {
+        if (isFunction(fn)) {
+          fn(res);
+        }
+      });
     } catch (e: any) {
-      console.error('JFORM::: Error in js ' + scope + ':::');
+      console.error('JFORM::: Error in js ' + e + ':::');
     }
   };
 
   if (deps.length !== 0) {
-    provider.JReactivex.joinFork(deps, functionJoinFork, scope);
+    return provider.JReactivex.joinFork(deps, functionJoinFork, scope);
   } else {
     functionJoinFork({});
+    return new Function();
   }
 };
 
 export const dependencies = (uiSchema: any) => {
-  return uiSchema.options && uiSchema.options.dependencies
-    ? uiSchema.options.dependencies
+  return uiSchema.options &&
+    uiSchema.options.items &&
+    uiSchema.options.items.dataSource
+    ? _.sortedUniq(
+        uiSchema.options.items.dataSource.config.dataInputVariables.map(
+          (el: any) => el.src
+        )
+      )
     : [];
 };
 

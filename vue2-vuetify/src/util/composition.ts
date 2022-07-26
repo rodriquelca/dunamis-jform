@@ -259,7 +259,7 @@ export const useVuetifyControlExt = <
   const indexc = pathControlSchema(props.uischema.scope);
   const JForm = inject<any>('JForm');
   const store = inject<any>('store');
-  const JReactivex = inject<any>('JReactivex');
+  const JReactivex = inject<any>('jReactivex');
 
   // CREATE FUNCTION
   let fnOnchange = new Function();
