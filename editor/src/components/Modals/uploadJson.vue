@@ -90,6 +90,7 @@
 <script>
 import { defineComponent } from '@vue/composition-api';
 import _ from 'lodash';
+import { setDefaultTheme } from '../Composables/composableTheme';
 
 const UploadJson = defineComponent({
   name: 'upload-json',
@@ -164,21 +165,15 @@ const UploadJson = defineComponent({
         });
         if (themeUpload !== '') {
           this.$store.set('themes/updateTheme', themeUpload);
-          this.setDefaultTheme(themeUpload);
+          setDefaultTheme(this.$vuetify, themeUpload);
         } else {
-          this.setDefaultTheme(defaultTheme);
+          setDefaultTheme(this.$vuetify, defaultTheme);
         }
         this.dialog = false;
       } else {
         this.message = 'Json format not valid.';
         this.showToast = true;
       }
-    }
-    function setDefaultTheme(theme) {
-      Object.keys(theme.light).forEach((i) => {
-        this.$vuetify.theme.themes.light[i] = theme.light[i];
-      });
-      this.$vuetify.theme.currentTheme.name = theme.name;
     }
     function onDrop(e) {
       this.dragover = false;
@@ -200,7 +195,6 @@ const UploadJson = defineComponent({
       uploadFile,
       handleFileLoad,
       onDrop,
-      setDefaultTheme,
     };
   },
   methods: {},
