@@ -196,5 +196,21 @@ const PropertiesPanel = [
     options: {},
     items: [],
   } as PropertyPanel,
+  {
+    id: 'orientation',
+    type: 'dropdown',
+    name: 'Orientation',
+    options: {},
+    items: [
+      {
+        text: 'Horizontal',
+        id: 'horizontal',
+      },
+      {
+        text: 'Vertical',
+        id: 'vertical',
+      },
+    ],
+  } as PropertyPanel,
 ];
 export default PropertiesPanel;
