@@ -9,7 +9,7 @@ export { default as RatingControlRendererEditor } from './RatingControlRendererE
 export { default as SubmitButtonControlRendererEditor } from './SubmitButtonControlRendererEditor.vue';
 export { default as SuggestControlRendererEditor } from './SuggestControlRendererEditor.vue';
 export { default as TextAreaControlRendererEditor } from './TextAreaControlRendererEditor.vue';
-export { default as TextControlRenderer } from './TextControlRenderer.vue';
+export { default as TextControlRendererEditor } from './TextControlRendererEditor.vue';
 export { default as RichTextControlRendererEditor } from './RichTextControlRendererEditor.vue';
 
 import { entry as checkboxControlRendererEditorEntry } from './CheckboxControlRendererEditor.vue';
@@ -24,7 +24,7 @@ import { entry as richTextControlRendererEditorEntry } from './RichTextControlRe
 import { entry as submitButtonControlRendererEditorEntry } from './SubmitButtonControlRendererEditor.vue';
 import { entry as suggestControlRendererEditorEntry } from './SuggestControlRendererEditor.vue';
 import { entry as textAreaControlRendererEditorEntry } from './TextAreaControlRendererEditor.vue';
-import { entry as textControlRendererEntry } from './TextControlRenderer.vue';
+import { entry as textControlRendererEditorEntry } from './TextControlRendererEditor.vue';
 
 export const editorRenderers = [
   checkboxControlRendererEditorEntry,
@@ -39,5 +39,5 @@ export const editorRenderers = [
   submitButtonControlRendererEditorEntry,
   suggestControlRendererEditorEntry,
   textAreaControlRendererEditorEntry,
-  textControlRendererEntry,
+  textControlRendererEditorEntry,
 ];

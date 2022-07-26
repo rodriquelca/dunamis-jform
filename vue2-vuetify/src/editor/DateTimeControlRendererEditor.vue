@@ -5,7 +5,6 @@
     :isFocused="isFocused"
     :appliedOptions="appliedOptions"
   >
-    {{ control.data }}
     <v-menu
       ref="menu"
       v-model="menu"
@@ -16,20 +15,23 @@
     >
       <template v-slot:activator="{ on, attrs }">
         <v-text-field
-          :type="inputFormat"
           :id="control.id + '-input'"
           :class="styles.control.input"
           :disabled="!control.enabled"
           :autofocus="appliedOptions.focus"
-          :placeholder="control.uischema.options.placeholder"
+          :placeholder="placeholder"
           :label="computedLabel"
-          :hint="control.description"
+          hint=""
           :persistent-hint="persistentHint()"
           :required="control.required"
           :error-messages="control.errors"
-          :value="control.data"
+          :value="valueChangeFormat"
           @focus="isFocused = true"
-          @blur="isFocused = false"
+          @blur="
+            {
+              (isFocused = false), blurChangeFormat;
+            }
+          "
           append-icon="mdi-calendar"
           v-bind="attrs"
           v-on="on"
@@ -38,25 +40,17 @@
       </template>
       <v-date-picker
         v-model="date"
-        v-if="
-          control.schema.format == 'date' ||
-          control.schema.format == 'date-time'
-        "
-        @input="control.schema.format !== 'date-time' ? (menu = false) : true"
-        @change="onDateChange"
+        v-if="inputFormat == 'date' || inputFormat == 'date-time'"
+        @input="inputFormat !== 'date-time' ? (menu = false) : (menu = true)"
         no-title
         scrollable
       >
-        <v-btn text color="primary" @click="clearDate"> Clear </v-btn>
+        <v-btn text color="primary"> Clear </v-btn>
       </v-date-picker>
       <v-time-picker
         v-model="time"
-        v-if="
-          control.schema.format == 'time' ||
-          control.schema.format == 'date-time'
-        "
-        @input="control.schema.format !== 'date-time' ? (menu = false) : true"
-        @change="onTimeChange"
+        v-if="inputFormat == 'time' || inputFormat == 'date-time'"
+        @input="inputFormat !== 'date-time' ? (menu = false) : (menu = true)"
       ></v-time-picker>
     </v-menu>
   </control-wrapper>
@@ -93,81 +87,127 @@ const controlRenderer = defineComponent({
     ...rendererProps<ControlElement>(),
   },
   setup(props: RendererProps<ControlElement>) {
-    let data = ref('');
-    let inputValue = ref();
+    let date = ref(
+      new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+        .toISOString()
+        .substr(0, 10)
+    );
+    let dateFormatted = ref(
+      formatDate(
+        new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+          .toISOString()
+          .substr(0, 10)
+      )
+    );
+    let time = ref(
+      new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+        .toISOString()
+        .slice(11, 16)
+    );
+    let timeFormatted = ref(
+      formatTime(
+        new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+          .toISOString()
+          .slice(11, 16)
+      )
+    );
+    let dateTime = ref(
+      new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+        .toISOString()
+        .slice(0, 16)
+        .replace('T', ' ')
+    );
+    let dateTimeFormatted = ref(
+      formatDateTime.apply(this, [
+        new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+          .toISOString()
+          .slice(0, 16)
+          .replace('T', ' '),
+      ])
+    );
+
+    function formatDate(dt: any): string | null {
+      // MM-DD-YYYY format
+      if (!dt) return null;
+
+      const [year, month, day] = dt.split('-');
+      return `${month}/${day}/${year}`;
+    }
+    function parseDate(dt: any): string | null {
+      // ISO format
+      if (!dt) return null;
+
+      const [month, day, year] = dt.split('/');
+      return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+    }
+    // Time is saved the same way it is displayed
+    function formatTime(dt: any): string | null {
+      if (!dt) return null;
+      const [hours, minutes] = dt.split(':');
+      return `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
+    }
+    // To be displayed to the user
+    function formatDateTime(dt: string): string | null {
+      let [d, t] = dt.split(' ');
+      if (!dt) return null;
+
+      return formatDate(d) + ' ' + formatTime(t);
+    }
+    // To be saved in ISO format
+    function parseDateTime(d: any, t: any): string | null {
+      if (!d || !t) return null;
+
+      return parseDate(d) + 'T' + formatTime(t) + ':00Z';
+    }
+    function blurChangeFormat(this: any) {
+      if (this.inputFormat == 'date') {
+        this.date = parseDate(dateFormatted);
+      } else if (this.inputFormat == 'time') {
+        this.time = formatTime(timeFormatted);
+      } else if (this.inputFormat == 'date-time') {
+        this.dateTime = parseDateTime(this.date, this.time);
+      }
+    }
+
     return {
       ...useVuetifyControl(useJsonFormsControl(props)),
       menu: false,
-      data,
-      inputValue,
+      date,
+      dateFormatted,
+      time,
+      timeFormatted,
+      dateTime,
+      dateTimeFormatted,
+      formatDate,
+      parseDate,
+      formatTime,
+      formatDateTime,
+      parseDateTime,
+      blurChangeFormat,
     };
   },
+  watch: {
+    date() {
+      this.dateFormatted = this.formatDate(this.date);
+      if (this.inputFormat == 'date-time') {
+        this.dateTimeFormatted = this.formatDateTime(
+          this.date + ' ' + this.time
+        );
+      }
+    },
+    time() {
+      this.timeFormatted = this.formatTime(this.time);
+      if (this.inputFormat == 'date-time') {
+        this.dateTimeFormatted = this.formatDateTime(
+          this.date + ' ' + this.time
+        );
+      }
+    },
+    dateTime() {
+      this.dateTimeFormatted = this.formatDateTime(this.dateTime);
+    },
+  },
   computed: {
-    date: {
-      get(): string | null {
-        // const dateFormat = this.appliedOptions.dateSaveFormat ?? 'YYYY-MM-DD';
-        // const value = (this.control.data as string | undefined | null) || '';
-        // const parsedDate = parseDateTime(value, dateFormat);
-        // console.log('Parsed Date:', parsedDate);
-        // return parsedDate ? parsedDate.local().format(dateFormat) : '';
-        return this.control.data.split('T')[0];
-      },
-      set(newDate: string) {
-        // const saveFormat =
-        //   this.appliedOptions.dateTimeSaveFormat ?? 'YYYY-MM-DD';
-        // const parsedDate = parseDateTime(newDate, saveFormat);
-        // const result = parsedDate ? parsedDate.format(saveFormat) : newDate;
-        // console.log('Date:', result);
-        // if (this.inputFormat == 'date') {
-        this.onChange(newDate);
-        // }
-      },
-    },
-    time: {
-      get(): string | null {
-        // const timeFormat = this.appliedOptions.timeSaveFormat ?? 'HH:mm';
-        // const value = (this.control.data as string | undefined | null) || '';
-        // const parsedTime = parseDateTime(value, timeFormat);
-        // console.log('Parsed Time:', parsedTime);
-        // return parsedTime ? parsedTime.local().format(timeFormat) : '';
-        return this.control.data.split('T')[1].split('Z')[0];
-      },
-      set(newTime: string) {
-        // const saveFormat = this.appliedOptions.dateTimeSaveFormat ?? 'HH:mm:ss';
-        // const parsedTime = parseDateTime(newTime + ':00', saveFormat);
-        // const result = parsedTime ? parsedTime.format(saveFormat) : newTime;
-        // console.log('Time:', result);
-        // if (this.inputFormat == 'time') {
-        //   this.control.data = result;
-        this.onChange(newTime + ':00');
-        // }
-      },
-    },
-    // dataTime: {
-    //   get(): string | null | undefined {
-    //     const datetimeLocalFormat = 'YYYY-MM-DDTHH:mm:ss.SSS';
-    //     const saveFormat = this.appliedOptions.dateTimeSaveFormat ?? undefined;
-    //     const value = this.control.data as string | undefined | null;
-
-    //     const dateTime = parseDateTime(value, saveFormat);
-    //     return dateTime ? dateTime.local().format(datetimeLocalFormat) : value;
-    //   },
-    //   set(newData: string) {
-    //     return '';
-    //   },
-    // },
-    // dateTime(): string | null | undefined {
-    //   const datetimeFormats = [
-    //     'YYYY-MM-DDTHH:mm:ssZ',
-    //     'YYYY-MM-DD',
-    //     'HH:mm:ss',
-    //   ];
-    //   const value = (this.date ?? '') + (this.time ?? '');
-    //   const dateTime = parseDateTime(value, datetimeFormats);
-    //   const result = dateTime?.format(datetimeFormats[0]) ?? value;
-    //   console.log(result);
-    //   return result;
-    // },
     hint(): string {
       return this.control.uischema.options?.hint ?? '';
     },
@@ -175,36 +215,17 @@ const controlRenderer = defineComponent({
       return this.control.uischema.options?.placeholder ?? '';
     },
     inputFormat(): string | undefined {
-      return this.control.schema.format === 'date-time'
-        ? 'datetime-local'
-        : this.control.schema.format;
+      return this.control.schema?.format ?? '';
     },
-  },
-  methods: {
-    clearDate() {
-      this.menu = false;
-      this.date = null;
-    },
-    onDateChange(newDate: any) {
-      if (this.inputFormat == 'datetime-local') {
-        if (this.data == '') {
-          this.data = newDate + 'T00:00:00Z';
-          this.onChange(this.data);
-        } else {
-          let x = this.data.split('T');
-          this.onChange(newDate + 'T' + x[1]);
-        }
-      }
-    },
-    onTimeChange(newTime: any) {
-      if (this.inputFormat == 'datetime-local') {
-        if (this.data == '') {
-          this.data = '1999-01-01T' + newTime + ':00Z';
-          this.onChange(this.data);
-        } else {
-          let x = this.data.split('T');
-          this.onChange(x[0] + 'T' + newTime + ':00Z');
-        }
+    valueChangeFormat(): string | null {
+      if (this.inputFormat == 'date') {
+        return this.dateFormatted;
+      } else if (this.inputFormat == 'time') {
+        return this.timeFormatted;
+      } else if (this.inputFormat == 'date-time') {
+        return this.dateTimeFormatted;
+      } else {
+        return null;
       }
     },
   },
