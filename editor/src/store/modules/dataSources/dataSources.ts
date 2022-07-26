@@ -294,7 +294,7 @@ const state: DataSourcesState = {
         method: 'POST',
         params: {},
         headers: {
-          authorization: 'Bearer 02efd5dd7fc793ffafe643038fb9837f28df1521',
+          authorization: 'Bearer f7ed160dd74cf67db966f9c2f1b04b189af199cd',
           'content-type': 'application/json',
         },
         body: {
