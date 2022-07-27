@@ -193,26 +193,27 @@ export const useVuetifyControlExt = <
   input: I,
   adaptValue: (target: any) => any = (v) => v
 ) => {
-  const JForm = inject<any>('JForm');
   const store = inject<any>('store');
-  const JReactivex = inject<any>('JReactivex');
+  const JReactivex = inject<any>('jReactivex');
   const serviceProvider = inject<any>('serviceProvider');
   const dataSources = serviceProvider.get('dataSources');
   const appliedOptions = useControlAppliedOptions(input);
 
   const controlBuilder = reactive({
     items: [],
-    itemsBuilder: Controlbuilder.itemsBuilder(input.control.value.uischema),
-    scope: Controlbuilder.pathControlSchema(input.control.value.uischema.scope),
-    payload: {},
   });
 
+  /*
   Controlbuilder.items({
     uischema: input.control.value.uischema,
     dataSources,
+    //Handler to return dependents fields values
+    getData: (arr: any) => {
+      store.getters['preview/getMultipleData'](arr);
+    },
   }).then((res: any) => {
     controlBuilder.items = res;
-  });
+  });*/
 
   const isFocused = ref(false);
   const onChange = (value: any) => {
@@ -242,23 +243,19 @@ export const useVuetifyControlExt = <
 
   //Watch for execute onchange
   const unwatch = Controlbuilder.watchScope(store, props.uischema, {
-    JForm,
     JReactivex,
   });
 
-  Controlbuilder.scopesHandler(
+  const unregister = Controlbuilder.scopesHandler(
     props.uischema,
     {
       JReactivex,
-      JForm,
+      dataSources,
+      store,
     },
     // Save new items
     (narray: any) => {
       controlBuilder.items = narray;
-    },
-    //Save payload fom dependencies
-    (payload: any) => {
-      controlBuilder.payload = payload;
     }
   );
 
@@ -269,10 +266,12 @@ export const useVuetifyControlExt = <
   onBeforeUnmount(() => {});
   onUnmounted(() => {
     unwatch();
+    unregister();
   });
   onActivated(() => {});
   onDeactivated(() => {
     unwatch();
+    unregister();
   });
   onErrorCaptured(() => {});
   return {
