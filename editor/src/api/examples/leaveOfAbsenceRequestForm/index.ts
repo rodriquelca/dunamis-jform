@@ -1,6 +1,7 @@
 import schema from './schema.json';
 import uischema from './uischema.json';
 import data from './data.json';
+import theme from './theme.json';
 
 import { UISchemaElement, JsonSchema } from '@jsonforms/core';
 const picture = 'leaveOfAbsenceRequestForm/picture.png';
@@ -9,4 +10,5 @@ export const input: {
   uischema: UISchemaElement;
   data: any;
   picture: any;
-} = { schema, uischema, data, picture };
+  theme: any;
+} = { schema, uischema, data, picture, theme };

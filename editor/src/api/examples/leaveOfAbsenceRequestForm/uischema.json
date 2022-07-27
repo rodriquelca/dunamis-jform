@@ -105,16 +105,6 @@
               }
             },
             "items": {
-              "dataSource": {
-                "id": "api-1",
-                "name": "Processmaker",
-                "type": "api",
-                "config": {
-                  "value": "value",
-                  "label": "text",
-                  "dataInputVariables": []
-                }
-              },
               "local": []
             },
             "request": null,

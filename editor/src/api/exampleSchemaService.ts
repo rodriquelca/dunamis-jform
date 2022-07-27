@@ -9,7 +9,9 @@ import { SchemaService } from './schemaService';
 
 const exampleUischema = undefined;
 const exampleSchema = undefined;
+const exampleTheme = undefined;
 export class ExampleSchemaService implements SchemaService {
   getSchema = async () => exampleSchema;
   getUiSchema = async () => exampleUischema;
+  getTheme = async () => exampleTheme;
 }

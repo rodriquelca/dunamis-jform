@@ -212,7 +212,8 @@ const Templates = defineComponent({
         modified: new Date().toJSON().slice(0, 10),
         created: new Date().toJSON().slice(0, 10),
       });
-      this.$emit('preview', {});
+      this.$store.set('themes/updateTheme', item.input.theme);
+      this.$emit('preview', item);
     },
     createFromTemplate: function (template) {
       store.dispatch('dashboard/addForm', {

@@ -39,7 +39,7 @@
           </div>
 
           <v-scroll-y-transition mode="out-in">
-            <TemplatePreview :key="key" />
+            <TemplatePreview :key="key" :theme="theme" />
           </v-scroll-y-transition>
         </v-col>
       </v-row>
@@ -55,6 +55,7 @@ import TemplatePreview from './TemplatePreview.vue';
 import store from '../../store';
 import { v4 as uuid } from 'uuid';
 import { useExportSchema, useExportUiSchema } from '../../util';
+import { setDefaultTheme } from '../../components/Composables/composableTheme';
 
 const MainPanelDashboard = defineComponent({
   name: 'MainPanelDashboard',
@@ -71,10 +72,12 @@ const MainPanelDashboard = defineComponent({
   },
   setup(props: any) {
     let key = ref(0);
-    let previewTemplate = () => {
+    let theme = ref({});
+    let previewTemplate = (item: any) => {
       key.value++;
+      theme = item.input.theme;
     };
-    return { previewTemplate, key };
+    return { previewTemplate, key, theme };
   },
 
   methods: {
@@ -103,6 +106,8 @@ const MainPanelDashboard = defineComponent({
         mainPanel,
         actionsBar,
       });
+      let theme = this.$store.getters['themes/getThemeSelected'];
+      setDefaultTheme(this.$vuetify, theme);
     },
   },
 });
