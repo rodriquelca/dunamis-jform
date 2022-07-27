@@ -129,7 +129,7 @@ export const scopesHandler = (
   provider: any,
   fn: any, // To set value
   fnPayload?: any
-): Function => {
+) => {
   const fireItemsBuilder = ['Dropdown', 'RadioGroup', 'CheckboxGroup'];
   const deps = dependencies(uiSchema);
   const scope = pathControlSchema(uiSchema.scope);

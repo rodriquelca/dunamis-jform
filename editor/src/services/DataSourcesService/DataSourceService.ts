@@ -127,7 +127,8 @@ export class DataSourceService implements Service {
   }
   replaceBraces(value: any, data: any) {
     /* eslint-disable */
-    const res = value.match(/{{\s*[A-Z\.\_a-z0-9]+\s*}}/g);
+    const expression = new RegExp(/{{\s*[A-Z\.\_a-z0-9]+\s*}}/g);
+    const res = value.match(expression);
     let val = value;
     /* eslint-enable */
     if (res) {
