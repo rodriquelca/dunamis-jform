@@ -65,8 +65,21 @@ const PropertiesPanelDynamic = defineComponent({
         context.emit('backPanel', dt);
       },
       visible(dt: any) {
+        // TODO: Verify when implementation cases with visible increase
         if (dt) {
-          properties.value = FieldProperties.get(dt);
+          switch (dt) {
+            case 'date':
+              properties.value = FieldProperties.get('DatePicker');
+              break;
+            case 'time':
+              properties.value = FieldProperties.get('TimePicker');
+              break;
+            case 'date-time':
+              properties.value = FieldProperties.get('DateTime');
+              break;
+            default:
+              break;
+          }
         }
       },
     };

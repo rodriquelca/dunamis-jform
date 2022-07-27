@@ -83,18 +83,15 @@ const PropertiesPanel = [
     items: [
       {
         text: 'Date',
-        id: 'DatePicker',
-        format: 'date',
+        id: 'date',
       },
       {
         text: 'Time',
-        id: 'TimePicker',
-        format: 'time',
+        id: 'time',
       },
       {
         text: 'Date + Time',
-        id: 'DateTime',
-        format: 'date-time',
+        id: 'date-time',
       },
     ],
   } as PropertyPanel,
