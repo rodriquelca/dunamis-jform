@@ -91,29 +91,6 @@ const controlRenderer = defineComponent({
   watch: {
     search() {
       if (this.isLoading) return;
-      //let prom, clonePayload;
-      //Verify if the controlBuilder.itemsbuilder is a function
-      /*if (isFunction(this.controlBuilder.itemsBuilder)) {
-        this.isLoading = true;
-        clonePayload = {
-          ..._.clone(this.controlBuilder.payload),
-          ...{ [this.controlBuilder.scope]: query },
-        };
-        prom = this.controlBuilder.itemsBuilder(_, clonePayload);
-        if (prom && typeof prom.then === 'function') {
-          prom
-            .then((res: any) => {
-              this.controlBuilder.items = res;
-            })
-            .catch((err: any) => {
-              console.error(err);
-            })
-            .finally(() => (this.isLoading = false));
-        } else {
-          this.controlBuilder.items = prom;
-          this.isLoading = false;
-        }
-      }*/
     },
   },
 });
