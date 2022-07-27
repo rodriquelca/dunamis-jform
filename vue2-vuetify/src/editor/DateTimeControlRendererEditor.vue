@@ -28,9 +28,8 @@
           :value="valueChangeFormat"
           @focus="isFocused = true"
           @blur="
-            {
-              (isFocused = false), blurChangeFormat;
-            }
+            blurChangeFormat();
+            isFocused = false;
           "
           append-icon="mdi-calendar"
           v-bind="attrs"
@@ -129,14 +128,12 @@ const controlRenderer = defineComponent({
     function formatDate(dt: any): string | null {
       // MM-DD-YYYY format
       if (!dt) return null;
-
       const [year, month, day] = dt.split('-');
       return `${month}/${day}/${year}`;
     }
     function parseDate(dt: any): string | null {
       // ISO format
       if (!dt) return null;
-
       const [month, day, year] = dt.split('/');
       return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
     }
@@ -150,22 +147,27 @@ const controlRenderer = defineComponent({
     function formatDateTime(dt: string): string | null {
       let [d, t] = dt.split(' ');
       if (!dt) return null;
-
       return formatDate(d) + ' ' + formatTime(t);
     }
     // To be saved in ISO format
     function parseDateTime(d: any, t: any): string | null {
       if (!d || !t) return null;
-
       return parseDate(d) + 'T' + formatTime(t) + ':00Z';
     }
     function blurChangeFormat(this: any) {
       if (this.inputFormat == 'date') {
-        this.date = parseDate(dateFormatted);
+        this.date = parseDate(
+          'value' in dateFormatted ? dateFormatted.value : dateFormatted
+        );
       } else if (this.inputFormat == 'time') {
-        this.time = formatTime(timeFormatted);
+        this.time = formatTime(
+          'value' in timeFormatted ? timeFormatted.value : timeFormatted
+        );
       } else if (this.inputFormat == 'date-time') {
-        this.dateTime = parseDateTime(this.date, this.time);
+        this.dateTime = parseDateTime(
+          'value' in dateFormatted ? dateFormatted.value : dateFormatted,
+          'value' in timeFormatted ? timeFormatted.value : timeFormatted
+        );
       }
     }
 

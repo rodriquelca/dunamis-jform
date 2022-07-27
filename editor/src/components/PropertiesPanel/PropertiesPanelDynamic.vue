@@ -174,6 +174,10 @@ const PropertiesPanel = defineComponent({
         fieldData['hint'] = this.uiElement.options
           ? this.uiElement.options.hint
           : null;
+        // Get the format property for DateTime
+        fieldData['format'] = this.uiElement.options.format
+          ? this.uiElement.options.format
+          : 'date-time';
       }
       this.generalData = {
         type: this.uiElement.type,
@@ -320,7 +324,7 @@ const PropertiesPanel = defineComponent({
       }
       // format for DateTime
       if (data.format) {
-        this.$store.dispatch('app/updateSchemaElement', {
+        this.$store.dispatch('app/updateUISchemaElementOption', {
           elementUUID: this.uiElement.uuid,
           changedProperties: { format: data.format.format },
         });
