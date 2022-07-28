@@ -6,6 +6,7 @@
         :key="index"
         :config="property"
         v-model="data[property.id]"
+        @visible="visible"
         @change="getData"
         @extendPanel="extendPanel"
         @backPanel="backPanel"
@@ -39,7 +40,7 @@ const PropertiesPanelDynamic = defineComponent({
   emit: ['backPanel'],
   setup(props: any, context: any) {
     let type = ref(props.config.type);
-    let properties = FieldProperties.get(type.value);
+    let properties = ref(FieldProperties.get(type.value));
     let formatProperties = (properties: any, data: any) => {
       let res = {};
       properties.forEach((element) => {
@@ -62,6 +63,24 @@ const PropertiesPanelDynamic = defineComponent({
       },
       backPanel(dt: any) {
         context.emit('backPanel', dt);
+      },
+      visible(dt: any) {
+        // TODO: Verify when implementation cases with visible increase
+        if (dt) {
+          switch (dt) {
+            case 'date':
+              properties.value = FieldProperties.get('DatePicker');
+              break;
+            case 'time':
+              properties.value = FieldProperties.get('TimePicker');
+              break;
+            case 'date-time':
+              properties.value = FieldProperties.get('DateTime');
+              break;
+            default:
+              break;
+          }
+        }
       },
     };
   },

@@ -160,8 +160,6 @@ const PropertiesPanel = defineComponent({
         fieldData['readOnly'] = elementSchema.schema.readOnly
           ? elementSchema.schema.readOnly
           : false;
-        // Get the Type property
-        fieldData['type'] = this.uiElement.type ? this.uiElement.type : '';
         // Get the items property
         fieldData['items'] = this.uiElement.options
           ? this.uiElement.options.items
@@ -174,6 +172,10 @@ const PropertiesPanel = defineComponent({
         fieldData['hint'] = this.uiElement.options
           ? this.uiElement.options.hint
           : null;
+        // Get the format property for DateTime
+        fieldData['format'] = elementSchema.schema
+          ? elementSchema.schema.format
+          : 'date-time';
       }
       this.generalData = {
         type: this.uiElement.type,
@@ -279,7 +281,7 @@ const PropertiesPanel = defineComponent({
         this.$store.dispatch('app/updateUISchemaElementOption', {
           elementUUID: this.uiElement.uuid,
           changedProperties: {
-            orientation: data.orientation.id ?? 'horizontal',
+            orientation: data.orientation ?? 'horizontal',
           },
         });
       }
@@ -316,6 +318,13 @@ const PropertiesPanel = defineComponent({
         this.$store.dispatch('app/updateUISchemaElementOption', {
           elementUUID: this.uiElement.uuid,
           changedProperties: { placeholder: data.placeholder },
+        });
+      }
+      // format for DateTime
+      if (data.format) {
+        this.$store.dispatch('app/updateSchemaElement', {
+          elementUUID: this.uiElement.uuid,
+          changedProperties: { format: data.format },
         });
       }
       // default value -> to options

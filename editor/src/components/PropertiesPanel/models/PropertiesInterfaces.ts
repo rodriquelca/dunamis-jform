@@ -76,6 +76,26 @@ const PropertiesPanel = [
     items: [],
   } as PropertyPanel,
   {
+    id: 'format',
+    type: 'dropdown',
+    name: 'Format',
+    options: {},
+    items: [
+      {
+        text: 'Date',
+        id: 'date',
+      },
+      {
+        text: 'Time',
+        id: 'time',
+      },
+      {
+        text: 'Date + Time',
+        id: 'date-time',
+      },
+    ],
+  } as PropertyPanel,
+  {
     id: 'validation',
     type: 'text',
     name: 'Validation',
