@@ -165,7 +165,7 @@ const PropertiesPanel = defineComponent({
           ? this.uiElement.options.items
           : null;
         // Get the orientation property
-        fieldData['orientation'] = this.uiElement.options.orientation
+        fieldData['orientation'] = this.uiElement.options
           ? this.uiElement.options.orientation
           : 'horizontal';
         // Get the hint property
@@ -281,7 +281,7 @@ const PropertiesPanel = defineComponent({
         this.$store.dispatch('app/updateUISchemaElementOption', {
           elementUUID: this.uiElement.uuid,
           changedProperties: {
-            orientation: data.orientation.id ?? 'horizontal',
+            orientation: data.orientation ?? 'horizontal',
           },
         });
       }
