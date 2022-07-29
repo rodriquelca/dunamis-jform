@@ -153,6 +153,7 @@ const Templates = defineComponent({
         mainPanel,
         actionsBar,
       });
+      store.dispatch('themes/setTheme');
       return;
     };
 
