@@ -18,7 +18,7 @@
       :error-messages="control.errors"
       :indeterminate="control.data === undefined"
       :value="control.data"
-      :input-value="control.data"
+      :input-value="checkedDefault"
       @change="onChange"
       @focus="isFocused = true"
       @blur="isFocused = false"
@@ -73,6 +73,9 @@ const controlRenderer = defineComponent({
     },
     placeholder(): string {
       return this.control.uischema.options?.placeholder ?? '';
+    },
+    checkedDefault(): boolean {
+      return this.control.uischema.options?.checkedDefault ?? false;
     },
   },
 });

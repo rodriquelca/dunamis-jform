@@ -5,8 +5,9 @@
     filled
     no-gutters
     class="caption"
-    :value="value"
+    v-model="val"
     :input-value="val"
+    @input="val"
     @change="twoBind"
   >
     <template v-slot:label>
@@ -18,21 +19,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent, ref } from '@vue/composition-api';
 import { dynamicPropertyDefault } from '../PropertiesPanelComp';
 const CheckboxProp = defineComponent({
   name: 'CheckboxProp',
   emits: ['input', 'change'],
   props: ['value', 'config'],
   setup(props: any, context: any) {
+    let val = ref(props.value ?? false);
     return {
       ...dynamicPropertyDefault(props, context),
+      val,
     };
-  },
-  computed: {
-    val() {
-      return this.$props.value ?? false;
-    },
   },
 });
 export default CheckboxProp;

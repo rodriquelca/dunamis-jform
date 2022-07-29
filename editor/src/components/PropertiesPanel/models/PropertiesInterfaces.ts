@@ -38,6 +38,13 @@ const PropertiesPanel = [
     items: [],
   } as PropertyPanel,
   {
+    id: 'checkedDefault',
+    type: 'checkbox',
+    name: 'Checked by Default',
+    options: {},
+    items: [],
+  } as PropertyPanel,
+  {
     id: 'hint',
     type: 'text',
     name: 'Hint',
@@ -161,7 +168,7 @@ const PropertiesPanel = [
   {
     id: 'readOnly',
     type: 'checkbox',
-    name: 'Variable',
+    name: 'Read Only',
     options: {},
     items: [],
   } as PropertyPanel,
