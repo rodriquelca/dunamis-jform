@@ -73,11 +73,15 @@ const controlRenderer = defineComponent({
     VTooltip,
   },
   setup(props: RendererProps<ControlElement>) {
-    return useVuetifyControlExt(
-      props,
-      useJsonFormsControl(props),
-      (value) => value || undefined
-    );
+    let delay: any = null;
+    return {
+      ...useVuetifyControlExt(
+        props,
+        useJsonFormsControl(props),
+        (value) => value || undefined
+      ),
+      delay,
+    };
   },
   computed: {
     hint(): string {
@@ -89,14 +93,25 @@ const controlRenderer = defineComponent({
   },
   methods: {},
   watch: {
-    search() {
-      if (this.isLoading) return;
+    search(query: any) {
+      let oldVal: any = null;
+      if (this.control.data) {
+        oldVal = this.control.data.label;
+      }
+      if (this.delay) {
+        clearTimeout(this.delay);
+      }
+      this.delay = setTimeout(() => {
+        if (oldVal !== query) {
+          this.manualHandlerDependencies(query);
+        }
+      }, 800);
     },
   },
 });
 export default controlRenderer;
 export const entry: JsonFormsRendererRegistryEntry = {
   renderer: controlRenderer,
-  tester: rankWith(9, uiTypeIs('Suggest')),
+  tester: rankWith(8, uiTypeIs('Suggest')),
 };
 </script>

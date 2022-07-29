@@ -203,18 +203,6 @@ export const useVuetifyControlExt = <
     items: [],
   });
 
-  /*
-  Controlbuilder.items({
-    uischema: input.control.value.uischema,
-    dataSources,
-    //Handler to return dependents fields values
-    getData: (arr: any) => {
-      store.getters['preview/getMultipleData'](arr);
-    },
-  }).then((res: any) => {
-    controlBuilder.items = res;
-  });*/
-
   const isFocused = ref(false);
   const onChange = (value: any) => {
     input.handleChange(input.control.value.path, adaptValue(value));
@@ -259,6 +247,19 @@ export const useVuetifyControlExt = <
     }
   );
 
+  const manualHandlerDependencies = Controlbuilder.manualHandlerDependencies(
+    props.uischema,
+    {
+      JReactivex,
+      dataSources,
+      store,
+    },
+    // Save new items
+    (narray: any) => {
+      controlBuilder.items = narray;
+    }
+  );
+
   onBeforeMount(() => {});
   onMounted(() => {});
   onBeforeUpdate(() => {});
@@ -284,5 +285,6 @@ export const useVuetifyControlExt = <
     persistentHint,
     computedLabel,
     controlBuilder,
+    manualHandlerDependencies,
   };
 };
