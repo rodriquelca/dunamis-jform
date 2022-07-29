@@ -176,6 +176,10 @@ const PropertiesPanel = defineComponent({
         fieldData['format'] = elementSchema.schema
           ? elementSchema.schema.format
           : 'date-time';
+        // Get the checkedDefault property
+        fieldData['checkedDefault'] = this.uiElement.options
+          ? this.uiElement.options.checkedDefault
+          : false;
       }
       this.generalData = {
         type: this.uiElement.type,
@@ -211,7 +215,7 @@ const PropertiesPanel = defineComponent({
         });
       }
       // readOnly
-      if (data.readOnly) {
+      if (typeof data.readOnly !== 'undefined') {
         this.$store.dispatch('app/updateSchemaReadOnly', {
           elementUUID: this.uiElement.uuid,
           readOnly: data.readOnly,
@@ -332,6 +336,13 @@ const PropertiesPanel = defineComponent({
         this.$store.dispatch('app/updateUISchemaElementOption', {
           elementUUID: this.uiElement.uuid,
           changedProperties: { defaultValue: data.defaultValue },
+        });
+      }
+      // checkedDefault -> to options
+      if (typeof data.checkedDefault !== 'undefined') {
+        this.$store.dispatch('app/updateUISchemaElementOption', {
+          elementUUID: this.uiElement.uuid,
+          changedProperties: { checkedDefault: data.checkedDefault },
         });
       }
       this.generalData['data'] = data;
