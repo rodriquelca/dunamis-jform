@@ -2,6 +2,9 @@ const actions = {
   addTheme: ({ commit }: any, data: any) => {
     commit('ADD_THEME', data);
   },
+  setTheme: ({ commit }: any, data: any) => {
+    commit('SET_UPDATE_THEME', data);
+  },
   updateTheme: ({ commit }: any, data: any) => {
     commit('ADD_THEME', data);
   },
