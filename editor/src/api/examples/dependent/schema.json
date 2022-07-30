@@ -16,6 +16,21 @@
       "type": "object",
       "description": "",
       "i18n": "location"
+    },
+    "countrys": {
+      "type": "object",
+      "description": "",
+      "i18n": "countrys"
+    },
+    "subdivisions": {
+      "type": "object",
+      "description": "",
+      "i18n": "subdivisions"
+    },
+    "locations": {
+      "type": "object",
+      "description": "",
+      "i18n": "locations"
     }
   }
 }

@@ -124,22 +124,13 @@ export const watchScope = (store: any, uiSchema: any, provider: any) => {
  * @param provider
  * @param fn
  */
-export const scopesHandler = (
-  uiSchema: any,
-  provider: any,
-  fn: any, // To set value
-  fnPayload?: any
-) => {
+export const scopesHandler = (uiSchema: any, provider: any, fn: any) => {
   const fireItemsBuilder = ['Dropdown', 'RadioGroup', 'CheckboxGroup'];
   const deps = dependencies(uiSchema);
   const scope = pathControlSchema(uiSchema.scope);
   const type = uiSchema.type;
-  const functionJoinFork = (payload: any) => {
+  const functionJoinFork = () => {
     try {
-      // Save payload from dependencies
-      if (isFunction(fnPayload)) {
-        fnPayload(payload);
-      }
       //Not continue with the execution when is suggest control
       if (indexOf(fireItemsBuilder, type) === -1) {
         return;
@@ -162,9 +153,39 @@ export const scopesHandler = (
   if (deps.length !== 0) {
     return provider.JReactivex.joinFork(deps, functionJoinFork, scope);
   } else {
-    functionJoinFork({});
+    functionJoinFork();
     return new Function();
   }
+};
+
+/**
+ * @param uiSchema
+ * @param provider
+ * @param fn
+ */
+export const manualHandlerDependencies = (
+  uiSchema: any,
+  provider: any,
+  fn: any
+) => {
+  const deps = dependencies(uiSchema);
+  const scope = pathControlSchema(uiSchema.scope);
+  return (payload: any) => {
+    debugger;
+    const data = provider.store.getters['preview/getMultipleData'](deps);
+    data[scope] = payload;
+    try {
+      getReactiveItems(uiSchema, provider.dataSources, data).then(
+        (res: any) => {
+          if (isFunction(fn)) {
+            fn(res);
+          }
+        }
+      );
+    } catch (e: any) {
+      console.error('JFORM::: Error in js ' + e + ':::');
+    }
+  };
 };
 
 export const dependencies = (uiSchema: any) => {

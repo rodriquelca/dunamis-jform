@@ -80,6 +80,90 @@
           "local": []
         }
       }
+    },
+    {
+      "type": "Suggest",
+      "scope": "#/properties/countrys",
+      "options": {
+        "items": {
+          "dataSource": {
+            "id": "api-11",
+            "name": "Processmaker Countries Suggest",
+            "type": "api",
+            "config": {
+              "value": "value",
+              "label": "text",
+              "dataInputVariables": [
+                {
+                  "dest": "countrys",
+                  "src": "countrys"
+                }
+              ]
+            }
+          },
+          "local": []
+        }
+      }
+    },
+    {
+      "type": "Suggest",
+      "scope": "#/properties/subdivisions",
+      "options": {
+        "items": {
+          "dataSource": {
+            "id": "api-subs",
+            "name": "Processmaker Subdivision",
+            "type": "api",
+            "config": {
+              "value": "value",
+              "label": "text",
+              "dataInputVariables": [
+                {
+                  "dest": "countrys",
+                  "src": "countrys"
+                },
+                {
+                  "dest": "subdivisions",
+                  "src": "subdivisions"
+                }
+              ]
+            }
+          },
+          "local": []
+        }
+      }
+    },
+    {
+      "type": "Suggest",
+      "scope": "#/properties/locations",
+      "options": {
+        "items": {
+          "dataSource": {
+            "id": "api-locs",
+            "name": "Processmaker Location Suggest",
+            "type": "api",
+            "config": {
+              "value": "value",
+              "label": "text",
+              "dataInputVariables": [
+                {
+                  "dest": "countrys",
+                  "src": "countrys"
+                },
+                {
+                  "dest": "subdivisions",
+                  "src": "subdivisions"
+                },
+                {
+                  "dest": "locations",
+                  "src": "locations"
+                }
+              ]
+            }
+          },
+          "local": []
+        }
+      }
     }
   ]
 }
