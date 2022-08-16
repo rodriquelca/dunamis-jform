@@ -5,77 +5,82 @@
     :isFocused="isFocused"
     :appliedOptions="appliedOptions"
   >
-    <v-hover v-slot="{ hover }">
-      <v-combobox
-        v-if="suggestions !== undefined"
-        v-disabled-icon-focus
-        :id="control.id + '-input'"
-        :class="styles.control.input"
-        :disabled="!control.enabled"
-        :autofocus="appliedOptions.focus"
-        :placeholder="placeholder"
-        :label="computedLabel"
-        :hint="control.description"
-        :persistent-hint="persistentHint()"
-        :required="control.required"
-        :error-messages="control.errors"
-        :maxlength="
-          appliedOptions.restrict ? control.schema.maxLength : undefined
-        "
-        :counter="
-          control.schema.maxLength !== undefined
-            ? control.schema.maxLength
-            : undefined
-        "
-        :clearable="hover"
-        :value="control.data"
-        :items="suggestions"
-        hide-no-data
-        @change="onChange"
-        @focus="isFocused = true"
-        @blur="isFocused = false"
-      />
-      <v-text-field
-        v-else
-        v-disabled-icon-focus
-        :id="control.id + '-input'"
-        :class="styles.control.input"
-        :disabled="!control.enabled"
-        :autofocus="appliedOptions.focus"
-        :placeholder="placeholder"
-        :label="computedLabel"
-        :hint="control.hint"
-        :persistent-hint="persistentHint()"
-        :required="control.required"
-        :error-messages="control.errors"
-        :value="
-          control.data
-            ? control.data
-            : control.uischema.options.defaultValue || ''
-        "
-        :maxlength="
-          appliedOptions.restrict ? control.schema.maxLength : undefined
-        "
-        :counter="
-          control.schema.maxLength !== undefined
-            ? control.schema.maxLength
-            : undefined
-        "
-        :clearable="hover"
-        :rules="validationRegExp"
-        @change="onChange"
-        @focus="isFocused = true"
-        @blur="isFocused = false"
-        v-mask="inputMask"
-      >
-        <v-tooltip v-if="hint && hint != ''" slot="append" top>
-          <template v-slot:activator="{ on }">
-            <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
-          </template>
-          <span class="">{{ hint }}</span>
-        </v-tooltip>
-      </v-text-field>
-    </v-hover>
+    <CustomControlWrapper
+      v-bind="{ labelOrientation, computedLabel, labelCols }"
+    >
+      <v-hover v-slot="{ hover }">
+        <v-combobox
+          v-if="suggestions !== undefined"
+          v-disabled-icon-focus
+          :id="control.id + '-input'"
+          :class="styles.control.input"
+          :disabled="!control.enabled"
+          :autofocus="appliedOptions.focus"
+          :placeholder="placeholder"
+          :label="computedLabel"
+          :hint="control.description"
+          :persistent-hint="persistentHint()"
+          :required="control.required"
+          :error-messages="control.errors"
+          :maxlength="
+            appliedOptions.restrict ? control.schema.maxLength : undefined
+          "
+          :counter="
+            control.schema.maxLength !== undefined
+              ? control.schema.maxLength
+              : undefined
+          "
+          :clearable="hover"
+          :value="control.data"
+          :items="suggestions"
+          hide-no-data
+          @change="onChange"
+          @focus="isFocused = true"
+          @blur="isFocused = false"
+        />
+        <v-text-field
+          v-else
+          v-disabled-icon-focus
+          :id="control.id + '-input'"
+          :class="styles.control.input"
+          :disabled="!control.enabled"
+          :autofocus="appliedOptions.focus"
+          :placeholder="placeholder"
+          :persistent-placeholder="labelOrientation() == 'inherit'"
+          :label="labelOrientation() == 'inherit' ? computedLabel : null"
+          :hint="control.hint"
+          :persistent-hint="persistentHint()"
+          :required="control.required"
+          :error-messages="control.errors"
+          :value="
+            control.data
+              ? control.data
+              : control.uischema.options.defaultValue || ''
+          "
+          :maxlength="
+            appliedOptions.restrict ? control.schema.maxLength : undefined
+          "
+          :counter="
+            control.schema.maxLength !== undefined
+              ? control.schema.maxLength
+              : undefined
+          "
+          :clearable="hover"
+          :rules="validationRegExp"
+          @change="onChange"
+          @focus="isFocused = true"
+          @blur="isFocused = false"
+          v-mask="inputMask"
+        >
+          <v-tooltip v-if="hint && hint != ''" slot="append" top>
+            <template v-slot:activator="{ on }">
+              <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
+            </template>
+            <span class="">{{ hint }}</span>
+          </v-tooltip>
+        </v-text-field>
+      </v-hover>
+    </CustomControlWrapper>
   </control-wrapper>
 </template>
 
@@ -100,6 +105,7 @@ import isArray from 'lodash/isArray';
 import every from 'lodash/every';
 import isString from 'lodash/isString';
 import { mask } from '@titou10/v-mask';
+import CustomControlWrapper from '../controls/CustomControlWrapper.vue';
 
 const controlRenderer = defineComponent({
   name: 'string-control-renderer',
@@ -110,6 +116,7 @@ const controlRenderer = defineComponent({
     VCombobox,
     VIcon,
     VTooltip,
+    CustomControlWrapper,
   },
   directives: {
     DisabledIconFocus,

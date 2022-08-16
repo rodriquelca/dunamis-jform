@@ -5,31 +5,36 @@
     :isFocused="isFocused"
     :appliedOptions="appliedOptions"
   >
-    <v-hover v-slot="{ hover }">
-      <v-autocomplete
-        :value="control.data"
-        :items="controlBuilder.items"
-        :loading="isLoading"
-        hide-no-data
-        :search-input.sync="search"
-        item-text="label"
-        item-value="value"
-        :label="computedLabel"
-        :placeholder="placeholder"
-        prepend-icon="mdi-database-search"
-        return-object
-        :required="control.required"
-        :clearable="hover"
-        @input="onChange"
-      >
-        <v-tooltip v-if="hint && hint != ''" slot="append-outer" top>
-          <template v-slot:activator="{ on }">
-            <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
-          </template>
-          <span class="">{{ hint }}</span>
-        </v-tooltip>
-      </v-autocomplete>
-    </v-hover>
+    <CustomControlWrapper
+      v-bind="{ labelOrientation, computedLabel, labelCols }"
+    >
+      <v-hover v-slot="{ hover }">
+        <v-autocomplete
+          :value="control.data"
+          :items="controlBuilder.items"
+          :loading="isLoading"
+          hide-no-data
+          :search-input.sync="search"
+          item-text="label"
+          item-value="value"
+          :persistent-placeholder="labelOrientation() == 'inherit'"
+          :label="labelOrientation() == 'inherit' ? computedLabel : null"
+          :placeholder="placeholder"
+          prepend-icon="mdi-database-search"
+          return-object
+          :required="control.required"
+          :clearable="hover"
+          @input="onChange"
+        >
+          <v-tooltip v-if="hint && hint != ''" slot="append-outer" top>
+            <template v-slot:activator="{ on }">
+              <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
+            </template>
+            <span class="">{{ hint }}</span>
+          </v-tooltip>
+        </v-autocomplete>
+      </v-hover>
+    </CustomControlWrapper>
   </control-wrapper>
 </template>
 
@@ -51,6 +56,7 @@ import { default as ControlWrapper } from '../controls/ControlWrapper.vue';
 import { useVuetifyControlExt } from '../composition';
 import { VHover, VAutocomplete, VIcon, VTooltip } from 'vuetify/lib';
 import _ from 'lodash';
+import CustomControlWrapper from '../controls/CustomControlWrapper.vue';
 
 const controlRenderer = defineComponent({
   name: 'suggest-control-renderer',
@@ -71,6 +77,7 @@ const controlRenderer = defineComponent({
     VHover,
     VIcon,
     VTooltip,
+    CustomControlWrapper,
   },
   setup(props: RendererProps<ControlElement>) {
     let delay: any = null;

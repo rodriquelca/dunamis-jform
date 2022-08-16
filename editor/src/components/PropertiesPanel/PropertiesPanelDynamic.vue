@@ -131,7 +131,11 @@ const PropertiesPanel = defineComponent({
           : null;
         // Get the label property
         fieldData['label'] = this.uiElement.options
-          ? this.uiElement.options.label
+          ? this.uiElement.label
+          : null;
+        // Get the label config property
+        fieldData['labelConfig'] = this.uiElement.options
+          ? this.uiElement.options.labelConfig
           : null;
         // Get the rows property
         fieldData['rows'] = this.uiElement.options
@@ -188,7 +192,6 @@ const PropertiesPanel = defineComponent({
     },
     updateData(data: any) {
       const elementSchema = this.findElementSchema();
-
       // type
       if (data.type) {
         this.$store.dispatch('app/updateUISchemaElement', {
@@ -255,13 +258,6 @@ const PropertiesPanel = defineComponent({
           changedProperties: { label: data.label },
         });
       }
-      // options
-      if (data.options) {
-        this.$store.dispatch('app/updateUISchemaElement', {
-          elementUUID: this.uiElement.uuid,
-          changedProperties: { options: data.options },
-        });
-      }
       // description
       if (data.description) {
         this.$store.dispatch('app/updateSchemaElement', {
@@ -278,6 +274,13 @@ const PropertiesPanel = defineComponent({
           changedProperties: {
             items: data.items,
           },
+        });
+      }
+      // label
+      if (data.labelConfig) {
+        this.$store.dispatch('app/updateUISchemaElementOption', {
+          elementUUID: this.uiElement.uuid,
+          changedProperties: { labelConfig: data.labelConfig },
         });
       }
       // orientation -> to options
@@ -346,6 +349,7 @@ const PropertiesPanel = defineComponent({
         });
       }
       this.generalData['data'] = data;
+      this.key++;
     },
     findElementSchema() {
       const linkedSchemaUUID = this.uiElement.linkedSchemaElement;

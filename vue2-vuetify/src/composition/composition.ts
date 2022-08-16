@@ -202,6 +202,16 @@ export const useVuetifyControlExt = <
   const controlBuilder = reactive({
     items: [],
   });
+  const labelOrientation = (): string => {
+    return (
+      input.control.value.uischema.options?.labelConfig?.orientation ||
+      'inherit'
+    );
+  };
+
+  const labelCols = (): string => {
+    return input.control.value.uischema.options?.labelConfig?.cols || '2';
+  };
 
   const isFocused = ref(false);
   const onChange = (value: any) => {
@@ -286,5 +296,7 @@ export const useVuetifyControlExt = <
     computedLabel,
     controlBuilder,
     manualHandlerDependencies,
+    labelOrientation,
+    labelCols,
   };
 };

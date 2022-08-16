@@ -87,6 +87,16 @@ export const useVuetifyControl = <
   };
 
   const computedLabel = useComputedLabel(input, appliedOptions);
+  const labelOrientation = (): string => {
+    return (
+      input.control.value.uischema.options?.labelConfig?.orientation ||
+      'inherit'
+    );
+  };
+
+  const labelCols = (): string => {
+    return input.control.value.uischema.options?.labelConfig?.cols || '2';
+  };
 
   const controlWrapper = computed(() => {
     const { id, description, errors, label, visible, required } =
@@ -105,6 +115,8 @@ export const useVuetifyControl = <
     onChange,
     persistentHint,
     computedLabel,
+    labelOrientation,
+    labelCols,
   };
 };
 

@@ -5,55 +5,62 @@
     :isFocused="isFocused"
     :appliedOptions="appliedOptions"
   >
-    <v-menu
-      ref="menu"
-      v-model="menu"
-      :close-on-content-click="false"
-      transition="scale-transition"
-      offset-y
-      min-width="auto"
+    <CustomControlWrapper
+      v-bind="{ labelOrientation, computedLabel, labelCols }"
     >
-      <template v-slot:activator="{ on, attrs }">
-        <v-text-field
-          type="date"
-          :id="control.id + '-input'"
-          :class="styles.control.input"
-          :disabled="!control.enabled"
-          :autofocus="appliedOptions.focus"
-          :placeholder="placeholder"
-          :label="computedLabel"
-          :hint="control.description"
-          :persistent-hint="persistentHint()"
-          :required="control.required"
-          :error-messages="control.errors"
-          :value="control.data"
-          @focus="isFocused = true"
-          @blur="isFocused = false"
-          append-icon="mdi-calendar"
-          readonly
-          v-bind="attrs"
-          v-on="on"
-        >
-          <v-tooltip v-if="hint && hint != ''" slot="append-outer" top>
-            <template v-slot:activator="{ on }">
-              <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
-            </template>
-            <span class="">{{ hint }}</span>
-          </v-tooltip>
-        </v-text-field>
-      </template>
-      <v-date-picker
-        v-model="date"
-        @change="onChange"
-        @input="menu = false"
-        :min="control.schema.minDate"
-        :max="control.schema.maxDate"
-        no-title
-        scrollable
+      <v-menu
+        ref="menu"
+        v-model="menu"
+        :close-on-content-click="false"
+        transition="scale-transition"
+        offset-y
+        min-width="auto"
       >
-        <v-btn text color="primary" @click="clearDate"> Clear </v-btn>
-      </v-date-picker>
-    </v-menu>
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field
+            type="date"
+            :id="control.id + '-input'"
+            :class="styles.control.input"
+            :disabled="!control.enabled"
+            :autofocus="appliedOptions.focus"
+            :placeholder="placeholder"
+            :persistent-placeholder="labelOrientation() == 'inherit'"
+            :label="labelOrientation() == 'inherit' ? computedLabel : null"
+            :hint="control.description"
+            :persistent-hint="persistentHint()"
+            :required="control.required"
+            :error-messages="control.errors"
+            :value="control.data"
+            @focus="isFocused = true"
+            @blur="isFocused = false"
+            append-icon="mdi-calendar"
+            readonly
+            v-bind="attrs"
+            v-on="on"
+          >
+            <v-tooltip v-if="hint && hint != ''" slot="append-outer" top>
+              <template v-slot:activator="{ on }">
+                <v-icon v-on="on" color="primary" small>
+                  mdi-information
+                </v-icon>
+              </template>
+              <span class="">{{ hint }}</span>
+            </v-tooltip>
+          </v-text-field>
+        </template>
+        <v-date-picker
+          v-model="date"
+          @change="onChange"
+          @input="menu = false"
+          :min="control.schema.minDate"
+          :max="control.schema.maxDate"
+          no-title
+          scrollable
+        >
+          <v-btn text color="primary" @click="clearDate"> Clear </v-btn>
+        </v-date-picker>
+      </v-menu>
+    </CustomControlWrapper>
   </control-wrapper>
 </template>
 
@@ -80,6 +87,7 @@ import {
   VIcon,
   VTooltip,
 } from 'vuetify/lib';
+import CustomControlWrapper from '../controls/CustomControlWrapper.vue';
 
 const controlRenderer = defineComponent({
   name: 'date-picker-control-renderer',
@@ -91,6 +99,7 @@ const controlRenderer = defineComponent({
     VBtn,
     VIcon,
     VTooltip,
+    CustomControlWrapper,
   },
   props: {
     ...rendererProps<ControlElement>(),

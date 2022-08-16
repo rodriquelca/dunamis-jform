@@ -5,53 +5,58 @@
     :isFocused="isFocused"
     :appliedOptions="appliedOptions"
   >
-    <v-menu
-      ref="menu"
-      v-model="menu"
-      :close-on-content-click="false"
-      transition="scale-transition"
-      offset-y
-      min-width="auto"
+    <CustomControlWrapper
+      v-bind="{ labelOrientation, computedLabel, labelCols }"
     >
-      <template v-slot:activator="{ on, attrs }">
-        <v-text-field
-          :id="control.id + '-input'"
-          :class="styles.control.input"
-          :disabled="!control.enabled"
-          :autofocus="appliedOptions.focus"
-          :placeholder="placeholder"
-          :label="computedLabel"
-          hint=""
-          :persistent-hint="persistentHint()"
-          :required="control.required"
-          :error-messages="control.errors"
-          :value="valueChangeFormat"
-          @focus="isFocused = true"
-          @blur="
-            blurChangeFormat();
-            isFocused = false;
-          "
-          append-icon="mdi-calendar"
-          v-bind="attrs"
-          v-on="on"
-          readonly
-        ></v-text-field>
-      </template>
-      <v-date-picker
-        v-model="date"
-        v-if="inputFormat == 'date' || inputFormat == 'date-time'"
-        @input="inputFormat !== 'date-time' ? (menu = false) : (menu = true)"
-        no-title
-        scrollable
+      <v-menu
+        ref="menu"
+        v-model="menu"
+        :close-on-content-click="false"
+        transition="scale-transition"
+        offset-y
+        min-width="auto"
       >
-        <v-btn text color="primary"> Clear </v-btn>
-      </v-date-picker>
-      <v-time-picker
-        v-model="time"
-        v-if="inputFormat == 'time' || inputFormat == 'date-time'"
-        @input="inputFormat !== 'date-time' ? (menu = false) : (menu = true)"
-      ></v-time-picker>
-    </v-menu>
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field
+            :id="control.id + '-input'"
+            :class="styles.control.input"
+            :disabled="!control.enabled"
+            :autofocus="appliedOptions.focus"
+            :placeholder="placeholder"
+            :persistent-placeholder="labelOrientation() == 'inherit'"
+            :label="labelOrientation() == 'inherit' ? computedLabel : null"
+            hint=""
+            :persistent-hint="persistentHint()"
+            :required="control.required"
+            :error-messages="control.errors"
+            :value="valueChangeFormat"
+            @focus="isFocused = true"
+            @blur="
+              blurChangeFormat();
+              isFocused = false;
+            "
+            append-icon="mdi-calendar"
+            v-bind="attrs"
+            v-on="on"
+            readonly
+          ></v-text-field>
+        </template>
+        <v-date-picker
+          v-model="date"
+          v-if="inputFormat == 'date' || inputFormat == 'date-time'"
+          @input="inputFormat !== 'date-time' ? (menu = false) : (menu = true)"
+          no-title
+          scrollable
+        >
+          <v-btn text color="primary"> Clear </v-btn>
+        </v-date-picker>
+        <v-time-picker
+          v-model="time"
+          v-if="inputFormat == 'time' || inputFormat == 'date-time'"
+          @input="inputFormat !== 'date-time' ? (menu = false) : (menu = true)"
+        ></v-time-picker>
+      </v-menu>
+    </CustomControlWrapper>
   </control-wrapper>
 </template>
 
@@ -71,6 +76,7 @@ import {
 import { default as ControlWrapper } from '../controls/ControlWrapper.vue';
 import { useVuetifyControl } from '../util';
 import { VTextField, VMenu, VDatePicker, VTimePicker, VBtn } from 'vuetify/lib';
+import CustomControlWrapper from '../controls/CustomControlWrapper.vue';
 
 const controlRenderer = defineComponent({
   name: 'date-time-control-renderer-editor',
@@ -81,6 +87,7 @@ const controlRenderer = defineComponent({
     VDatePicker,
     VTimePicker,
     VBtn,
+    CustomControlWrapper,
   },
   props: {
     ...rendererProps<ControlElement>(),

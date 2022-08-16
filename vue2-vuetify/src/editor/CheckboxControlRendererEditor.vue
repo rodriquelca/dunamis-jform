@@ -5,31 +5,36 @@
     :isFocused="isFocused"
     :appliedOptions="appliedOptions"
   >
-    <v-checkbox
-      :id="control.id + '-input'"
-      :class="styles.control.input"
-      :disabled="!control.enabled"
-      :autofocus="appliedOptions.focus"
-      :placeholder="placeholder"
-      :label="computedLabel"
-      :hint="control.description"
-      :persistent-hint="persistentHint()"
-      :required="control.required"
-      :error-messages="control.errors"
-      :indeterminate="control.data === undefined"
-      :value="control.data"
-      :input-value="checkedDefault"
-      @change="onChange"
-      @focus="isFocused = true"
-      @blur="isFocused = false"
+    <CustomControlWrapper
+      v-bind="{ labelOrientation, computedLabel, labelCols }"
     >
-      <v-tooltip v-if="hint && hint != ''" slot="append" top>
-        <template v-slot:activator="{ on }">
-          <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
-        </template>
-        <span class="">{{ hint }}</span>
-      </v-tooltip>
-    </v-checkbox>
+      <v-checkbox
+        :id="control.id + '-input'"
+        :class="styles.control.input"
+        :disabled="!control.enabled"
+        :autofocus="appliedOptions.focus"
+        :placeholder="placeholder"
+        :persistent-placeholder="labelOrientation() == 'inherit'"
+        :label="labelOrientation() == 'inherit' ? computedLabel : null"
+        :hint="control.description"
+        :persistent-hint="persistentHint()"
+        :required="control.required"
+        :error-messages="control.errors"
+        :indeterminate="control.data === undefined"
+        :value="control.data"
+        :input-value="checkedDefault"
+        @change="onChange"
+        @focus="isFocused = true"
+        @blur="isFocused = false"
+      >
+        <v-tooltip v-if="hint && hint != ''" slot="append" top>
+          <template v-slot:activator="{ on }">
+            <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
+          </template>
+          <span class="">{{ hint }}</span>
+        </v-tooltip>
+      </v-checkbox>
+    </CustomControlWrapper>
   </control-wrapper>
 </template>
 
@@ -49,6 +54,7 @@ import {
 import { default as ControlWrapper } from '../controls/ControlWrapper.vue';
 import { useVuetifyControl } from '../util';
 import { VCheckbox, VIcon, VTooltip } from 'vuetify/lib';
+import CustomControlWrapper from '../controls/CustomControlWrapper.vue';
 
 const controlRenderer = defineComponent({
   name: 'checkbox-control-renderer-editor',
@@ -57,6 +63,7 @@ const controlRenderer = defineComponent({
     VIcon,
     VTooltip,
     ControlWrapper,
+    CustomControlWrapper,
   },
   props: {
     ...rendererProps<ControlElement>(),
