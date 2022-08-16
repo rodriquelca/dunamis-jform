@@ -63,10 +63,11 @@ const PropertiesPanel = [
   } as PropertyPanel,
   {
     id: 'label',
-    type: 'text',
+    type: 'label',
     name: 'Label',
     options: {},
     items: [],
+    icons: [],
   } as PropertyPanel,
   {
     id: 'alt',

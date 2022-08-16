@@ -5,29 +5,34 @@
     :isFocused="isFocused"
     :appliedOptions="appliedOptions"
   >
-    <v-text-field
-      type="datetime-local"
-      :id="control.id + '-input'"
-      :class="styles.control.input"
-      :disabled="!control.enabled"
-      :autofocus="appliedOptions.focus"
-      :placeholder="placeholder"
-      :label="computedLabel"
-      :hint="control.description"
-      :persistent-hint="persistentHint()"
-      :required="control.required"
-      :error-messages="control.errors"
-      :value="dataTime"
-      @focus="isFocused = true"
-      @blur="isFocused = false"
+    <CustomControlWrapper
+      v-bind="{ labelOrientation, computedLabel, labelCols }"
     >
-      <v-tooltip v-if="hint && hint != ''" slot="append" top>
-        <template v-slot:activator="{ on }">
-          <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
-        </template>
-        <span class="">{{ hint }}</span>
-      </v-tooltip>
-    </v-text-field>
+      <v-text-field
+        type="datetime-local"
+        :id="control.id + '-input'"
+        :class="styles.control.input"
+        :disabled="!control.enabled"
+        :autofocus="appliedOptions.focus"
+        :placeholder="placeholder"
+        :persistent-placeholder="labelOrientation() == 'inherit'"
+        :label="labelOrientation() == 'inherit' ? computedLabel : null"
+        :hint="control.description"
+        :persistent-hint="persistentHint()"
+        :required="control.required"
+        :error-messages="control.errors"
+        :value="dataTime"
+        @focus="isFocused = true"
+        @blur="isFocused = false"
+      >
+        <v-tooltip v-if="hint && hint != ''" slot="append" top>
+          <template v-slot:activator="{ on }">
+            <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
+          </template>
+          <span class="">{{ hint }}</span>
+        </v-tooltip>
+      </v-text-field>
+    </CustomControlWrapper>
   </control-wrapper>
 </template>
 
@@ -47,6 +52,7 @@ import {
 import { default as ControlWrapper } from './../controls/ControlWrapper.vue';
 import { useVuetifyControl, parseDateTime } from '../util';
 import { VTextField, VIcon, VTooltip } from 'vuetify/lib';
+import CustomControlWrapper from '../controls/CustomControlWrapper.vue';
 
 const controlRenderer = defineComponent({
   name: 'datetime-control-renderer-editor',
@@ -55,6 +61,7 @@ const controlRenderer = defineComponent({
     VTextField,
     VIcon,
     VTooltip,
+    CustomControlWrapper,
   },
   props: {
     ...rendererProps<ControlElement>(),

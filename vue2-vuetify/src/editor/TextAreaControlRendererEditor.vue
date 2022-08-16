@@ -5,43 +5,48 @@
     :isFocused="isFocused"
     :appliedOptions="appliedOptions"
   >
-    <v-hover v-slot="{ hover }">
-      <v-textarea
-        v-disabled-icon-focus
-        :id="control.id + '-input'"
-        :class="styles.control.input"
-        :disabled="!control.enabled"
-        :rows="rows"
-        :autofocus="appliedOptions.focus"
-        :placeholder="placeholder"
-        :label="computedLabel"
-        :hint="control.hint"
-        :persistent-hint="persistentHint()"
-        :required="control.required"
-        :error-messages="control.errors"
-        :value="control.uischema.options.defaultValue"
-        :maxlength="
-          appliedOptions.restrict ? control.schema.maxLength : undefined
-        "
-        :size="
-          appliedOptions.trim && control.schema.maxLength !== undefined
-            ? control.schema.maxLength
-            : undefined
-        "
-        :clearable="hover"
-        multi-line
-        @change="onChange"
-        @focus="isFocused = true"
-        @blur="isFocused = false"
-      >
-        <v-tooltip v-if="hint && hint != ''" slot="append" top>
-          <template v-slot:activator="{ on }">
-            <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
-          </template>
-          <span class="">{{ hint }}</span>
-        </v-tooltip>
-      </v-textarea>
-    </v-hover>
+    <CustomControlWrapper
+      v-bind="{ labelOrientation, computedLabel, labelCols }"
+    >
+      <v-hover v-slot="{ hover }">
+        <v-textarea
+          v-disabled-icon-focus
+          :id="control.id + '-input'"
+          :class="styles.control.input"
+          :disabled="!control.enabled"
+          :rows="rows"
+          :autofocus="appliedOptions.focus"
+          :placeholder="placeholder"
+          :persistent-placeholder="labelOrientation() == 'inherit'"
+          :label="labelOrientation() == 'inherit' ? computedLabel : null"
+          :hint="control.hint"
+          :persistent-hint="persistentHint()"
+          :required="control.required"
+          :error-messages="control.errors"
+          :value="control.uischema.options.defaultValue"
+          :maxlength="
+            appliedOptions.restrict ? control.schema.maxLength : undefined
+          "
+          :size="
+            appliedOptions.trim && control.schema.maxLength !== undefined
+              ? control.schema.maxLength
+              : undefined
+          "
+          :clearable="hover"
+          multi-line
+          @change="onChange"
+          @focus="isFocused = true"
+          @blur="isFocused = false"
+        >
+          <v-tooltip v-if="hint && hint != ''" slot="append" top>
+            <template v-slot:activator="{ on }">
+              <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
+            </template>
+            <span class="">{{ hint }}</span>
+          </v-tooltip>
+        </v-textarea>
+      </v-hover>
+    </CustomControlWrapper>
   </control-wrapper>
 </template>
 
@@ -62,6 +67,7 @@ import { default as ControlWrapper } from '../controls/ControlWrapper.vue';
 import { useVuetifyControl } from '../util';
 import { VHover, VTextarea, VTooltip, VIcon } from 'vuetify/lib';
 import { DisabledIconFocus } from '../controls/directives';
+import CustomControlWrapper from '../controls/CustomControlWrapper.vue';
 
 const controlRenderer = defineComponent({
   name: 'text-area-control-renderer-editor',
@@ -71,6 +77,7 @@ const controlRenderer = defineComponent({
     VTextarea,
     VTooltip,
     VIcon,
+    CustomControlWrapper,
   },
   directives: {
     DisabledIconFocus,

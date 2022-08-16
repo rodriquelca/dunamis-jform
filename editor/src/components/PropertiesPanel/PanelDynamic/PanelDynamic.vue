@@ -22,8 +22,8 @@ import TextareaProp from './TextareaProp.vue';
 import DropdownProp from './DropdownProp.vue';
 import CheckboxProp from './CheckboxProp.vue';
 import ItemsProp from './ItemsProp.vue';
+import LabelProp from './LabelProp.vue';
 import PanelExtended from '../PanelDynamicExtended/index';
-
 import _ from 'lodash';
 
 const PropertiesPanelDynamic = defineComponent({
@@ -34,6 +34,7 @@ const PropertiesPanelDynamic = defineComponent({
     DropdownProp,
     CheckboxProp,
     ItemsProp,
+    LabelProp,
     ...PanelExtended,
   },
   props: ['config'],

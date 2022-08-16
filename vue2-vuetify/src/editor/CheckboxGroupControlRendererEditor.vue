@@ -5,39 +5,42 @@
     :isFocused="isFocused"
     :appliedOptions="appliedOptions"
   >
-    <v-label :for="control.id + '-input'">{{ computedLabel }}</v-label>
-    <v-radio-group
-      :id="control.id + '-input'"
-      :class="styles.control.input"
-      :disabled="!control.enabled"
-      :autofocus="appliedOptions.focus"
-      :placeholder="placeholder"
-      :hint="control.description"
-      :persistent-hint="persistentHint()"
-      :required="control.required"
-      :error-messages="control.errors"
-      :value="control.data"
-      @change="onChange"
-      @focus="isFocused = true"
-      @blur="isFocused = false"
+    <CustomControlWrapper
+      v-bind="{ labelOrientation, computedLabel, labelCols }"
     >
-      <v-checkbox
-        v-for="o in control.options"
-        v-model="data"
-        :key="o.value"
-        :label="o.label"
-        :value="o.value"
+      <v-radio-group
+        :id="control.id + '-input'"
+        :class="styles.control.input"
+        :disabled="!control.enabled"
+        :autofocus="appliedOptions.focus"
+        :placeholder="placeholder"
+        :hint="control.description"
+        :persistent-hint="persistentHint()"
+        :required="control.required"
+        :error-messages="control.errors"
+        :value="control.data"
         @change="onChange"
+        @focus="isFocused = true"
+        @blur="isFocused = false"
       >
-      </v-checkbox>
+        <v-checkbox
+          v-for="o in control.options"
+          v-model="data"
+          :key="o.value"
+          :label="o.label"
+          :value="o.value"
+          @change="onChange"
+        >
+        </v-checkbox>
 
-      <v-tooltip v-if="hint && hint != ''" slot="append" top>
-        <template v-slot:activator="{ on }">
-          <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
-        </template>
-        <span class="">{{ hint }}</span>
-      </v-tooltip>
-    </v-radio-group>
+        <v-tooltip v-if="hint && hint != ''" slot="append" top>
+          <template v-slot:activator="{ on }">
+            <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
+          </template>
+          <span class="">{{ hint }}</span>
+        </v-tooltip>
+      </v-radio-group>
+    </CustomControlWrapper>
   </control-wrapper>
 </template>
 
@@ -59,6 +62,7 @@ import { useVuetifyControl } from '../util';
 import { default as ControlWrapper } from '../controls/ControlWrapper.vue';
 import { VRadioGroup, VCheckbox, VLabel, VIcon, VTooltip } from 'vuetify/lib';
 import { reactive } from '@vue/composition-api';
+import CustomControlWrapper from '../controls/CustomControlWrapper.vue';
 
 const controlRenderer = defineComponent({
   name: 'checkbox-group-control-renderer-editor',
@@ -69,6 +73,7 @@ const controlRenderer = defineComponent({
     VLabel,
     VIcon,
     VTooltip,
+    CustomControlWrapper,
   },
   props: {
     ...rendererProps<ControlElement>(),

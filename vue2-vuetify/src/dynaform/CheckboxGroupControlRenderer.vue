@@ -5,55 +5,62 @@
     :isFocused="isFocused"
     :appliedOptions="appliedOptions"
   >
-    <v-label :for="control.id + '-input'">{{ computedLabel }}</v-label>
-    <v-radio-group
-      :id="control.id + '-input'"
-      :class="styles.control.input"
-      :disabled="!control.enabled"
-      :autofocus="appliedOptions.focus"
-      :placeholder="placeholder"
-      :hint="control.description"
-      :persistent-hint="persistentHint()"
-      :required="control.required"
-      :error-messages="control.errors"
-      :return-object="true"
-      row
-      @focus="isFocused = true"
-      @blur="isFocused = false"
+    <CustomControlWrapper
+      v-bind="{ labelOrientation, computedLabel, labelCols }"
     >
-      <div v-if="orientation === 'vertical'">
-        <v-row v-for="o in controlBuilder.items" :key="o.value">
-          <v-col class="pa-0">
-            <v-checkbox
-              class="shrink pb-0 mb-0 pt-0 mt-0"
-              v-model="data"
-              :label="o.label"
-              :value="o.value"
-              @change="onChange"
-            ></v-checkbox>
-          </v-col>
-        </v-row>
-      </div>
-      <div v-else>
-        <v-row>
-          <v-col class="pa-0" v-for="o in controlBuilder.items" :key="o.value">
-            <v-checkbox
-              v-model="data"
-              :label="o.label"
-              :value="o.value"
-              @change="onChange"
-            ></v-checkbox>
-          </v-col>
-        </v-row>
-      </div>
+      <v-radio-group
+        :id="control.id + '-input'"
+        :class="styles.control.input"
+        :disabled="!control.enabled"
+        :autofocus="appliedOptions.focus"
+        :placeholder="placeholder"
+        :hint="control.description"
+        :persistent-hint="persistentHint()"
+        :required="control.required"
+        :error-messages="control.errors"
+        :return-object="true"
+        row
+        @focus="isFocused = true"
+        @blur="isFocused = false"
+      >
+        <div v-if="orientation === 'vertical'">
+          <v-row v-for="o in controlBuilder.items" :key="o.value">
+            <v-col class="pa-0">
+              <v-checkbox
+                class="shrink pb-0 mb-0 pt-0 mt-0"
+                v-model="data"
+                :label="o.label"
+                :value="o.value"
+                @change="onChange"
+              ></v-checkbox>
+            </v-col>
+          </v-row>
+        </div>
+        <div v-else>
+          <v-row>
+            <v-col
+              class="pa-0"
+              v-for="o in controlBuilder.items"
+              :key="o.value"
+            >
+              <v-checkbox
+                v-model="data"
+                :label="o.label"
+                :value="o.value"
+                @change="onChange"
+              ></v-checkbox>
+            </v-col>
+          </v-row>
+        </div>
 
-      <v-tooltip v-if="hint && hint != ''" slot="append" top>
-        <template v-slot:activator="{ on }">
-          <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
-        </template>
-        <span class="">{{ hint }}</span>
-      </v-tooltip>
-    </v-radio-group>
+        <v-tooltip v-if="hint && hint != ''" slot="append" top>
+          <template v-slot:activator="{ on }">
+            <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
+          </template>
+          <span class="">{{ hint }}</span>
+        </v-tooltip>
+      </v-radio-group>
+    </CustomControlWrapper>
   </control-wrapper>
 </template>
 
@@ -82,6 +89,7 @@ import {
   VTooltip,
 } from 'vuetify/lib';
 import { reactive } from '@vue/composition-api';
+import CustomControlWrapper from '../controls/CustomControlWrapper.vue';
 
 const controlRenderer = defineComponent({
   name: 'checkbox-group-control-renderer',
@@ -94,6 +102,7 @@ const controlRenderer = defineComponent({
     VCol,
     VIcon,
     VTooltip,
+    CustomControlWrapper,
   },
   props: {
     ...rendererProps<ControlElement>(),
