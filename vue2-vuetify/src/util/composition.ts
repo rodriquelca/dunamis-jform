@@ -147,17 +147,31 @@ export const useTranslator = () => {
  * Adds styles and appliedOptions
  */
 export const useVuetifyLayout = <I extends { layout: any }>(input: I) => {
-  const appliedOptions = computed(() =>
-    merge(
+  //HorizontalLayout
+  const cols = computed(() => {
+    let cls = input.layout.value.uischema.options?.cols
+      ? input.layout.value.uischema.options?.cols.split(' ')
+      : null;
+    if (cls) {
+      cls = cls.map((el: string) => {
+        return parseInt(el);
+      });
+    }
+    return cls;
+  });
+
+  const appliedOptions = computed(() => {
+    return merge(
       {},
       cloneDeep(input.layout.value.config),
       cloneDeep(input.layout.value.uischema.options)
-    )
-  );
+    );
+  });
   return {
     ...input,
     styles: useStyles(input.layout.value.uischema),
     appliedOptions,
+    cols,
   };
 };
 

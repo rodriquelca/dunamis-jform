@@ -217,5 +217,18 @@ const PropertiesPanel = [
       },
     ],
   } as PropertyPanel,
+  {
+    id: 'cols',
+    type: 'text',
+    name: 'Cols',
+    options: {},
+    items: [],
+    rules: [
+      (val: string) => {
+        const pattern = /^([0-9]{1,2}[\s]{1})*([0-9]{1,2})$/;
+        return pattern.test(val) || 'Invalid cols format';
+      },
+    ],
+  } as PropertyPanel,
 ];
 export default PropertiesPanel;

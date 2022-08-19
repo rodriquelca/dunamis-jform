@@ -132,6 +132,7 @@ const FieldProperties: any = {
   ],
   Group: [Props.build('type'), Props.build('variable'), Props.build('label')],
   Label: [Props.build('type'), Props.build('variable'), Props.build('label')],
+  HorizontalLayout: [Props.build('cols')],
 };
 
 export default FieldProperties;

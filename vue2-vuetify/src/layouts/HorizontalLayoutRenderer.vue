@@ -8,6 +8,7 @@
         v-for="(element, index) in layout.uischema.elements"
         :key="`${layout.path}-${index}`"
         :class="styles.horizontalLayout.item"
+        :cols="cols ? cols[index] : null"
       >
         <dispatch-renderer
           :schema="layout.schema"
