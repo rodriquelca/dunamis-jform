@@ -184,6 +184,11 @@ const PropertiesPanel = defineComponent({
         fieldData['checkedDefault'] = this.uiElement.options
           ? this.uiElement.options.checkedDefault
           : false;
+      } else {
+        // Get horizontal layout cols
+        fieldData['cols'] = this.uiElement.options
+          ? this.uiElement.options.cols
+          : '';
       }
       this.generalData = {
         type: this.uiElement.type,
@@ -346,6 +351,13 @@ const PropertiesPanel = defineComponent({
         this.$store.dispatch('app/updateUISchemaElementOption', {
           elementUUID: this.uiElement.uuid,
           changedProperties: { checkedDefault: data.checkedDefault },
+        });
+      }
+      // Horizontal Layout cols
+      if (data.cols || data.cols === '') {
+        this.$store.dispatch('app/updateUISchemaElementOption', {
+          elementUUID: this.uiElement.uuid,
+          changedProperties: { cols: data.cols },
         });
       }
       this.generalData['data'] = data;

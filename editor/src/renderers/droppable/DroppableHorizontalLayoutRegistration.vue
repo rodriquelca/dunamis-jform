@@ -16,18 +16,19 @@
       >
         <v-col
           v-for="(element, index) in uischema.elements"
-          :key="`${useJsonForm.layout.value.path}-${index}`"
+          :key="`${layout.path}-${index}`"
           no-gutters
           :class="{ 'not-draggable': !enabled }"
+          :cols="cols ? cols[index] : null"
         >
           <dispatch-renderer
             :key="element.uuid"
-            :schema="useJsonForm.layout.value.schema"
+            :schema="layout.schema"
             :uischema="element"
-            :path="useJsonForm.layout.value.path"
-            :enabled="useJsonForm.layout.value.enabled"
+            :path="layout.path"
+            :enabled="layout.enabled"
             :renderers="customRenderers"
-            :cells="useJsonForm.layout.value.cells"
+            :cells="layout.cells"
           />
         </v-col>
       </draggable>
@@ -76,14 +77,14 @@ const droppableRenderer = defineComponent({
   },
   setup(props: RendererProps<Layout>) {
     return {
-      useJsonForm: useVuetifyLayout(useJsonFormsLayout(props)),
+      ...useVuetifyLayout(useJsonFormsLayout(props)),
       enabledDrag: true,
       dragging: false,
     };
   },
   computed: {
     draggableClass(): string {
-      return 'dragArea row ' + this.useJsonForm.styles.horizontalLayout.item;
+      return 'dragArea row ' + this.styles.horizontalLayout.item;
     },
     customRenderers(): Array<any> {
       return (
