@@ -1,5 +1,9 @@
 <template>
-  <component v-bind:is="determinedRenderer" v-bind="renderer"></component>
+  <component
+    v-bind:is="determinedRenderer"
+    v-bind="renderer"
+    :class="setCustomStyle"
+  ></component>
 </template>
 
 <script lang="ts">
@@ -34,6 +38,20 @@ export default defineComponent({
         return renderer.renderer;
       }
     },
+    setCustomStyle(): any {
+      if (
+        this.renderer.uischema.type === 'HorizontalLayout' ||
+        this.renderer.uischema.type === 'VerticalLayout'
+      ) {
+        return 'layoutItem';
+      }
+      return '';
+    },
   },
 });
 </script>
+<style scoped>
+.layoutItem {
+  max-height: 97%;
+}
+</style>

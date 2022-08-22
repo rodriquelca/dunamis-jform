@@ -97,6 +97,7 @@ export default {
 
 .vpm-sidebar-layout {
   overflow-y: scroll;
+  max-height: 95%;
 }
 
 .vpm-sidebar-layout::-webkit-scrollbar-track {
@@ -118,6 +119,8 @@ export default {
 
 .vpm-mainpanel-layout {
   overflow-y: scroll;
+  overflow-x: hidden;
+  max-height: 94%;
 }
 
 .vpm-mainpanel-layout::-webkit-scrollbar-track {

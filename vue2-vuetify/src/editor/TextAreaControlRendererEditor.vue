@@ -11,10 +11,11 @@
       <v-hover v-slot="{ hover }">
         <v-textarea
           v-disabled-icon-focus
+          readonly
           :id="control.id + '-input'"
           :class="styles.control.input"
           :disabled="!control.enabled"
-          :rows="rows"
+          :rows="1"
           :autofocus="appliedOptions.focus"
           :placeholder="placeholder"
           :persistent-placeholder="labelOrientation() == 'inherit'"
