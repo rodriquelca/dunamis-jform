@@ -1,112 +1,122 @@
 <template>
   <v-card outlined :class="selectedStyle" @click="click">
-    <div
-      class="d-block"
-      @mouseover.stop.prevent.self="hover = true"
-      @mouseleave.self="hover = false"
-    >
-      <v-icon small>{{ computedIcon }}</v-icon>
-      <span class="d-inline caption" v-if="ruleEffect">
-        <span class="font-weight-bold">R</span>
-        <span class="font-italic"> ({{ ruleEffect }})</span>
-      </span>
+    <v-row>
+      <v-col>
+        <div
+          class="d-block"
+          @mouseover.stop.prevent.self="hover = true"
+          @mouseleave.self="hover = false"
+        >
+          <v-icon small>{{ computedIcon }}</v-icon>
+          <span class="d-inline caption" v-if="ruleEffect">
+            <span class="font-weight-bold">R</span>
+            <span class="font-italic"> ({{ ruleEffect }})</span>
+          </span>
 
-      <div class="d-inline caption font-weight-bold v-opacity">
-        {{ wrappedElement.scope ? wrappedElement.scope.split('/').pop() : '' }}
-      </div>
-      <v-tooltip top v-if="hover" :color="moveColor">
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            v-bind="attrs"
-            v-on="on"
-            fab
-            x-small
-            class="float-right"
-            :color="moveColor"
-            @mouseover="moveColor = 'teal lighten-2'"
-            @mouseleave="moveColor = undefined"
-          >
-            <v-icon> mdi-arrow-all </v-icon>
-          </v-btn>
-        </template>
-        <span>Move</span>
-      </v-tooltip>
-      <v-tooltip top v-if="hover" :color="removeColor">
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            v-bind="attrs"
-            v-on="on"
-            fab
-            x-small
-            v-if="hover"
-            @click="onRemove"
-            class="float-right"
-            :color="removeColor"
-            @mouseover="removeColor = 'red lighten-2'"
-            @mouseleave="removeColor = undefined"
-          >
-            <v-icon> mdi-delete </v-icon>
-          </v-btn>
-        </template>
-        <span>Delete</span>
-      </v-tooltip>
+          <div class="d-inline caption font-weight-bold v-opacity">
+            {{
+              wrappedElement.scope ? wrappedElement.scope.split('/').pop() : ''
+            }}
+          </div>
+          <div class="d-inline float-right">
+            <v-tooltip top v-if="hover" :color="moveColor">
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  v-bind="attrs"
+                  v-on="on"
+                  plain
+                  x-small
+                  :color="moveColor"
+                  @mouseover="moveColor = 'teal lighten-2'"
+                  @mouseleave="moveColor = undefined"
+                >
+                  <v-icon small> mdi-arrow-all </v-icon>
+                </v-btn>
+              </template>
+              <span>Move</span>
+            </v-tooltip>
+            <v-tooltip top v-if="hover" :color="removeColor">
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  v-bind="attrs"
+                  v-on="on"
+                  plain
+                  x-small
+                  v-if="hover"
+                  @click="onRemove"
+                  :color="removeColor"
+                  @mouseover="removeColor = 'red lighten-2'"
+                  @mouseleave="removeColor = undefined"
+                >
+                  <v-icon small> mdi-delete </v-icon>
+                </v-btn>
+              </template>
+              <span>Delete</span>
+            </v-tooltip>
 
-      <v-tooltip top v-if="hover" :color="editColor">
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            v-bind="attrs"
-            v-on="on"
-            fab
-            x-small
-            @click="onEdit"
-            class="float-right"
-            :color="editColor"
-            @mouseover="editColor = 'green lighten-2'"
-            @mouseleave="editColor = undefined"
-          >
-            <v-icon> mdi-pencil-outline </v-icon>
-          </v-btn>
-        </template>
-        <span>Edit</span>
-      </v-tooltip>
-      <v-tooltip top v-if="hover" :color="duplicateColor">
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            v-bind="attrs"
-            v-on="on"
-            fab
-            x-small
-            @click="onDuplicate"
-            class="float-right"
-            :color="duplicateColor"
-            @mouseover="duplicateColor = 'brown lighten-2'"
-            @mouseleave="duplicateColor = undefined"
-          >
-            <v-icon> mdi-content-copy </v-icon>
-          </v-btn>
-        </template>
-        <span>Duplicate</span>
-      </v-tooltip>
-    </div>
+            <v-tooltip top v-if="hover" :color="editColor">
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  v-bind="attrs"
+                  v-on="on"
+                  plain
+                  x-small
+                  @click="onEdit"
+                  :color="editColor"
+                  @mouseover="editColor = 'green lighten-2'"
+                  @mouseleave="editColor = undefined"
+                >
+                  <v-icon small> mdi-pencil-outline </v-icon>
+                </v-btn>
+              </template>
+              <span>Edit</span>
+            </v-tooltip>
+            <v-tooltip top v-if="hover" :color="duplicateColor">
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  v-bind="attrs"
+                  v-on="on"
+                  plain
+                  x-small
+                  @click="onDuplicate"
+                  :color="duplicateColor"
+                  @mouseover="duplicateColor = 'brown lighten-2'"
+                  @mouseleave="duplicateColor = undefined"
+                >
+                  <v-icon small> mdi-content-copy </v-icon>
+                </v-btn>
+              </template>
+              <span>Duplicate</span>
+            </v-tooltip>
+          </div>
+        </div>
 
-    <div class="d-block pt-2">
-      <slot></slot>
-    </div>
+        <div>
+          <slot></slot>
+        </div>
+      </v-col>
+      <ResizableCols
+        v-model="wrappedElement"
+        v-if="
+          wrappedElement.scope &&
+          wrappedElement.parent.type == 'HorizontalLayout'
+        "
+      />
+    </v-row>
   </v-card>
 </template>
 
 <script lang="ts">
 import { PropType } from 'vue';
+import ResizableCols from './Generic/ResizableCols.vue';
 import _ from 'lodash';
-import {
-  EditorUISchemaElement,
-  getUISchemaPath,
-  hasChildren,
-} from '../model/uischema';
+import { EditorUISchemaElement, hasChildren } from '../model/uischema';
 import { sync } from 'vuex-pathify';
 import { tryFindByUUID } from '@/util';
+
 export default {
   name: 'EditorElement',
+  components: { ResizableCols },
   props: {
     wrappedElement: {
       required: false,
@@ -115,7 +125,7 @@ export default {
   },
   data() {
     return {
-      hover: false,
+      hover: true,
       editColor: undefined,
       removeColor: undefined,
       moveColor: undefined,
@@ -128,6 +138,7 @@ export default {
     },
     activeElement: sync('app/editor@element'),
     editorSchema: sync('app/editor@schema'),
+    editoruiSchema: sync('app/editor@uiSchema'),
     computedIcon() {
       const schemaElement = tryFindByUUID(
         this.editorSchema,
