@@ -52,11 +52,7 @@
           :persistent-hint="persistentHint()"
           :required="control.required"
           :error-messages="control.errors"
-          :value="
-            control.data
-              ? control.data
-              : control.uischema.options.defaultValue || ''
-          "
+          :value="textValue"
           :maxlength="
             appliedOptions.restrict ? control.schema.maxLength : undefined
           "
@@ -67,6 +63,7 @@
           "
           :clearable="hover"
           :rules="validationRegExp"
+          @input="transform(textValue)"
           @change="onChange"
           @focus="isFocused = true"
           @blur="isFocused = false"
@@ -91,7 +88,7 @@ import {
   rankWith,
   uiTypeIs,
 } from '@jsonforms/core';
-import { defineComponent } from '../vue';
+import { defineComponent, ref } from '../vue';
 import {
   rendererProps,
   useJsonFormsControl,
@@ -126,30 +123,55 @@ const controlRenderer = defineComponent({
     ...rendererProps<ControlElement>(),
   },
   setup(props: RendererProps<ControlElement>) {
-    return useVuetifyControl(useJsonFormsControl(props), (value, options) => {
-      switch (options.value.textTransformTo) {
-        case 'lowercase':
-          value = value.toLowerCase();
-          break;
-        case 'UPPERCASE':
-          value = value.toUpperCase();
-          break;
-        case 'Capital phrase':
-          value = value.charAt(0).toUpperCase() + value.slice(1);
-          break;
-        case 'Title Case': {
-          const arr = value.split(' ');
-          for (var i = 0; i < arr.length; i++) {
-            arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1);
+    let textValue = ref('');
+    return {
+      ...useVuetifyControl(
+        useJsonFormsControl(props),
+        (value) => value || undefined
+      ),
+      textValue,
+    };
+  },
+  mounted() {
+    this.textValue = this.control.data
+      ? this.transform(this.control.data)
+      : this.transform(this.control.uischema.options?.defaultValue) || '';
+  },
+  methods: {
+    transform(text: string) {
+      if (text) {
+        let transformToApply = this.textTransform;
+        switch (transformToApply) {
+          case 'lowercase':
+            text = text.toLowerCase();
+            break;
+          case 'uppercase':
+            text = text.toUpperCase();
+            break;
+          case 'capital':
+            text = text.charAt(0).toUpperCase() + text.slice(1);
+            break;
+          case 'title': {
+            const arr = text.split(' ');
+            for (var i = 0; i < arr.length; i++) {
+              arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1);
+            }
+            text = arr.join(' ');
+            break;
           }
-          value = arr.join(' ');
-          break;
+          default:
+            text = text ?? '';
+            break;
         }
       }
-      return value || undefined;
-    });
+
+      return text;
+    },
   },
   computed: {
+    textTransform(): string {
+      return this.control.uischema.options?.textTransform ?? '';
+    },
     hint(): string {
       return this.control.uischema.options?.hint ?? '';
     },

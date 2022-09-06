@@ -52,7 +52,7 @@
           :persistent-hint="persistentHint()"
           :required="control.required"
           :error-messages="control.errors"
-          :value="control.uischema.options.defaultValue || ''"
+          :value="textValue"
           :maxlength="
             appliedOptions.restrict ? control.schema.maxLength : undefined
           "
@@ -132,30 +132,33 @@ const controlRenderer = defineComponent({
     ...rendererProps<ControlElement>(),
   },
   setup(props: RendererProps<ControlElement>) {
-    return useVuetifyControl(useJsonFormsControl(props), (value, options) => {
-      switch (options.value.textTransformTo) {
+    return useVuetifyControl(
+      useJsonFormsControl(props),
+      (value) => value || undefined
+    );
+  },
+  computed: {
+    textValue(): string {
+      let defaultValue = this.control.uischema.options?.defaultValue ?? '';
+      let transformToApply = this.control.uischema.options?.textTransform ?? '';
+      switch (transformToApply) {
         case 'lowercase':
-          value = value.toLowerCase();
-          break;
-        case 'UPPERCASE':
-          value = value.toUpperCase();
-          break;
-        case 'Capital phrase':
-          value = value.charAt(0).toUpperCase() + value.slice(1);
-          break;
-        case 'Title Case': {
-          const arr = value.split(' ');
+          return defaultValue.toLowerCase();
+        case 'uppercase':
+          return defaultValue.toUpperCase();
+        case 'capital':
+          return defaultValue.charAt(0).toUpperCase() + defaultValue.slice(1);
+        case 'title': {
+          const arr = defaultValue.split(' ');
           for (var i = 0; i < arr.length; i++) {
             arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1);
           }
-          value = arr.join(' ');
-          break;
+          return arr.join(' ');
         }
+        default:
+          return defaultValue ?? '';
       }
-      return value || undefined;
-    });
-  },
-  computed: {
+    },
     hint(): string {
       return this.control.uischema.options?.hint ?? '';
     },

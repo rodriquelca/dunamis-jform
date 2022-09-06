@@ -164,6 +164,14 @@ const PropertiesPanel = defineComponent({
         fieldData['readOnly'] = elementSchema.schema.readOnly
           ? elementSchema.schema.readOnly
           : false;
+        // Get the defaultValue property
+        fieldData['defaultValue'] = this.uiElement.options
+          ? this.uiElement.options.defaultValue
+          : '';
+        // Get the Text Transform property
+        fieldData['textTransform'] = this.uiElement.options
+          ? this.uiElement.options.textTransform
+          : '';
         // Get the items property
         fieldData['items'] = this.uiElement.options
           ? this.uiElement.options.items
@@ -280,6 +288,15 @@ const PropertiesPanel = defineComponent({
         this.$store.dispatch('app/updateUISchemaElementOption', {
           elementUUID: this.uiElement.uuid,
           changedProperties: { labelConfig: data.labelConfig },
+        });
+      }
+      // Text Transform -> to options
+      if (data.textTransform) {
+        this.$store.dispatch('app/updateUISchemaElementOption', {
+          elementUUID: this.uiElement.uuid,
+          changedProperties: {
+            textTransform: data.textTransform ?? '',
+          },
         });
       }
       // orientation -> to options
