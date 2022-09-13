@@ -1,24 +1,23 @@
 <template>
   <div>
-    <!-- <v-container class="grey lighten-5"> -->
     <v-row no-gutters>
       <draggable
         :class="draggableClass"
-        :value="[]"
+        :list="uischema.elements"
         group="people"
-        @change="handleChange"
         :key="'draggable' + uischema.uuid"
         :sort="true"
-        :disabled="!enabledDrag"
+        drag-class="drag-ghost"
         ghost-class="ghost"
-        @start="dragging = true"
-        @end="dragging = false"
+        chosen-class="chosen-ghost"
+        handle=".drag-icon"
+        :animation="200"
+        @change="handleChange"
       >
         <v-col
           v-for="(element, index) in uischema.elements"
           :key="`${layout.path}-${index}`"
           no-gutters
-          :class="{ 'not-draggable': !enabled }"
           :cols="cols ? cols[index] : null"
         >
           <dispatch-renderer
@@ -40,7 +39,6 @@
 import { sync } from 'vuex-pathify';
 import { Uri } from 'monaco-editor/esm/vs/editor/editor.api';
 import { getMonacoModelForUri } from '@/core/jsonSchemaValidation';
-import { useExportUiSchema } from '../../util';
 import draggable from 'vuedraggable';
 import {
   uiTypeIs,
@@ -58,7 +56,7 @@ import {
 import { useVuetifyLayout } from '@jsonforms/vue2-vuetify';
 import { VContainer, VRow, VCol } from 'vuetify/lib';
 import { entry as DroppableElementRegistration } from './DroppableElement.vue';
-import { createControl, tryFindByUUID } from '@/util';
+import { doFindByScope, useExportUiSchema } from '@/util';
 import { buildSchemaTree } from '../../model/schema';
 import _ from 'lodash';
 
@@ -84,7 +82,7 @@ const droppableRenderer = defineComponent({
   },
   computed: {
     draggableClass(): string {
-      return 'dragArea row ' + this.styles.horizontalLayout.item;
+      return 'drag-area row ' + this.styles.horizontalLayout.item;
     },
     customRenderers(): Array<any> {
       return (
@@ -94,74 +92,56 @@ const droppableRenderer = defineComponent({
     editorUiSchemaModel: sync('app/editor@uiSchema'),
   },
   methods: {
-    handleChange(evt) {
+    handleChange(evt: any) {
+      const enabledFields = [
+        'Control',
+        'Checkbox',
+        'DatePicker',
+        'DateTime',
+        'TimePicker',
+        'MultipleFile',
+        'Text',
+        'TextArea',
+        'RichText',
+        'Rating',
+        'RadioGroup',
+        'Suggest',
+        'CheckboxGroup',
+        'Dropdown',
+        'Image',
+        'GridControl',
+        'DataTableControl',
+        'File',
+        'Submit',
+      ];
       if (evt.added) {
         if (
           evt.added.element &&
-          (evt.added.element.type === 'Control' ||
-            evt.added.element.type === 'Checkbox' ||
-            evt.added.element.type === 'DatePicker' ||
-            evt.added.element.type === 'DateTime' ||
-            evt.added.element.type === 'TimePicker' ||
-            evt.added.element.type === 'MultipleFile' ||
-            evt.added.element.type === 'Text' ||
-            evt.added.element.type === 'TextArea' ||
-            evt.added.element.type === 'RichText' ||
-            evt.added.element.type === 'Rating' ||
-            evt.added.element.type === 'RadioGroup' ||
-            evt.added.element.type === 'Suggest' ||
-            evt.added.element.type === 'CheckboxGroup' ||
-            evt.added.element.type === 'Dropdown' ||
-            evt.added.element.type === 'Image' ||
-            evt.added.element.type === 'GridControl' ||
-            evt.added.element.type === 'File' ||
-            evt.added.element.type === 'Submit')
+          enabledFields.indexOf(evt.added.element.type) !== -1
         ) {
           //here update the schema
           const property = evt.added.element.uiSchemaElementProvider();
           const newElement = buildSchemaTree(property.control);
-          this.$store.dispatch('app/addPropertyToSchema', {
-            schemaElement: newElement,
-            elementUUID: this.schema.uuid,
-            indexOrProp: property.variable,
-          });
-
-          //Here uischema
-          const schemaElement = tryFindByUUID(
+          //Verify if the scope has been created
+          let elementSchema = doFindByScope(
             this.$store.get('app/editor@schema'),
-            newElement.uuid
+            evt.added.element.scope.split('/').pop()
           );
-          const element = this.findElementSchema(
-            this.$store.get('app/editor@schema'),
-            schemaElement
-          );
-          this.$store.dispatch('locales/addProperty', {
-            property: element.key,
-          });
-
-          schemaElement.options = property.uiOptions;
-          const newUIElement = createControl(
-            schemaElement,
-            evt.added.element.type
-          );
-          this.$store.dispatch('app/addScopedElementToLayout', {
-            uiSchemaElement: newUIElement,
-            layoutUUID: this.uischema.uuid,
-            index: evt.added.newIndex,
-            schemaUUID: evt.added.element.uuid,
-            schemaElement,
-          });
-        } else {
-          let provider = evt.added.element.uiSchemaElementProvider();
-          this.$store.dispatch('app/addUnscopedElementToLayout', {
-            uiSchemaElement: provider,
-            layoutUUID: this.uischema.uuid,
-            index: evt.added.newIndex,
+          //Add new element to schema
+          if (!elementSchema) {
+            this.$store.dispatch('app/addPropertyToSchema', {
+              schemaElement: newElement,
+              parentUUID: this.schema.uuid,
+              variable: evt.added.element.scope.split('/').pop(),
+            });
+          }
+          //Update parent in newElement
+          this.$store.dispatch('app/updateParentUiSchemaElement', {
+            elementUUID: evt.added.element.uuid,
+            parentUUID: this.uischema.uuid,
+            linkedSchemaElement: newElement.uuid,
           });
         }
-      }
-      if (evt.moved) {
-        this.updateItemIndex(evt.moved);
       }
     },
     /**
@@ -205,7 +185,23 @@ export const entry: JsonFormsRendererRegistryEntry = {
 };
 </script>
 <style scoped>
-.dragArea {
+.drag-area {
   min-height: 80px;
+}
+
+.drag-ghost {
+  transform: scale(0.95);
+}
+
+.drag-ghost .editor-element {
+  display: none;
+}
+
+.chosen-ghost {
+  transform: scale(0.95);
+}
+
+.chosen-ghost .editor-element {
+  display: none;
 }
 </style>

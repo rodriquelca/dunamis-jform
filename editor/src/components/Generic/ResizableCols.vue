@@ -7,7 +7,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from '@vue/composition-api';
+import {
+  defineComponent,
+  onDeactivated,
+  onMounted,
+  onUnmounted,
+  ref,
+} from '@vue/composition-api';
 import Vue from 'vue';
 import store from './../../store';
 export default defineComponent({
@@ -153,6 +159,14 @@ export default defineComponent({
     onMounted(() => {
       document.documentElement.addEventListener('mouseup', mouseUp, true);
       document.documentElement.addEventListener('mousemove', mouseMove, true);
+    });
+    onUnmounted(() => {
+      document.documentElement.removeEventListener('mouseup', mouseUp);
+      document.documentElement.removeEventListener('mousemove', mouseMove);
+    });
+    onDeactivated(() => {
+      document.documentElement.removeEventListener('mouseup', mouseUp);
+      document.documentElement.removeEventListener('mousemove', mouseMove);
     });
 
     return {

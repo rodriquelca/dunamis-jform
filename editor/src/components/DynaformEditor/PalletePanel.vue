@@ -20,6 +20,7 @@
             :sort="false"
             class="flex-wrap"
             elevation="0"
+            :clone="clone"
           >
             <div
               v-for="(item, n) in group.elements"
@@ -53,10 +54,19 @@
 </template>
 
 <script lang="ts">
+import {
+  computed,
+  defineComponent,
+  onMounted,
+  ref,
+} from '@vue/composition-api';
 import draggable from 'vuedraggable';
 import { sync } from 'vuex-pathify';
-import { getLabel, SchemaElement } from '../../model/schema';
-export default {
+import { buildSchemaTree, getLabel, SchemaElement } from '../../model/schema';
+import { ghostElementLayout } from '../../store/utils/schemas';
+import store from './../../store';
+import { createControlDrag } from '../../util';
+export default defineComponent({
   name: 'PalletePanel',
   components: {
     draggable,
@@ -66,24 +76,71 @@ export default {
       type: [Object, Boolean],
     },
   },
-  data() {
+  setup(props: any, context: any) {
+    const enabledFields = [
+      'Control',
+      'Checkbox',
+      'DatePicker',
+      'DateTime',
+      'TimePicker',
+      'MultipleFile',
+      'Text',
+      'TextArea',
+      'RichText',
+      'Rating',
+      'RadioGroup',
+      'Suggest',
+      'CheckboxGroup',
+      'Dropdown',
+      'Image',
+      'GridControl',
+      'DataTableControl',
+      'File',
+      'Submit',
+    ];
+    const panel = ref([0, 1, 2, 3]);
+    const getLabel = (schemaElement: SchemaElement) => {
+      return getLabel(schemaElement);
+    };
+    const paletteElements = computed(sync('app/editor@paletteElements'));
+    const editorUiSchema: any = computed(sync('app/editor@uiSchema'));
+
+    const clone = (element: any) => {
+      const property = element.uiSchemaElementProvider();
+      let newElement, newUIElement;
+      if (enabledFields.indexOf(element.type) != -1) {
+        newElement = buildSchemaTree(property.control);
+        newElement.options = property.uiOptions;
+        newUIElement = createControlDrag(newElement, element.type);
+        return {
+          ...ghostElementLayout(
+            editorUiSchema.value,
+            newUIElement,
+            editorUiSchema.uuid
+          ),
+          uiSchemaElementProvider: element.uiSchemaElementProvider,
+        };
+      } else {
+        return ghostElementLayout(
+          editorUiSchema.value,
+          property,
+          editorUiSchema.uuid
+        );
+      }
+    };
+
+    onMounted(() => {
+      store.dispatch('app/getPaletteElements');
+    });
+
     return {
-      panel: [0, 1, 2, 3],
+      panel,
+      getLabel,
+      clone,
+      paletteElements,
     };
   },
-  created: function () {
-    this.$store.dispatch('app/getPaletteElements');
-  },
-  computed: {
-    paletteElements: sync('app/editor@paletteElements'),
-    editorSchema: sync('app/editor@schema'),
-  },
-  methods: {
-    getLabel: function (schemaElement: SchemaElement) {
-      return getLabel(schemaElement);
-    },
-  },
-};
+});
 </script>
 
 <style>

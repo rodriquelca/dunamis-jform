@@ -12,6 +12,7 @@ import {
   createScopedElementToLayout,
   createScopedElementToTable,
   addPropertyToSchema,
+  updateParentUiSchemaElement,
   createUnscopedUiSchema,
   createSchema,
   createUiSchema,
@@ -36,6 +37,10 @@ const actions = {
   addPropertyToSchema: ({ commit, state }: any, payload: any) => {
     const clone = addPropertyToSchema(state, payload);
     commit('SET_SCHEMA', clone);
+  },
+  updateParentUiSchemaElement: ({ commit, state }: any, payload: any) => {
+    const uiSchema = updateParentUiSchemaElement(state, payload);
+    commit('SET_UI_SCHEMA', uiSchema);
   },
   addUnscopedElementToLayout: ({ commit, state }: any, payload: any) => {
     const clone = createUnscopedUiSchema(state, payload);

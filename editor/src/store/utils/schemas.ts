@@ -1,5 +1,5 @@
 import { assign } from 'lodash';
-import { withCloneTree, withCloneTrees } from './../../util/clone';
+import { withCloneTree, withCloneTrees, getTree } from './../../util/clone';
 import {
   findByUUID,
   getRoot,
@@ -24,6 +24,7 @@ import {
 import { CategorizationService } from '../../api/categorizationService';
 import { v4 as uuid } from 'uuid';
 import { DefaultPaletteService } from '../../api/paletteService';
+import { cloneDeep } from 'lodash';
 
 /** Removes the given UI element from its tree.
  *  If a SchemaElement is provided, the element to remove will be cleaned up from all linkedUISchemaElements fields in the schema.
@@ -371,6 +372,15 @@ export const createScopedElementToLayout = (state: any, payload: any) => {
   );
 };
 
+export const ghostElementLayout = (uiSchema: any, element: any, UUID: any) => {
+  const newUIElement = element;
+  withCloneTree(uiSchema, UUID, {} as EditorUISchemaElement, (clonedSchema) => {
+    newUIElement.parent = clonedSchema;
+    return getRoot(clonedSchema as EditorUISchemaElement);
+  });
+  return newUIElement;
+};
+
 export const createScopedElementToTable = (state: any, payload: any) => {
   return withCloneTrees(
     state.editor.uiSchema,
@@ -400,22 +410,13 @@ export const createScopedElementToTable = (state: any, payload: any) => {
 export const addPropertyToSchema = (state: any, payload: any) => {
   return withCloneTree(
     state.editor.schema,
-    payload.elementUUID,
+    payload.parentUUID,
     state.editor,
     (clonedSchema) => {
       const newElement = payload.schemaElement;
       newElement.parent = clonedSchema;
-      let counter = 0;
-      for (const key of clonedSchema.properties.keys()) {
-        if (key.includes(payload.indexOrProp)) {
-          counter += 1;
-        }
-      }
-      newElement.schema.i18n = `${payload.indexOrProp}_${counter}`;
-      clonedSchema.properties?.set(
-        `${payload.indexOrProp}_${counter}`,
-        newElement
-      );
+      newElement.schema.i18n = payload.variable;
+      clonedSchema.properties?.set(payload.variable, newElement);
       // return clonedSchema;
       return getRoot(clonedSchema as EditorUISchemaElement);
     }
@@ -439,6 +440,15 @@ export const createUnscopedUiSchema = (state: any, payload: any) => {
       return getRoot(newUiSchema as EditorUISchemaElement);
     }
   );
+};
+
+export const updateParentUiSchemaElement = (state: any, payload: any) => {
+  const uiSchema = cloneDeep(state.editor.uiSchema);
+  const element = getTree(uiSchema, payload.elementUUID);
+  const parent = getTree(uiSchema, payload.parentUUID);
+  element.parent = parent;
+  element.linkedSchemaElement = payload.linkedSchemaElement;
+  return uiSchema;
 };
 
 export const createSchema = (state: any, payload: any) => {

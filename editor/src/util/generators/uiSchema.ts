@@ -17,7 +17,7 @@ import {
 
 export const createControl = (
   schemaElement: SchemaElement,
-  uiSchemaType: string,
+  uiSchemaType: string
 ): ControlElement & EditorUISchemaElement => {
   return createControlWithScope(
     `#${getScope(schemaElement)}`,
@@ -26,12 +26,24 @@ export const createControl = (
   );
 };
 
+export const createControlDrag = (
+  schemaElement: any,
+  uiSchemaType: string
+): any => {
+  const uid = uuid();
+  return {
+    type: uiSchemaType,
+    scope: `#/properties/${uiSchemaType}_${uid.split('-').shift()}`,
+    options: schemaElement.options,
+    uuid: uid,
+  };
+};
+
 export const createControlWithScope = (
   scope: string,
   options: Record<string, unknown>,
   uiSchemaType: string
 ): ControlElement & EditorUISchemaElement => {
-
   return {
     type: uiSchemaType,
     scope: scope,
