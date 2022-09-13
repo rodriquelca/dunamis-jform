@@ -12,7 +12,6 @@
             <span class="font-weight-bold">R</span>
             <span class="font-italic"> ({{ ruleEffect }})</span>
           </span>
-
           <div class="d-inline caption font-weight-bold v-opacity">
             {{
               wrappedElement.scope ? wrappedElement.scope.split('/').pop() : ''
@@ -26,6 +25,7 @@
                   v-on="on"
                   plain
                   x-small
+                  class="drag-icon"
                   :color="moveColor"
                   @mouseover="moveColor = 'teal lighten-2'"
                   @mouseleave="moveColor = undefined"
@@ -91,7 +91,7 @@
           </div>
         </div>
 
-        <div>
+        <div class="editor-element">
           <slot></slot>
         </div>
       </v-col>

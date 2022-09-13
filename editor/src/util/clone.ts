@@ -53,3 +53,13 @@ export const withCloneTrees = <R, T1, T2>(
       process(clonedElement1, clonedElement2)
     )
   );
+
+/**
+ * Returns the tree with UUID
+ * @param root
+ * @param uuid
+ * @returns
+ */
+export const getTree = <T>(root: T, uuid?: string): T | UUIDError => {
+  return uuid ? findByUUID(root, uuid) : root;
+};

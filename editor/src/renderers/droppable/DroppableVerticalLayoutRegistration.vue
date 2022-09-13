@@ -1,37 +1,35 @@
 <template>
-  <div>
-    <draggable
-      :class="draggableClass"
-      :list="[]"
-      group="people"
-      @change="handleChange"
-      :sort="true"
-      :disabled="!enabledDrag"
-      ghost-class="ghost"
-      @start="dragging = true"
-      @end="dragging = false"
+  <draggable
+    :class="draggableClass"
+    :list="uischema.elements"
+    group="people"
+    :sort="true"
+    @change="handleChange"
+    drag-class="drag-ghost"
+    ghost-class="ghost"
+    chosen-class="chosen-ghost"
+    handle=".drag-icon"
+    :animation="200"
+  >
+    <v-row
+      v-for="(element, index) in uischema.elements"
+      :key="`${useJsonForm.layout.value.path}-${index}`"
+      no-gutters
     >
-      <v-row
-        v-for="(element, index) in uischema.elements"
-        :key="`${useJsonForm.layout.value.path}-${index}`"
-        no-gutters
-        :class="{ 'not-draggable': !enabled }"
-      >
-        <v-col cols="12" :class="useJsonForm.styles.verticalLayout.item">
-          <dispatch-renderer
-            :key="element.uuid"
-            updateItemIndex
-            :schema="useJsonForm.layout.value.schema"
-            :uischema="element"
-            :path="useJsonForm.layout.value.path"
-            :enabled="useJsonForm.layout.value.enabled"
-            :renderers="customRenderers"
-            :cells="useJsonForm.layout.value.cells"
-          />
-        </v-col>
-      </v-row>
-    </draggable>
-  </div>
+      <v-col cols="12" :class="useJsonForm.styles.verticalLayout.item">
+        <dispatch-renderer
+          :key="element.uuid"
+          updateItemIndex
+          :schema="useJsonForm.layout.value.schema"
+          :uischema="element"
+          :path="useJsonForm.layout.value.path"
+          :enabled="useJsonForm.layout.value.enabled"
+          :renderers="customRenderers"
+          :cells="useJsonForm.layout.value.cells"
+        />
+      </v-col>
+    </v-row>
+  </draggable>
 </template>
 
 <script lang="ts">
@@ -56,7 +54,7 @@ import {
 import { useVuetifyLayout } from '@jsonforms/vue2-vuetify';
 import { VContainer, VRow, VCol } from 'vuetify/lib';
 import { entry as DroppableElementRegistration } from './DroppableElement.vue';
-import { createControl, tryFindByUUID } from '@/util';
+import { createControl, tryFindByUUID, doFindByScope } from '@/util';
 import { buildSchemaTree } from '../../model/schema';
 import _ from 'lodash';
 
@@ -75,13 +73,11 @@ const droppableRenderer = defineComponent({
   setup(props: RendererProps<Layout>) {
     return {
       useJsonForm: useVuetifyLayout(useJsonFormsLayout(props)),
-      enabledDrag: true,
-      dragging: false,
     };
   },
   computed: {
     draggableClass(): string {
-      return 'dragArea list-group';
+      return 'dragArea list-group py-8';
     },
     customRenderers(): Array<any> {
       return (
@@ -92,73 +88,55 @@ const droppableRenderer = defineComponent({
   },
   methods: {
     handleChange(evt: any) {
+      const enabledFields = [
+        'Control',
+        'Checkbox',
+        'DatePicker',
+        'DateTime',
+        'TimePicker',
+        'MultipleFile',
+        'Text',
+        'TextArea',
+        'RichText',
+        'Rating',
+        'RadioGroup',
+        'Suggest',
+        'CheckboxGroup',
+        'Dropdown',
+        'Image',
+        'GridControl',
+        'DataTableControl',
+        'File',
+        'Submit',
+      ];
       if (evt.added) {
         if (
           evt.added.element &&
-          (evt.added.element.type === 'Control' ||
-            evt.added.element.type === 'Checkbox' ||
-            evt.added.element.type === 'DatePicker' ||
-            evt.added.element.type === 'DateTime' ||
-            evt.added.element.type === 'TimePicker' ||
-            evt.added.element.type === 'MultipleFile' ||
-            evt.added.element.type === 'Text' ||
-            evt.added.element.type === 'TextArea' ||
-            evt.added.element.type === 'RichText' ||
-            evt.added.element.type === 'Rating' ||
-            evt.added.element.type === 'RadioGroup' ||
-            evt.added.element.type === 'Suggest' ||
-            evt.added.element.type === 'CheckboxGroup' ||
-            evt.added.element.type === 'Dropdown' ||
-            evt.added.element.type === 'Image' ||
-            evt.added.element.type === 'GridControl' ||
-            evt.added.element.type === 'DataTableControl' ||
-            evt.added.element.type === 'File' ||
-            evt.added.element.type === 'Submit')
+          enabledFields.indexOf(evt.added.element.type) !== -1
         ) {
           //here update the schema
           const property = evt.added.element.uiSchemaElementProvider();
           const newElement = buildSchemaTree(property.control);
-          this.$store.dispatch('app/addPropertyToSchema', {
-            schemaElement: newElement,
-            elementUUID: this.schema.uuid,
-            indexOrProp: property.variable,
-          });
-
-          //Here uischema
-          const schemaElement = tryFindByUUID(
+          //Verify if the scope has been created
+          let elementSchema = doFindByScope(
             this.$store.get('app/editor@schema'),
-            newElement.uuid
+            evt.added.element.scope.split('/').pop()
           );
-          const element = this.findElementSchema(
-            this.$store.get('app/editor@schema'),
-            schemaElement
-          );
-          this.$store.dispatch('locales/addProperty', {
-            property: element.key,
-          });
-          schemaElement.options = property.uiOptions;
-          const newUIElement = createControl(
-            schemaElement,
-            evt.added.element.type
-          );
-          this.$store.dispatch('app/addScopedElementToLayout', {
-            uiSchemaElement: newUIElement,
-            layoutUUID: this.uischema.uuid,
-            index: evt.added.newIndex,
-            schemaUUID: evt.added.element.uuid,
-            schemaElement,
-          });
-        } else {
-          let provider = evt.added.element.uiSchemaElementProvider();
-          this.$store.dispatch('app/addUnscopedElementToLayout', {
-            uiSchemaElement: provider,
-            layoutUUID: this.uischema.uuid,
-            index: evt.added.newIndex,
+          //Add new element to schema
+          if (!elementSchema) {
+            this.$store.dispatch('app/addPropertyToSchema', {
+              schemaElement: newElement,
+              parentUUID: this.schema.uuid,
+              variable: evt.added.element.scope.split('/').pop(),
+            });
+          }
+          //Update parent in newElement
+          this.$store.dispatch('app/updateParentUiSchemaElement', {
+            elementUUID: evt.added.element.uuid,
+            parentUUID: this.uischema.uuid,
+            linkedSchemaElement: newElement.uuid,
           });
         }
-      }
-      if (evt.moved) {
-        this.updateItemIndex(evt.moved);
       }
     },
     /**
@@ -201,3 +179,20 @@ export const entry: JsonFormsRendererRegistryEntry = {
   tester: rankWith(45, uiTypeIs('VerticalLayout')),
 };
 </script>
+<style>
+.drag-ghost {
+  transform: scale(0.95);
+}
+
+.drag-ghost .editor-element {
+  display: none;
+}
+
+.chosen-ghost {
+  transform: scale(0.95);
+}
+
+.chosen-ghost .editor-element {
+  display: none;
+}
+</style>

@@ -305,3 +305,42 @@ export const isEditorLayout = (
 ): element is EditorLayout => {
   return isEditorUISchemaElement(element) && isLayout(element);
 };
+/**
+ * Do find by scope
+ * @param root
+ * @param scope
+ * @returns
+ */
+export const doFindByScope = (root: any, scope: string): any | UUIDError => {
+  if (!scope) {
+    return {
+      id: 'noScopeError',
+    };
+  }
+  if (root && root.scope?.split('/').pop() === scope) {
+    return root;
+  }
+  if (!root) {
+    return undefined;
+  }
+  const entries = root instanceof Map ? root.entries() : Object.entries(root);
+  for (const [key, value] of Array.from(entries)) {
+    if (key === scope) {
+      return value;
+    }
+    if (typeof value === 'object' && key !== 'parent') {
+      const result = doFindByScope(value, scope);
+      if (result) {
+        return result;
+      }
+    }
+    // some mappings are 'reversed'
+    if (typeof key === 'object') {
+      const result = doFindByScope(key, scope);
+      if (result) {
+        return result;
+      }
+    }
+  }
+  return undefined;
+};
