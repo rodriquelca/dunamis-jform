@@ -22,6 +22,9 @@ const mutations = {
   REMOVE_UISCHEMA_ELEMENT: (state: any, value: any) => {
     state.editor.uiSchema = value;
   },
+  REMOVE_SCHEMA_ELEMENT: (state: any, value: any) => {
+    state.editor.schema = value;
+  },
   SET_INFORMATION: (state: any, value: any) => {
     state.editor.information = value;
   },

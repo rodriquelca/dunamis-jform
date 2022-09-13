@@ -73,6 +73,7 @@ const actions = {
   removeUiSchemaElement: ({ commit, state }: any, payload: any) => {
     const clone = removeUiSchemaElement(state, payload);
     commit('REMOVE_UISCHEMA_ELEMENT', clone.uiSchema);
+    commit('REMOVE_SCHEMA_ELEMENT', clone.schema);
   },
   duplicateElement: ({ commit, state }: any, payload: any) => {
     const clone = duplicateElement(state, payload);
