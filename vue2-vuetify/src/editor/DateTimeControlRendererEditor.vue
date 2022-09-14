@@ -25,8 +25,8 @@
             :placeholder="placeholder"
             :persistent-placeholder="labelOrientation() == 'inherit'"
             :label="labelOrientation() == 'inherit' ? computedLabel : null"
-            hint=""
             :persistent-hint="persistentHint()"
+            hint=""
             :required="control.required"
             :error-messages="control.errors"
             :value="valueChangeFormat"
@@ -43,16 +43,17 @@
         </template>
         <v-date-picker
           v-model="date"
-          v-if="inputFormat == 'date' || inputFormat == 'date-time'"
+          v-if="inputFormat === 'date' || inputFormat === 'date-time'"
+          :max="maxDate"
+          :min="minDate"
           @input="inputFormat !== 'date-time' ? (menu = false) : (menu = true)"
           no-title
           scrollable
         >
-          <v-btn text color="primary"> Clear </v-btn>
         </v-date-picker>
         <v-time-picker
           v-model="time"
-          v-if="inputFormat == 'time' || inputFormat == 'date-time'"
+          v-if="inputFormat === 'time' || inputFormat === 'date-time'"
           @input="inputFormat !== 'date-time' ? (menu = false) : (menu = true)"
         ></v-time-picker>
       </v-menu>
@@ -77,6 +78,16 @@ import { default as ControlWrapper } from '../controls/ControlWrapper.vue';
 import { useVuetifyControl } from '../util';
 import { VTextField, VMenu, VDatePicker, VTimePicker, VBtn } from 'vuetify/lib';
 import CustomControlWrapper from '../controls/CustomControlWrapper.vue';
+import {
+  dateNow,
+  dateTimeNow,
+  timeNow,
+  formatDate,
+  parseDate,
+  formatTime,
+  formatDateTime,
+  parseDateTime,
+} from '../util/composableDateTime';
 
 const controlRenderer = defineComponent({
   name: 'date-time-control-renderer-editor',
@@ -93,84 +104,27 @@ const controlRenderer = defineComponent({
     ...rendererProps<ControlElement>(),
   },
   setup(props: RendererProps<ControlElement>) {
-    let date = ref(
-      new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-        .toISOString()
-        .substr(0, 10)
-    );
-    let dateFormatted = ref(
-      formatDate(
-        new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-          .toISOString()
-          .substr(0, 10)
-      )
-    );
-    let time = ref(
-      new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-        .toISOString()
-        .slice(11, 16)
-    );
-    let timeFormatted = ref(
-      formatTime(
-        new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-          .toISOString()
-          .slice(11, 16)
-      )
-    );
-    let dateTime = ref(
-      new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-        .toISOString()
-        .slice(0, 16)
-        .replace('T', ' ')
-    );
+    let date = ref(dateNow());
+    let dateFormatted = ref(formatDate(dateNow()));
+    let time = ref(timeNow());
+    let timeFormatted = ref(formatTime(timeNow()));
+    let dateTime = ref(dateTimeNow().replace('T', ' '));
     let dateTimeFormatted = ref(
-      formatDateTime.apply(this, [
-        new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-          .toISOString()
-          .slice(0, 16)
-          .replace('T', ' '),
-      ])
+      formatDateTime.apply(this, [dateTimeNow().replace('T', ' ')])
     );
 
-    function formatDate(dt: any): string | null {
-      // MM-DD-YYYY format
-      if (!dt) return null;
-      const [year, month, day] = dt.split('-');
-      return `${month}/${day}/${year}`;
-    }
-    function parseDate(dt: any): string | null {
-      // ISO format
-      if (!dt) return null;
-      const [month, day, year] = dt.split('/');
-      return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-    }
-    // Time is saved the same way it is displayed
-    function formatTime(dt: any): string | null {
-      if (!dt) return null;
-      const [hours, minutes] = dt.split(':');
-      return `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
-    }
-    // To be displayed to the user
-    function formatDateTime(dt: string): string | null {
-      let [d, t] = dt.split(' ');
-      if (!dt) return null;
-      return formatDate(d) + ' ' + formatTime(t);
-    }
-    // To be saved in ISO format
-    function parseDateTime(d: any, t: any): string | null {
-      if (!d || !t) return null;
-      return parseDate(d) + 'T' + formatTime(t) + ':00Z';
-    }
     function blurChangeFormat(this: any) {
-      if (this.inputFormat == 'date') {
+      if (this.inputFormat === 'date') {
         this.date = parseDate(
           'value' in dateFormatted ? dateFormatted.value : dateFormatted
         );
-      } else if (this.inputFormat == 'time') {
+      }
+      if (this.inputFormat === 'time') {
         this.time = formatTime(
           'value' in timeFormatted ? timeFormatted.value : timeFormatted
         );
-      } else if (this.inputFormat == 'date-time') {
+      }
+      if (this.inputFormat === 'date-time') {
         this.dateTime = parseDateTime(
           'value' in dateFormatted ? dateFormatted.value : dateFormatted,
           'value' in timeFormatted ? timeFormatted.value : timeFormatted
@@ -198,7 +152,7 @@ const controlRenderer = defineComponent({
   watch: {
     date() {
       this.dateFormatted = this.formatDate(this.date);
-      if (this.inputFormat == 'date-time') {
+      if (this.inputFormat === 'date-time') {
         this.dateTimeFormatted = this.formatDateTime(
           this.date + ' ' + this.time
         );
@@ -206,7 +160,7 @@ const controlRenderer = defineComponent({
     },
     time() {
       this.timeFormatted = this.formatTime(this.time);
-      if (this.inputFormat == 'date-time') {
+      if (this.inputFormat === 'date-time') {
         this.dateTimeFormatted = this.formatDateTime(
           this.date + ' ' + this.time
         );
@@ -227,15 +181,63 @@ const controlRenderer = defineComponent({
       return this.control.schema?.format ?? '';
     },
     valueChangeFormat(): string | null {
-      if (this.inputFormat == 'date') {
+      if (this.inputFormat === 'date') {
         return this.dateFormatted;
-      } else if (this.inputFormat == 'time') {
-        return this.timeFormatted;
-      } else if (this.inputFormat == 'date-time') {
-        return this.dateTimeFormatted;
-      } else {
-        return null;
       }
+      if (this.inputFormat === 'time') {
+        return this.timeFormatted;
+      }
+      if (this.inputFormat === 'date-time') {
+        return this.dateTimeFormatted;
+      }
+
+      return null;
+    },
+    maxDate(): string {
+      let max = this.control.uischema.options?.maxDate;
+      if (max) {
+        let min = this.control.uischema.options?.minDate;
+        let current = new Date(this.date);
+        max = new Date(max);
+
+        if (current > max) {
+          min = min ? new Date(min) : '';
+          if (!min || !(max < min)) {
+            this.date = max.toISOString().split('T')[0];
+          }
+        }
+
+        if (min) {
+          max = max < min ? min.toISOString() : new Date(max).toISOString();
+          return max;
+        }
+
+        return max.toISOString() ?? '';
+      }
+      return max ?? '';
+    },
+    minDate(): string {
+      let min = this.control.uischema.options?.minDate;
+      if (min) {
+        let max = this.control.uischema.options?.maxDate;
+        let current = new Date(this.date);
+        min = new Date(min);
+
+        if (current < min) {
+          max = max ? new Date(max) : '';
+          if (!max || !(min > max)) {
+            this.date = min.toISOString().split('T')[0];
+          }
+        }
+
+        if (max) {
+          min = min > max ? max.toISOString() : new Date(min).toISOString();
+          return min;
+        }
+
+        return min.toISOString() ?? '';
+      }
+      return min ?? '';
     },
   },
 });

@@ -171,7 +171,6 @@ export const manualHandlerDependencies = (
   const deps = dependencies(uiSchema);
   const scope = pathControlSchema(uiSchema.scope);
   return (payload: any) => {
-    debugger;
     const data = provider.store.getters['preview/getMultipleData'](deps);
     data[scope] = payload;
     try {

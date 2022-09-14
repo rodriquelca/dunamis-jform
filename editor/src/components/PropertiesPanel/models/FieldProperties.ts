@@ -51,6 +51,8 @@ const FieldProperties: any = {
     Props.build('label'),
     Props.build('placeholder'),
     Props.build('required'),
+    Props.build('minDate'),
+    Props.build('maxDate'),
   ],
   TimePicker: [
     Props.build('type'),
@@ -67,6 +69,8 @@ const FieldProperties: any = {
     Props.build('label'),
     Props.build('placeholder'),
     Props.build('required'),
+    Props.build('minDate'),
+    Props.build('maxDate'),
   ],
   Dropdown: [
     Props.build('type'),

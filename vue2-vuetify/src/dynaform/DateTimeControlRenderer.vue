@@ -8,30 +8,54 @@
     <CustomControlWrapper
       v-bind="{ labelOrientation, computedLabel, labelCols }"
     >
-      <v-text-field
-        type="datetime-local"
-        :id="control.id + '-input'"
-        :class="styles.control.input"
-        :disabled="!control.enabled"
-        :autofocus="appliedOptions.focus"
-        :placeholder="placeholder"
-        :persistent-placeholder="labelOrientation() == 'inherit'"
-        :label="labelOrientation() == 'inherit' ? computedLabel : null"
-        :hint="control.description"
-        :persistent-hint="persistentHint()"
-        :required="control.required"
-        :error-messages="control.errors"
-        :value="dataTime"
-        @focus="isFocused = true"
-        @blur="isFocused = false"
+      <v-menu
+        ref="menu"
+        v-model="menu"
+        :close-on-content-click="false"
+        transition="scale-transition"
+        offset-y
+        min-width="auto"
       >
-        <v-tooltip v-if="hint && hint != ''" slot="append" top>
-          <template v-slot:activator="{ on }">
-            <v-icon v-on="on" color="primary" small> mdi-information </v-icon>
-          </template>
-          <span class="">{{ hint }}</span>
-        </v-tooltip>
-      </v-text-field>
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field
+            :id="control.id + '-input'"
+            :class="styles.control.input"
+            :disabled="!control.enabled"
+            :autofocus="appliedOptions.focus"
+            :placeholder="placeholder"
+            :persistent-placeholder="labelOrientation() == 'inherit'"
+            :label="labelOrientation() == 'inherit' ? computedLabel : null"
+            :persistent-hint="persistentHint()"
+            :required="control.required"
+            :error-messages="control.errors"
+            :value="valueChangeFormat"
+            @focus="isFocused = true"
+            @blur="
+              blurChangeFormat();
+              isFocused = false;
+            "
+            append-icon="mdi-calendar"
+            v-bind="attrs"
+            v-on="on"
+            readonly
+          ></v-text-field>
+        </template>
+        <v-date-picker
+          v-model="date"
+          v-if="inputFormat === 'date' || inputFormat === 'date-time'"
+          :max="maxDate"
+          :min="minDate"
+          @input="inputFormat !== 'date-time' ? (menu = false) : (menu = true)"
+          no-title
+          scrollable
+        >
+        </v-date-picker>
+        <v-time-picker
+          v-model="time"
+          v-if="inputFormat === 'time' || inputFormat === 'date-time'"
+          @input="inputFormat !== 'date-time' ? (menu = false) : (menu = true)"
+        ></v-time-picker>
+      </v-menu>
     </CustomControlWrapper>
   </control-wrapper>
 </template>
@@ -43,33 +67,107 @@ import {
   rankWith,
   uiTypeIs,
 } from '@jsonforms/core';
-import { defineComponent } from '../vue';
+import { defineComponent, ref } from '../vue';
 import {
   rendererProps,
   useJsonFormsControl,
   RendererProps,
 } from '@jsonforms/vue2';
 import { default as ControlWrapper } from './../controls/ControlWrapper.vue';
-import { useVuetifyControl, parseDateTime } from '../util';
-import { VTextField, VIcon, VTooltip } from 'vuetify/lib';
+import { useVuetifyControl } from '../util';
+import { VTextField, VMenu, VDatePicker, VTimePicker, VBtn } from 'vuetify/lib';
 import CustomControlWrapper from '../controls/CustomControlWrapper.vue';
+import {
+  dateNow,
+  dateTimeNow,
+  timeNow,
+  formatDate,
+  parseDate,
+  formatTime,
+  formatDateTime,
+  parseDateTime,
+} from '../util/composableDateTime';
 
 const controlRenderer = defineComponent({
-  name: 'datetime-control-renderer-editor',
+  name: 'datetime-control-renderer',
   components: {
     ControlWrapper,
     VTextField,
-    VIcon,
-    VTooltip,
+    VMenu,
+    VDatePicker,
+    VTimePicker,
+    VBtn,
     CustomControlWrapper,
   },
   props: {
     ...rendererProps<ControlElement>(),
   },
   setup(props: RendererProps<ControlElement>) {
+    let date = ref(dateNow());
+    let dateFormatted = ref(formatDate(dateNow()));
+    let time = ref(timeNow());
+    let timeFormatted = ref(formatTime(timeNow()));
+    let dateTime = ref(dateTimeNow().replace('T', ' '));
+    let dateTimeFormatted = ref(
+      formatDateTime.apply(this, [dateTimeNow().replace('T', ' ')])
+    );
+
+    function blurChangeFormat(this: any) {
+      if (this.inputFormat === 'date') {
+        this.date = parseDate(
+          'value' in dateFormatted ? dateFormatted.value : dateFormatted
+        );
+      }
+      if (this.inputFormat === 'time') {
+        this.time = formatTime(
+          'value' in timeFormatted ? timeFormatted.value : timeFormatted
+        );
+      }
+      if (this.inputFormat === 'date-time') {
+        this.dateTime = parseDateTime(
+          'value' in dateFormatted ? dateFormatted.value : dateFormatted,
+          'value' in timeFormatted ? timeFormatted.value : timeFormatted
+        );
+      }
+    }
+
     return {
       ...useVuetifyControl(useJsonFormsControl(props)),
+      menu: false,
+      date,
+      dateFormatted,
+      time,
+      timeFormatted,
+      dateTime,
+      dateTimeFormatted,
+      formatDate,
+      parseDate,
+      formatTime,
+      formatDateTime,
+      parseDateTime,
+      blurChangeFormat,
     };
+  },
+  watch: {
+    date() {
+      this.dateFormatted = this.formatDate(this.date);
+      if (this.inputFormat === 'date-time') {
+        this.dateTimeFormatted = this.formatDateTime(
+          this.date + ' ' + this.time
+        );
+      }
+    },
+    time() {
+      this.timeFormatted = this.formatTime(this.time);
+      if (this.inputFormat === 'date-time') {
+        this.dateTimeFormatted = this.formatDateTime(
+          this.date + ' ' + this.time
+        );
+      }
+    },
+    dateTime() {
+      this.dateTimeFormatted = this.formatDateTime(this.dateTime);
+    },
   },
   computed: {
     hint(): string {
@@ -78,29 +176,64 @@ const controlRenderer = defineComponent({
     placeholder(): string {
       return this.control.uischema.options?.placeholder ?? '';
     },
-    dataTime: {
-      get(): string | null | undefined {
-        const datetimeLocalFormat = 'YYYY-MM-DDTHH:mm:ss.SSS';
-        const saveFormat = this.appliedOptions.dateTimeSaveFormat ?? undefined;
-        const value = this.control.data as string | undefined | null;
+    inputFormat(): string | undefined {
+      return this.control.schema?.format ?? '';
+    },
+    valueChangeFormat(): string | null {
+      if (this.inputFormat === 'date') {
+        return this.dateFormatted;
+      }
+      if (this.inputFormat === 'time') {
+        return this.timeFormatted;
+      }
+      if (this.inputFormat === 'date-time') {
+        return this.dateTimeFormatted;
+      }
+      return null;
+    },
+    maxDate(): string {
+      let max = this.control.uischema.options?.maxDate;
+      if (max) {
+        let min = this.control.uischema.options?.minDate;
+        let current = new Date(this.date);
+        max = new Date(max);
 
-        const dateTime = parseDateTime(value, saveFormat);
-        return dateTime ? dateTime.local().format(datetimeLocalFormat) : value;
-      },
-      set(value: string) {
-        const datetimeLocalFormats = [
-          'YYYY-MM-DDTHH:mm:ss.SSS',
-          'YYYY-MM-DDTHH:mm:ss',
-          'YYYY-MM-DDTHH:mm',
-        ];
-        const saveFormat =
-          this.appliedOptions.dateTimeSaveFormat ?? 'YYYY-MM-DDTHH:mm:ssZ';
+        if (current > max) {
+          min = min ? new Date(min) : '';
+          if (!min || !(max < min)) {
+            this.date = max.toISOString().split('T')[0];
+          }
+        }
 
-        const dateTime = parseDateTime(value, datetimeLocalFormats);
-        const result = dateTime ? dateTime.format(saveFormat) : value;
+        if (min) {
+          max = max < min ? min.toISOString() : max.toISOString();
+        }
 
-        this.onChange(result);
-      },
+        return max ?? '';
+      }
+      return max ?? '';
+    },
+    minDate(): string {
+      let min = this.control.uischema.options?.minDate;
+      if (min) {
+        let max = this.control.uischema.options?.maxDate;
+        let current = new Date(this.date);
+        min = new Date(min);
+
+        if (current < min) {
+          max = max ? new Date(max) : '';
+          if (!max || !(min > max)) {
+            this.date = min.toISOString().split('T')[0];
+          }
+        }
+
+        if (max) {
+          min = min > max ? max.toISOString() : min.toISOString();
+        }
+
+        return min ?? '';
+      }
+      return min ?? '';
     },
   },
 });

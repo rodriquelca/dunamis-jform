@@ -104,6 +104,20 @@ const PropertiesPanel = [
     ],
   } as PropertyPanel,
   {
+    id: 'maxDate',
+    type: 'date',
+    name: 'Max Date',
+    options: {},
+    items: [],
+  } as PropertyPanel,
+  {
+    id: 'minDate',
+    type: 'date',
+    name: 'Min Date',
+    options: {},
+    items: [],
+  } as PropertyPanel,
+  {
     id: 'validation',
     type: 'text',
     name: 'Validation',

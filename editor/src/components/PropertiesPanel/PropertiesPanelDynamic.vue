@@ -176,6 +176,14 @@ const PropertiesPanel = defineComponent({
         fieldData['hint'] = this.uiElement.options
           ? this.uiElement.options.hint
           : null;
+        // Get the maxDate property
+        fieldData['maxDate'] = this.uiElement.options
+          ? this.uiElement.options.maxDate
+          : '';
+        // Get the minDate property
+        fieldData['minDate'] = this.uiElement.options
+          ? this.uiElement.options.minDate
+          : '';
         // Get the format property for DateTime
         fieldData['format'] = elementSchema.schema
           ? elementSchema.schema.format
@@ -227,20 +235,6 @@ const PropertiesPanel = defineComponent({
         this.$store.dispatch('app/updateSchemaReadOnly', {
           elementUUID: this.uiElement.uuid,
           readOnly: data.readOnly,
-        });
-      }
-      //Properties for datePicker
-      if (data.minDate) {
-        this.$store.dispatch('app/updateSchemaMinDate', {
-          elementUUID: this.uiElement.uuid,
-          minDate: data.minDate,
-        });
-        this.generalData['minDate'] = data.minDate;
-      }
-      if (data.maxDate) {
-        this.$store.dispatch('app/updateSchemaMaxDate', {
-          elementUUID: this.uiElement.uuid,
-          maxDate: data.maxDate,
         });
       }
       if (data.defaultDate) {
@@ -305,7 +299,7 @@ const PropertiesPanel = defineComponent({
         });
       }
       // hint -> to options
-      if (data.hint || data.hint == '') {
+      if (data.hint || data.hint === '') {
         this.$store.dispatch('app/updateUISchemaElementOption', {
           elementUUID: this.uiElement.uuid,
           changedProperties: { hint: data.hint },
@@ -326,7 +320,7 @@ const PropertiesPanel = defineComponent({
         });
       }
       // placeholder -> to options
-      if (data.placeholder || data.placeholder == '') {
+      if (data.placeholder || data.placeholder === '') {
         this.$store.dispatch('app/updateUISchemaElementOption', {
           elementUUID: this.uiElement.uuid,
           changedProperties: { placeholder: data.placeholder },
@@ -339,8 +333,22 @@ const PropertiesPanel = defineComponent({
           changedProperties: { format: data.format },
         });
       }
+      // maxDate -> to options
+      if (data.maxDate || data.maxDate === '') {
+        this.$store.dispatch('app/updateUISchemaElementOption', {
+          elementUUID: this.uiElement.uuid,
+          changedProperties: { maxDate: data.maxDate },
+        });
+      }
+      // minDate -> to options
+      if (data.minDate || data.minDate === '') {
+        this.$store.dispatch('app/updateUISchemaElementOption', {
+          elementUUID: this.uiElement.uuid,
+          changedProperties: { minDate: data.minDate },
+        });
+      }
       // default value -> to options
-      if (data.defaultValue || data.defaultValue == '') {
+      if (data.defaultValue || data.defaultValue === '') {
         this.$store.dispatch('app/updateUISchemaElementOption', {
           elementUUID: this.uiElement.uuid,
           changedProperties: { defaultValue: data.defaultValue },
@@ -361,7 +369,6 @@ const PropertiesPanel = defineComponent({
         });
       }
       this.generalData['data'] = data;
-      this.key++;
     },
     findElementSchema() {
       const linkedSchemaUUID = this.uiElement.linkedSchemaElement;
