@@ -220,11 +220,22 @@ export default {
     onRemove: function (e) {
       e.preventDefault();
       e.stopPropagation();
-      if (!hasChildren(this.wrappedElement)) {
-        this.$store.dispatch(
-          'app/removeUiSchemaElement',
-          this.wrappedElement.uuid
-        );
+      if (hasChildren(this.wrappedElement)) {
+        this.removeChildren(this.wrappedElement.elements);
+      }
+      this.$store.dispatch(
+        'app/removeUiSchemaElement',
+        this.wrappedElement.uuid
+      );
+    },
+    removeChildren: function (elements: any): void {
+      let element;
+      for (element of elements) {
+        if (!hasChildren(element)) {
+          this.$store.dispatch('app/removeUiSchemaElement', element.uuid);
+        } else {
+          this.removeChildren(element.elements);
+        }
       }
     },
     onEdit: function (e) {

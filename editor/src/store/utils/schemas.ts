@@ -332,6 +332,10 @@ export const removeUiSchemaElement = (state: any, payload: any) => {
         console.error('Could not remove ui element ', removeResult);
         return state;
       }
+      //Remove the element from Schema
+      if (elementToRemove.scope) {
+        newSchema.properties.delete(elementToRemove.scope.substring(13));
+      }
       // check whether the element to remove was the root element
       const uiSchemaToReturn = elementToRemove.parent
         ? getRoot(elementToRemove)
