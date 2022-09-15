@@ -20,6 +20,7 @@ import FieldProperties from '../models/FieldProperties';
 import TextProp from './TextProp.vue';
 import TextareaProp from './TextareaProp.vue';
 import DropdownProp from './DropdownProp.vue';
+import DateProp from './DateProp.vue';
 import CheckboxProp from './CheckboxProp.vue';
 import ItemsProp from './ItemsProp.vue';
 import LabelProp from './LabelProp.vue';
@@ -33,6 +34,7 @@ const PropertiesPanelDynamic = defineComponent({
     TextareaProp,
     DropdownProp,
     CheckboxProp,
+    DateProp,
     ItemsProp,
     LabelProp,
     ...PanelExtended,
