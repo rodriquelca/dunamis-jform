@@ -169,6 +169,23 @@ export default {
   },
   computed: {},
   methods: {
+    /**
+     * Copy schemasfrom editor to preview
+     */
+    copySchemasFromEditorToPreview(): void {
+      this.$store.dispatch(
+        'preview/setSchema',
+        this.$store.get('app/editor@schema')
+      );
+      this.$store.dispatch(
+        'preview/setUiSchema',
+        this.$store.get('app/editor@uiSchema')
+      );
+      this.$store.dispatch(
+        'preview/setLocale',
+        this.$store.get('app/jsonforms@locale')
+      );
+    },
     onClickEditor() {
       let mainPanel = { id: 'main-editor' },
         sideBar = { id: 'side-bar-pallete' };
@@ -186,6 +203,7 @@ export default {
           },
         },
         sideBar = { id: 'side-bar-preview' };
+      this.copySchemasFromEditorToPreview();
       this.$store.dispatch('viewManager/setAllViews', {
         mainPanel,
         sideBar,
@@ -200,6 +218,7 @@ export default {
           },
         },
         sideBar = { id: 'side-bar-preview' };
+      this.copySchemasFromEditorToPreview();
       this.$store.dispatch('viewManager/setAllViews', {
         mainPanel,
         sideBar,

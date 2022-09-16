@@ -23,7 +23,7 @@
           :persistent-hint="persistentHint()"
           :required="control.required"
           :error-messages="control.errors"
-          :value="control.uischema.options.defaultValue"
+          :value="textValue"
           :maxlength="
             appliedOptions.restrict ? control.schema.maxLength : undefined
           "
@@ -92,6 +92,27 @@ const controlRenderer = defineComponent({
     );
   },
   computed: {
+    textValue(): string {
+      let defaultValue = this.control.uischema.options?.defaultValue ?? '';
+      let transformToApply = this.control.uischema.options?.textTransform ?? '';
+      switch (transformToApply) {
+        case 'lowercase':
+          return defaultValue.toLowerCase();
+        case 'uppercase':
+          return defaultValue.toUpperCase();
+        case 'capital':
+          return defaultValue.charAt(0).toUpperCase() + defaultValue.slice(1);
+        case 'title': {
+          const arr = defaultValue.split(' ');
+          for (var i = 0; i < arr.length; i++) {
+            arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1);
+          }
+          return arr.join(' ');
+        }
+        default:
+          return defaultValue ?? '';
+      }
+    },
     hint(): string {
       return this.control.uischema.options?.hint ?? '';
     },

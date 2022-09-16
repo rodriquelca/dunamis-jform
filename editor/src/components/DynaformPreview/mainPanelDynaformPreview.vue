@@ -121,29 +121,9 @@ export default {
       this.i18n.translate = this.createTranslator(nValue || 'en');
     },
   },
-  mounted() {
-    this.copySchemasFromEditorToPreview();
-  },
   methods: {
     getFont(): string {
       return this.$store.getters['themes/getFontFamilyTheme'];
-    },
-    /**
-     * Copy schemasfrom editor to preview
-     */
-    copySchemasFromEditorToPreview(): void {
-      this.$store.dispatch(
-        'preview/setSchema',
-        this.$store.get('app/editor@schema')
-      );
-      this.$store.dispatch(
-        'preview/setUiSchema',
-        this.$store.get('app/editor@uiSchema')
-      );
-      this.$store.dispatch(
-        'preview/setLocale',
-        this.$store.get('app/jsonforms@locale')
-      );
     },
     /**
      * Create translator for JSON FORMS based in store locale

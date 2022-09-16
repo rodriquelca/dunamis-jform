@@ -23,11 +23,7 @@
           :persistent-hint="persistentHint()"
           :required="control.required"
           :error-messages="control.errors"
-          :value="
-            control.data
-              ? control.data
-              : control.uischema.options.defaultValue || ''
-          "
+          :value="textValue"
           :maxlength="
             appliedOptions.restrict ? control.schema.maxLength : undefined
           "
@@ -38,6 +34,7 @@
           "
           :clearable="hover"
           multi-line
+          @input="transform(textValue)"
           @change="onChange"
           @focus="isFocused = true"
           @blur="isFocused = false"
@@ -61,7 +58,7 @@ import {
   rankWith,
   uiTypeIs,
 } from '@jsonforms/core';
-import { defineComponent } from '../vue';
+import { defineComponent, ref } from '../vue';
 import {
   rendererProps,
   useJsonFormsControl,
@@ -90,10 +87,51 @@ const controlRenderer = defineComponent({
     ...rendererProps<ControlElement>(),
   },
   setup(props: RendererProps<ControlElement>) {
-    return useVuetifyControl(
-      useJsonFormsControl(props),
-      (value) => value || undefined
-    );
+    let textValue = ref('');
+    return {
+      ...useVuetifyControl(
+        useJsonFormsControl(props),
+        (value) => value || undefined
+      ),
+      textValue,
+    };
+  },
+  mounted() {
+    this.textValue = this.control.data
+      ? this.transform(this.control.data)
+      : this.transform(this.control.uischema.options?.defaultValue) || '';
+  },
+  methods: {
+    transform(text: string) {
+      if (text) {
+        let transformToApply =
+          this.control.uischema.options?.textTransform ?? '';
+        switch (transformToApply) {
+          case 'lowercase':
+            text = text.toLowerCase();
+            break;
+          case 'uppercase':
+            text = text.toUpperCase();
+            break;
+          case 'capital':
+            text = text.charAt(0).toUpperCase() + text.slice(1);
+            break;
+          case 'title': {
+            const arr = text.split(' ');
+            for (var i = 0; i < arr.length; i++) {
+              arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1);
+            }
+            text = arr.join(' ');
+            break;
+          }
+          default:
+            text = text ?? '';
+            break;
+        }
+      }
+
+      return text;
+    },
   },
   computed: {
     hint(): string {
