@@ -104,6 +104,13 @@ const PropertiesPanel = [
     ],
   } as PropertyPanel,
   {
+    id: 'defaultDate',
+    type: 'date',
+    name: 'Default Date',
+    options: {},
+    items: [],
+  } as PropertyPanel,
+  {
     id: 'maxDate',
     type: 'date',
     name: 'Max Date',
