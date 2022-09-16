@@ -182,16 +182,29 @@ const controlRenderer = defineComponent({
     },
     valueChangeFormat(): string | null {
       if (this.inputFormat === 'date') {
-        return this.dateFormatted;
+        return this.defaultDate
+          ? formatDate(this.defaultDate.split('T')[0])
+          : this.dateFormatted;
       }
       if (this.inputFormat === 'time') {
         return this.timeFormatted;
       }
       if (this.inputFormat === 'date-time') {
-        return this.dateTimeFormatted;
+        return this.defaultDate
+          ? formatDate(this.defaultDate.split('T')[0]) +
+              ' ' +
+              this.timeFormatted
+          : this.dateTimeFormatted;
       }
 
       return null;
+    },
+    defaultDate(): string {
+      let defaultDate = this.control.uischema.options?.defaultDate;
+      if (defaultDate) {
+        this.date = defaultDate.split('T')[0];
+      }
+      return defaultDate;
     },
     maxDate(): string {
       let max = this.control.uischema.options?.maxDate;
