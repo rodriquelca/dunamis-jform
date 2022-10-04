@@ -176,6 +176,14 @@ const PropertiesPanel = defineComponent({
         fieldData['items'] = this.uiElement.options
           ? this.uiElement.options.items
           : null;
+        // Get the imgLabel property
+        fieldData['imgLabel'] = this.uiElement.options
+          ? this.uiElement.options.imgLabel
+          : '';
+        // Get the labelOrientation property
+        fieldData['labelOrientation'] = this.uiElement.options
+          ? this.uiElement.options.labelOrientation
+          : '';
         // Get the orientation property
         fieldData['orientation'] = this.uiElement.options
           ? this.uiElement.options.orientation
@@ -280,6 +288,24 @@ const PropertiesPanel = defineComponent({
           elementUUID: this.uiElement.uuid,
           changedProperties: {
             items: data.items,
+          },
+        });
+      }
+      // imgLabel
+      if (data.imgLabel || data.imgLabel === '') {
+        this.$store.dispatch('app/updateUISchemaElementOption', {
+          elementUUID: this.uiElement.uuid,
+          changedProperties: {
+            imgLabel: data.imgLabel,
+          },
+        });
+      }
+      // labelOrientation
+      if (data.labelOrientation || data.labelOrientation === '') {
+        this.$store.dispatch('app/updateUISchemaElementOption', {
+          elementUUID: this.uiElement.uuid,
+          changedProperties: {
+            labelOrientation: data.labelOrientation,
           },
         });
       }

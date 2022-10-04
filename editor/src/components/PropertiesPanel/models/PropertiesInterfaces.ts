@@ -188,6 +188,38 @@ const PropertiesPanel = [
     items: [],
   } as PropertyPanel,
   {
+    id: 'imgLabel',
+    type: 'text',
+    name: 'Image Label',
+    options: {},
+    items: [],
+    icons: [],
+  } as PropertyPanel,
+  {
+    id: 'labelOrientation',
+    type: 'dropdown',
+    name: 'Label Orientation',
+    options: {},
+    items: [
+      {
+        text: 'Top',
+        id: 'top',
+      },
+      {
+        text: 'Left',
+        id: 'left',
+      },
+      {
+        text: 'Right',
+        id: 'right',
+      },
+      {
+        text: 'Bottom',
+        id: 'bottom',
+      },
+    ],
+  } as PropertyPanel,
+  {
     id: 'multi',
     type: 'checkbox',
     name: 'Multi',
