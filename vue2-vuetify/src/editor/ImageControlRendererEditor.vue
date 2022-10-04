@@ -11,14 +11,17 @@
       </template>
       <span class="">{{ hint }}</span>
     </v-tooltip>
-    <v-img
-      :title="alt"
-      :alt="alt"
-      :max-height="appliedOptions.height || 150"
-      :max-width="appliedOptions.width || 150"
-      :src="appliedOptions.image"
-    >
-    </v-img>
+    <div :class="[labelPlacement, 'mx-auto', 'align-center']">
+      <v-img
+        :title="alt"
+        :alt="alt"
+        :max-height="appliedOptions.height || 150"
+        :max-width="appliedOptions.width || 150"
+        :src="appliedOptions.image"
+      >
+      </v-img>
+      <div class="mx-auto">{{ imageLabel }}</div>
+    </div>
   </control-wrapper>
 </template>
 
@@ -29,7 +32,7 @@ import {
   rankWith,
   uiTypeIs,
 } from '@jsonforms/core';
-import { defineComponent } from '../vue';
+import { defineComponent, ref } from '../vue';
 import {
   rendererProps,
   useJsonFormsControl,
@@ -56,10 +59,14 @@ const controlRenderer = defineComponent({
     ...rendererProps<ControlElement>(),
   },
   setup(props: RendererProps<ControlElement>) {
-    return useVuetifyControl(
-      useJsonFormsControl(props),
-      (value) => value || undefined
-    );
+    let place = ref('');
+    return {
+      ...useVuetifyControl(
+        useJsonFormsControl(props),
+        (value) => value || undefined
+      ),
+      place,
+    };
   },
   computed: {
     hint(): string {
@@ -68,6 +75,34 @@ const controlRenderer = defineComponent({
     alt(): string {
       // This property is required
       return this.control.uischema.options?.alt ?? 'Image';
+    },
+    imageLabel(): string {
+      return this.control.uischema.options?.imgLabel ?? '';
+    },
+    labelPlacement(): string {
+      if (this.imageLabel) {
+        let classes = '';
+        switch (this.control.uischema.options?.labelOrientation) {
+          case 'top':
+            classes += 'd-flex flex-column-reverse';
+            break;
+          case 'left':
+            classes = 'd-flex flex-row-reverse';
+            break;
+          case 'right':
+            classes = 'd-flex flex-row';
+            break;
+          case 'bottom':
+            classes = 'd-flex flex-column';
+            break;
+
+          default:
+            classes = 'd-flex flex-row-reverse';
+            break;
+        }
+        return classes;
+      }
+      return '';
     },
   },
 });
@@ -80,3 +115,8 @@ export const entry: JsonFormsRendererRegistryEntry = {
   tester: rankWith(9, uiTypeIs('Image')),
 };
 </script>
+<style>
+.img-parent {
+  display: flex;
+}
+</style>

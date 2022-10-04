@@ -54,10 +54,39 @@ const PropertiesPanelDynamic = defineComponent({
     let data = ref(
       formatProperties(FieldProperties.get(type.value), props.config.data)
     );
+
+    /**
+     * Add or remove the labelOrientation property for Image
+     */
+    // Clone props so as to avoid modyfing on the original props
+    let sideProps = [...properties.value];
+    // Get labelOrientation if exists
+    let index = sideProps.indexOf(
+      sideProps.find((obj) => obj.id === 'labelOrientation')
+    );
+    let labelOrientation = index > -1 ? sideProps[index] : {};
+    // Check if imgLabel is set in order to determine if labelOrientation
+    // should be rendered
+    if (!data.value.imgLabel) {
+      // Check to see if labelOrientation is trying to be rendered
+      // If it is, delete it
+      if (index > -1) {
+        data.value.labelOrientation = '';
+        labelOrientation = sideProps.splice(index, 1)[0];
+      }
+    } else {
+      // Save labelOrientation if it is present
+      labelOrientation = sideProps.find((obj) => obj.id === 'labelOrientation');
+    }
+    // Render the correct props
+    properties.value = sideProps;
+
     return {
       properties,
+      sideProps,
       type,
       data,
+      labelOrientation,
       getData() {
         context.emit('updateData', _.cloneDeep(data.value));
       },
@@ -86,6 +115,29 @@ const PropertiesPanelDynamic = defineComponent({
         }
       },
     };
+  },
+  beforeUpdate() {
+    // Get labelOrientation
+    let objToRemove = this.sideProps.find(
+      (obj) => obj.id === 'labelOrientation'
+    );
+    let indexToRemove = this.sideProps.indexOf(objToRemove);
+
+    // Check if imgLabel is set in order to determine
+    // if labelOrientation should be rendered
+    if (!this.data.imgLabel) {
+      // No imgLabel, no labelOrientation
+      if (indexToRemove > -1) {
+        this.data['labelOrientation'] = {};
+        this.sideProps.splice(indexToRemove, 1);
+      }
+    } else {
+      // Get saved labelOrientation if there is no prop saved
+      // and push into props
+      if (indexToRemove === -1) {
+        this.sideProps.push(this.labelOrientation);
+      }
+    }
   },
 });
 export default PropertiesPanelDynamic;

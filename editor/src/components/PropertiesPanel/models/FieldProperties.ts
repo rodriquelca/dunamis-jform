@@ -106,6 +106,8 @@ const FieldProperties: any = {
     Props.build('variable'),
     Props.build('hint'),
     Props.build('alt'),
+    Props.build('imgLabel'),
+    Props.build('labelOrientation'),
   ],
   MultipleFile: [
     Props.build('type'),
