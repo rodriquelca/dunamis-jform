@@ -270,4 +270,7 @@ export default {
 .selected {
   border: 2px solid rgb(48 201 173 / 98%);
 }
+.v-application .d-inline {
+  display: inline-flex;
+}
 </style>
